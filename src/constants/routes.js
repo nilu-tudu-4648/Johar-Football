@@ -5,6 +5,7 @@ export const NAVIGATION = {
   DRAWER: "MyDrawer",
   REGISTER: "Register",
   MATCH_DETAILS: "MatchDetails",
+  PROFILE: "ProfileScreen",
   HOME: "Home",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod

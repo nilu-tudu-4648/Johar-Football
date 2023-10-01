@@ -27,7 +27,7 @@ export const COLORS = {
   purple4: "rgba(97, 61, 193, 1)",
   //blue
   blue: "#2E85E0",
-  darkblue: "rgba(25, 73, 137, 1)",
+  darkblue: "#3399ff",
 };
 
 export const STYLES = {

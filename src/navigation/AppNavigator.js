@@ -10,6 +10,7 @@ import {
   HomeScreen,
   LoginScreen,
   MatchDetailsScreen,
+  ProfileScreen,
   SignUpScreen,
   WelcomeScreen,
 } from "../screens";
@@ -64,6 +65,11 @@ function AppNavigator() {
             options={options}
             name={NAVIGATION.MATCH_DETAILS}
             component={MatchDetailsScreen}
+          />
+          <Stack.Screen
+            options={options}
+            name={NAVIGATION.PROFILE}
+            component={ProfileScreen}
           />
         </>
       )}
