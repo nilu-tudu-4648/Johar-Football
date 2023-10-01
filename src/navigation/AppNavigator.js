@@ -9,6 +9,7 @@ import { setLoginUser } from "../store/userReducer";
 import {
   HomeScreen,
   LoginScreen,
+  MatchDetailsScreen,
   SignUpScreen,
   WelcomeScreen,
 } from "../screens";
@@ -58,6 +59,11 @@ function AppNavigator() {
             options={options}
             name={NAVIGATION.HOME}
             component={HomeScreen}
+          />
+          <Stack.Screen
+            options={options}
+            name={NAVIGATION.MATCH_DETAILS}
+            component={MatchDetailsScreen}
           />
         </>
       )}

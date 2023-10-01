@@ -55,7 +55,7 @@ const WelcomeScreen = ({ navigation }) => {
             title="REGISTER"
             style={{ marginVertical: SIZES.h4 }}
             onPress={() =>
-              navigation.navigate(NAVIGATION.LOGIN, { register: true })
+              navigation.navigate(NAVIGATION.REGISTER, { register: true })
             }
           />
           <View style={FSTYLES}>

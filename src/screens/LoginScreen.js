@@ -1,4 +1,4 @@
-import { StyleSheet, View, ToastAndroid } from "react-native";
+import { StyleSheet, View, ToastAndroid, BackHandler } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { set, useForm } from "react-hook-form";
@@ -15,7 +15,13 @@ import { auth, db } from "../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setLoginUser } from "../store/userReducer";
 import { useDispatch } from "react-redux";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { NAVIGATION } from "../constants/routes";
 
 const LoginScreen = ({ navigation, route }) => {
@@ -30,13 +36,12 @@ const LoginScreen = ({ navigation, route }) => {
     setValue,
   } = useForm({
     defaultValues: {
-      email: "a@gmail.com",
+      email: "nilunilesh94@gmail.com",
       password: "123456",
     },
   });
   const onSubmit = async (data) => {
     setloading(true);
-
     try {
       // api calls
       if (!register) {
@@ -51,7 +56,6 @@ const LoginScreen = ({ navigation, route }) => {
       setloading(false);
     }
   };
-
   const rules = {
     required: "This field is mandatory",
   };
@@ -85,10 +89,22 @@ const LoginScreen = ({ navigation, route }) => {
   useEffect(() => {
     route.params?.register && setregister(route.params?.register);
   }, []);
+  async function getUser(email) {
+    try {
+      const q = query(collection(db, "users"), where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => {
+        const user = doc.data();
+        dispatch(setLoginUser(user));
+        await AsyncStorage.setItem("loggedInUser", JSON.stringify(user));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleSignIn = async (email, password) => {
     try {
       setloading(true);
-
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
@@ -97,11 +113,7 @@ const LoginScreen = ({ navigation, route }) => {
 
       if (userCredential.user) {
         const user = userCredential.user;
-
-        await AsyncStorage.setItem("loggedInUser", JSON.stringify(user));
-
-        dispatch(setLoginUser(user));
-
+        await getUser(email);
         const usersCollectionRef = collection(db, "users");
         const userQuery = query(
           usersCollectionRef,
@@ -129,7 +141,14 @@ const LoginScreen = ({ navigation, route }) => {
       setloading(false);
     }
   };
-
+  BackHandler.addEventListener(
+    "hardwareBackPress",
+    () => {
+      BackHandler.exitApp();
+      return () => true;
+    },
+    []
+  );
   return (
     <AppView>
       <AppLoader loading={loading} />

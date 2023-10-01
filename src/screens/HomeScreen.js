@@ -1,17 +1,24 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
-import { AppButton, AppView, HomeHeader } from "../components";
-import { useDispatch } from "react-redux";
-import { logoutUser } from "../constants/functions";
+import { AppText, AppView, HomeHeader } from "../components";
+import MatchesItem from "../components/MatchesItem";
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
   return (
     <>
       <HomeHeader header={"DASHBOARD"} />
       <AppView>
-        <Text>HomeScreen</Text>
-        <AppButton title={"Logout"} onPress={() => logoutUser(dispatch)} />
+        <View style={{ width: "100%" }}>
+          <AppText>Upcoming Matches</AppText>
+        </View>
+        <ScrollView
+          style={{ width: "100%" }}
+          showsVerticalScrollIndicator={false}
+        >
+          {[1, 1, 1, 1, 1].map((item, i) => (
+            <MatchesItem key={i} item={item} />
+          ))}
+        </ScrollView>
       </AppView>
     </>
   );
