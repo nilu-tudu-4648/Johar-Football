@@ -15,6 +15,7 @@ import {
   WelcomeScreen,
 } from "../screens";
 import { StyleHeader } from "../components";
+import CreateTeamScreen from "../screens/CreateTeamScreen";
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -70,6 +71,11 @@ function AppNavigator() {
             options={options}
             name={NAVIGATION.PROFILE}
             component={ProfileScreen}
+          />
+          <Stack.Screen
+            options={options}
+            name={NAVIGATION.CREATE_TEAM}
+            component={CreateTeamScreen}
           />
         </>
       )}

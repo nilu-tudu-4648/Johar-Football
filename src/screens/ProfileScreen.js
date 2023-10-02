@@ -81,22 +81,10 @@ export default function ProfileScreen({ navigation }) {
           <AppText size={1.8}>{user.email}</AppText>
         </View>
         <View style={{ ...styles.gpsButton }}>
-          <AppText size={1.8}>userId :-{user.userId}</AppText>
+          <AppText size={1.8}>Id :-{user.userId}</AppText>
         </View>
-        <View style={{ ...styles.gpsButton, backgroundColor: COLORS.primary }}>
-          <AppText size={1.8} style={{ color: COLORS.white }}>
-            <Feather
-              name="phone-call"
-              size={SIZES.h5 * 1.2}
-              color={COLORS.white}
-            />{" "}
-            <AppText
-              size={1.8}
-              style={{ color: COLORS.white, textDecorationLine: "underline" }}
-            >
-              +91 {user.mobile}
-            </AppText>{" "}
-          </AppText>
+        <View style={{ ...styles.gpsButton }}>
+          <AppText size={1.8}>+91 {user.mobile}</AppText>
         </View>
       </View>
     </View>
@@ -129,7 +117,7 @@ const styles = StyleSheet.create({
   },
   headerstyle: {
     ...FSTYLES,
-    backgroundColor: COLORS.darkblue,
+    backgroundColor: COLORS.purple,
     padding: "10%",
   },
 });

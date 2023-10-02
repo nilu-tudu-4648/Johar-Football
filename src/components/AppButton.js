@@ -57,7 +57,7 @@ const AppButton = ({
 
 const styles = StyleSheet.create({
   bntstyle: {
-    borderRadius: SIZES.base1,
+    borderRadius: SIZES.base1*.7,
     ...STYLES,
     height: SIZES.h1 * 1.4,
     marginHorizontal: 3,

@@ -15,13 +15,7 @@ import { auth, db } from "../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setLoginUser } from "../store/userReducer";
 import { useDispatch } from "react-redux";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { NAVIGATION } from "../constants/routes";
 
 const LoginScreen = ({ navigation, route }) => {
@@ -36,8 +30,10 @@ const LoginScreen = ({ navigation, route }) => {
     setValue,
   } = useForm({
     defaultValues: {
-      email: "nilunilesh94@gmail.com",
-      password: "123456",
+      email: "",
+      password: "",
+      // email: "nilunilesh94@gmail.com",
+      // password: "123456",
     },
   });
   const onSubmit = async (data) => {

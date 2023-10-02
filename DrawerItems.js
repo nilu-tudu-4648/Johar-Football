@@ -14,7 +14,7 @@ const DrawerItems = ({ navigation }) => {
   
   return (
     <DrawerContentScrollView
-      contentContainerStyle={{ flex: 1, backgroundColor: COLORS.darkblue }}
+      contentContainerStyle={{ flex: 1, backgroundColor: COLORS.purple }}
     >
       <View style={styles.headerstyle}>
         {user?.ImgUrl ? (
@@ -55,7 +55,7 @@ const DrawerItems = ({ navigation }) => {
           }}
         >
           <AppText size={1} color={COLORS.lightgray1}>
-            1.0.0
+            1.0.1
           </AppText>
           <AppButton
             title={"Logout"}
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   headerstyle: {
     ...FSTYLES,
-    backgroundColor: COLORS.darkblue,
+    backgroundColor: COLORS.purple,
     height: "20%",
     paddingHorizontal: "10%",
   },

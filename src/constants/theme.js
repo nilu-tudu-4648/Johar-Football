@@ -21,7 +21,7 @@ export const COLORS = {
   transparent: "transparent",
   yellow: "#F1D31A",
   lightyellow: "#FFFCEA",
-  purple1: "#613DC1",
+  purple: "#613DC1",
   purple2: "#858AE3",
   purple3: "#4E148C",
   purple4: "rgba(97, 61, 193, 1)",
@@ -105,17 +105,25 @@ export const FONTS = {
     lineHeight: width * 0.04,
   },
 };
-export const RFONTS = {
-  h7: { fontSize: width * 0.02, color: COLORS.black, fontWeight: "700" },
-  h6: { fontSize: width * 0.03, color: COLORS.black, fontWeight: "700" },
-  h5: { fontSize: width * 0.04, color: COLORS.black, fontWeight: "700" },
-  h4: { fontSize: width * 0.05, color: COLORS.black, fontWeight: "700" },
-  h3: { fontSize: width * 0.06, color: COLORS.black, fontWeight: "700" },
-  h2: { fontSize: width * 0.07, color: COLORS.black, fontWeight: "700" },
-  h1: { fontSize: width * 0.09, color: COLORS.black, fontWeight: "700" },
+export const NFONTS = {
+  h7: { fontSize: width * 0.02, color: COLORS.black, fontWeight: "400" },
+  h6: { fontSize: width * 0.03, color: COLORS.black, fontWeight: "400" },
+  h5: { fontSize: width * 0.04, color: COLORS.black, fontWeight: "400" },
+  h4: { fontSize: width * 0.05, color: COLORS.black, fontWeight: "400" },
+  h3: { fontSize: width * 0.06, color: COLORS.black, fontWeight: "400" },
+  h2: { fontSize: width * 0.07, color: COLORS.black, fontWeight: "400" },
+  h1: { fontSize: width * 0.09, color: COLORS.black, fontWeight: "400" },
+};
+export const WNFONTS = {
+  h7: { fontSize: width * 0.02, color: COLORS.white, fontWeight: "400" },
+  h6: { fontSize: width * 0.03, color: COLORS.white, fontWeight: "400" },
+  h5: { fontSize: width * 0.04, color: COLORS.white, fontWeight: "400" },
+  h4: { fontSize: width * 0.05, color: COLORS.white, fontWeight: "400" },
+  h3: { fontSize: width * 0.06, color: COLORS.white, fontWeight: "400" },
+  h2: { fontSize: width * 0.07, color: COLORS.white, fontWeight: "400" },
+  h1: { fontSize: width * 0.09, color: COLORS.white, fontWeight: "400" },
 };
 
-
-const appTheme = { COLORS, SIZES, FONTS, RFONTS, STYLES, FSTYLES };
+const appTheme = { COLORS, SIZES, WNFONTS, FONTS, NFONTS, STYLES, FSTYLES };
 
 export default appTheme;

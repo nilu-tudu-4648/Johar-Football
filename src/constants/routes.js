@@ -7,6 +7,7 @@ export const NAVIGATION = {
   MATCH_DETAILS: "MatchDetails",
   PROFILE: "ProfileScreen",
   HOME: "Home",
+  CREATE_TEAM: "CreateTeamScreen",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod
   },
