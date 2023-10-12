@@ -8,6 +8,10 @@ export const NAVIGATION = {
   PROFILE: "ProfileScreen",
   HOME: "Home",
   CREATE_TEAM: "CreateTeamScreen",
+  GK_SCREEN: "GK",
+  DEF_SCREEN: "DEF",
+  MID_SCREEN: "MID",
+  ST_SCREEN: "ST",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod
   },
