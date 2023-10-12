@@ -15,7 +15,7 @@ const HomeScreen = () => {
           style={{ width: "100%" }}
           showsVerticalScrollIndicator={false}
         >
-          {[1, 1, 1, 1, 1].map((item, i) => (
+          {[1].map((item, i) => (
             <MatchesItem key={i} item={item} />
           ))}
         </ScrollView>

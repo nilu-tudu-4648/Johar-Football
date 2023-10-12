@@ -101,14 +101,6 @@ export const sanitizeJsonString = (jsonString) => {
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
-
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
-export const validatePAN = (Pan) => {
-  const PAN_Card_No = Pan.toUpperCase();
-  const regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
-  if (PAN_Card_No.length == 10) {
-    return regex.test(PAN_Card_No);
-  }
-};

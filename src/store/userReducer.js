@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./api";
+import { PLAYERS } from "../constants/data";
 const initialState = {
   loading: false,
   user: null,
   userLoggedIn: "false",
+  createteam: [],
+  GK: PLAYERS,
+  DEF: [],
 };
 
 const userReducer = createSlice({
@@ -30,6 +34,15 @@ const userReducer = createSlice({
     logoutFromReducer: (userReducer, action) => {
       userReducer.otpData = null;
     },
+    addGKtoTeam: (userReducer, action) => {
+      userReducer.GK = action.payload;
+    },
+    addDEFtoTeam: (userReducer, action) => {
+      userReducer.DEF = action.payload;
+    },
+    addPlayerstoTeam: (userReducer, action) => {
+      userReducer.createteam = action.payload;
+    },
   },
 });
 
@@ -40,8 +53,14 @@ const {
 } = userReducer.actions;
 
 export default userReducer.reducer;
-export const { logoutFromReducer, setLoginUser, checkUserLogin } =
-  userReducer.actions;
+export const {
+  logoutFromReducer,
+  setLoginUser,
+  checkUserLogin,
+  addPlayerstoTeam,
+  addGKtoTeam,
+  addDEFtoTeam,
+} = userReducer.actions;
 export const getUserDetails = (data) =>
   apiCallBegan({
     method: "post",

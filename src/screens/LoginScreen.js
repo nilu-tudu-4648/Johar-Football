@@ -30,10 +30,10 @@ const LoginScreen = ({ navigation, route }) => {
     setValue,
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
-      // email: "nilunilesh94@gmail.com",
-      // password: "123456",
+      // email: "",
+      // password: "",
+      email: "nilunilesh94@gmail.com",
+      password: "123456",
     },
   });
   const onSubmit = async (data) => {
@@ -159,7 +159,7 @@ const LoginScreen = ({ navigation, route }) => {
       </View>
       <View style={{ ...STYLES, flex: 1 }}>
         <View style={{ width: "100%" }}>
-          <AppText style={styles.smallText}>{"Email"}</AppText>
+          <AppText style={styles.smallText}>{"Fist Name"}</AppText>
           <FormInput
             control={control}
             rules={{
@@ -170,7 +170,7 @@ const LoginScreen = ({ navigation, route }) => {
               },
             }}
             keyboardType={"email-address"}
-            placeholder={"email"}
+            placeholder={"First Name"}
             name="email"
           />
         </View>

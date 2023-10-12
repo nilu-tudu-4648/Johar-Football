@@ -22,15 +22,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.syam.sundar.dream11"
+      "package": "com.nilesh98.dream11"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "19ae0746-6411-464d-8230-7bf471484c14"
-      }
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1f662c1a-e7d8-4ae4-a25c-fa6e76c171f4"
     }
   }
 }
