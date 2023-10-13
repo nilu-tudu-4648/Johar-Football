@@ -7,11 +7,11 @@ import AppText from "./src/components/AppText";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "./src/constants/functions";
 import { AppButton } from "./src/components";
+import { Image } from "react-native";
 const DrawerItems = ({ navigation }) => {
-
   const { user } = useSelector((state) => state.entities.userReducer);
   const dispatch = useDispatch();
-  
+
   return (
     <DrawerContentScrollView
       contentContainerStyle={{ flex: 1, backgroundColor: COLORS.purple }}
@@ -34,6 +34,10 @@ const DrawerItems = ({ navigation }) => {
         </AppText>
       </View>
       <View style={styles.container}>
+        <Image
+          source={require("./assets/qr.jpg")}
+          style={{ width: "100%", height: 500, resizeMode: "contain",marginVertical:20 }}
+        />
         <View style={{ width: "100%" }}>
           {/* {
             dashboardCards.map((item, i) => (

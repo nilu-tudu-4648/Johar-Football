@@ -4,6 +4,9 @@ import axios from "axios";
 import { NAVIGATION } from "./routes";
 import { setLoginUser } from "../store/userReducer";
 import { ACTIONS } from "./data";
+import { setleaderBoard } from "../store/playersReducer";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 
 export const logoutUser = async (dispatch) => {
   try {
@@ -104,3 +107,18 @@ export function capitalizeFirstLetter(string) {
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
+export const getLeaderBoard = async (dispatch) => {
+  try {
+    const q = query(collection(db, "teams"), where("matchId", "==", "123"));
+    const querySnapshot = await getDocs(q);
+    let arr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      return arr.push({ id, ...data });
+    });
+    dispatch(setleaderBoard(arr));
+  } catch (error) {
+    console.log(error);
+  }
+};

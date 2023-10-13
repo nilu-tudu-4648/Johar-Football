@@ -1,20 +1,16 @@
-import { StyleSheet, Text, ToastAndroid, View } from "react-native";
-import React, { useState } from "react";
-import {
-  AppButton,
-  AppLoader,
-  AppText,
-  AppView,
-  
-} from "../components";
-import { AntDesign } from "@expo/vector-icons";
-import { COLORS, WNFONTS, SIZES, FSTYLES } from "../constants/theme";
+import { StyleSheet, ToastAndroid, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { AppButton, AppLoader, AppText } from "../components";
+import { COLORS, SIZES, FSTYLES } from "../constants/theme";
 import * as Progress from "react-native-progress";
 import ContestDetailsNavigator from "../navigation/ContestDetailsNavigator";
 import { NAVIGATION } from "../constants/routes";
 import ContestHeader from "../components/ContestHeader";
+import { useDispatch } from "react-redux";
+import { getLeaderBoard } from "../constants/functions";
 const MatchDetailsScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
+  const dispatch = useDispatch();
   const joinContest = () => {
     setloading(true);
     setTimeout(() => {
@@ -23,6 +19,9 @@ const MatchDetailsScreen = ({ navigation }) => {
       ToastAndroid.show("Joined Successfully", ToastAndroid.SHORT);
     }, 2000);
   };
+  useEffect(() => {
+    getLeaderBoard(dispatch);
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       <AppLoader loading={loading} />

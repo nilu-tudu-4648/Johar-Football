@@ -6,18 +6,15 @@ import {
   ToastAndroid,
   BackHandler,
 } from "react-native";
-
-import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-
 import * as ImagePicker from "expo-image-picker";
 import AppText from "../components/AppText";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
-
 import { Avatar } from "react-native-paper";
 import { NAVIGATION } from "../constants/routes";
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen({ navigation, route }) {
+  const admin = route.params?.admin;
   const [image, setimage] = useState(null);
   const { user } = useSelector((state) => state.entities.userReducer);
   const pickImage = async () => {
@@ -45,7 +42,7 @@ export default function ProfileScreen({ navigation }) {
   BackHandler.addEventListener(
     "hardwareBackPress",
     () => {
-      navigation.navigate(NAVIGATION.HOME);
+      navigation.navigate(admin ? NAVIGATION.ADMIN_HOME : NAVIGATION.HOME);
       return () => true;
     },
     []

@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { apiCallBegan } from "./api";
 const initialState = {
   loading: false,
   players: [],
+  leaderBoard: [],
 };
 const playersReducer = createSlice({
   name: "playersReducer",
@@ -25,9 +25,15 @@ const playersReducer = createSlice({
     setFilterPlayersForTournament: (playersReducer, action) => {
       playersReducer.players = action.payload;
     },
+    setleaderBoard: (playersReducer, action) => {
+      playersReducer.leaderBoard = action.payload;
+    },
   },
 });
 
 export default playersReducer.reducer;
-export const { setPlayersForTournament, setFilterPlayersForTournament } =
-  playersReducer.actions;
+export const {
+  setPlayersForTournament,
+  setFilterPlayersForTournament,
+  setleaderBoard,
+} = playersReducer.actions;

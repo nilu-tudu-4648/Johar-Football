@@ -60,7 +60,6 @@ const SignUpScreen = ({ navigation }) => {
           where("userId", "==", user?.uid)
         );
         const querySnapshot = await getDocs(userQuery);
-
         if (querySnapshot.empty) {
           await addDoc(usersCollectionRef, {
             userId: user.uid,
@@ -69,6 +68,7 @@ const SignUpScreen = ({ navigation }) => {
             lastName,
             mobile,
             proflePic: "",
+            admin: "false",
           });
         }
         navigation.navigate(NAVIGATION.LOGIN);

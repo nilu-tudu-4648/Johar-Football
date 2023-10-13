@@ -1,28 +1,22 @@
 import { StyleSheet, View, ToastAndroid, BackHandler } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import FormInput from "../components/FormInput";
 import AppLoader from "../components/AppLoader";
 import { AppView } from "../components";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setLoginUser } from "../store/userReducer";
-import { useDispatch } from "react-redux";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { NAVIGATION } from "../constants/routes";
+import { useDispatch } from "react-redux";
+import { setLoginUser } from "../store/userReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation, route }) => {
   const [loading, setloading] = useState(false);
-  const [register, setregister] = useState(false);
-  const dispatch = useDispatch();
-
   const {
     control,
     handleSubmit,
@@ -36,68 +30,8 @@ const LoginScreen = ({ navigation, route }) => {
       password: "123456",
     },
   });
-  const onSubmit = async (data) => {
-    setloading(true);
-    try {
-      // api calls
-      if (!register) {
-        await handleSignIn(data.email, data.password);
-      } else {
-        await handleSignUp(data.email, data.password);
-      }
-    } catch (error) {
-      console.log(error, "err");
-      ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
-    } finally {
-      setloading(false);
-    }
-  };
-  const rules = {
-    required: "This field is mandatory",
-  };
+  const dispatch = useDispatch();
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  const handleSignUp = async (email, password) => {
-    try {
-      setloading(true);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (userCredential.user) {
-        ToastAndroid.show("Sign Up successfully", ToastAndroid.SHORT);
-        setregister(false);
-        setValue("email", "");
-        setValue("password", "");
-      } else {
-        console.log("User creation failed.");
-      }
-    } catch (error) {
-      console.error("An error occurred during sign-up:", error);
-      ToastAndroid.show(
-        "Sign Up failed. Please try again.",
-        ToastAndroid.SHORT
-      );
-    } finally {
-      setloading(false);
-    }
-  };
-  useEffect(() => {
-    route.params?.register && setregister(route.params?.register);
-  }, []);
-  async function getUser(email) {
-    try {
-      const q = query(collection(db, "users"), where("email", "==", email));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async (doc) => {
-        const user = doc.data();
-        dispatch(setLoginUser(user));
-        await AsyncStorage.setItem("loggedInUser", JSON.stringify(user));
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
   const handleSignIn = async (email, password) => {
     try {
       setloading(true);
@@ -106,26 +40,15 @@ const LoginScreen = ({ navigation, route }) => {
         email,
         password
       );
-
       if (userCredential.user) {
-        const user = userCredential.user;
-        await getUser(email);
-        const usersCollectionRef = collection(db, "users");
-        const userQuery = query(
-          usersCollectionRef,
-          where("userId", "==", user.uid)
-        );
-        const querySnapshot = await getDocs(userQuery);
-
-        if (querySnapshot.empty) {
-          await addDoc(usersCollectionRef, {
-            userId: user.uid,
-            email: user.email,
-          });
-        }
-
-        ToastAndroid.show("Login successful", ToastAndroid.SHORT);
-        navigation.navigate(NAVIGATION.HOME);
+        const q = query(collection(db, "users"), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (doc) => {
+          const user = doc.data();
+          dispatch(setLoginUser(user));
+          await AsyncStorage.setItem("loggedInUser", JSON.stringify(user));
+          ToastAndroid.show("Login successful", ToastAndroid.SHORT);
+        });
       } else {
         ToastAndroid.show("Invalid credentials", ToastAndroid.SHORT);
         console.log("User login failed.");
@@ -136,6 +59,20 @@ const LoginScreen = ({ navigation, route }) => {
     } finally {
       setloading(false);
     }
+  };
+  const onSubmit = async (data) => {
+    setloading(true);
+    try {
+      await handleSignIn(data.email, data.password);
+    } catch (error) {
+      console.log(error, "err");
+      ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
+    } finally {
+      setloading(false);
+    }
+  };
+  const rules = {
+    required: "This field is mandatory",
   };
   BackHandler.addEventListener(
     "hardwareBackPress",
@@ -154,7 +91,7 @@ const LoginScreen = ({ navigation, route }) => {
           style={{ alignSelf: "center", marginTop: SIZES.h1 * 2 }}
           size={2.5}
         >
-          {register ? "Register" : "Login"}
+          {"Login"}
         </AppText>
       </View>
       <View style={{ ...STYLES, flex: 1 }}>
@@ -184,19 +121,9 @@ const LoginScreen = ({ navigation, route }) => {
             secureTextEntry={true}
           />
         </View>
-        {/* <View style={{ width: "100%", alignItems: "flex-end" }}>
-          <TouchableOpacity onPress={() => setregister(true)}>
-            <AppText style={{ ...styles.smallText }}>
-              {"New user? Sign up"}
-            </AppText>
-          </TouchableOpacity>
-        </View> */}
       </View>
       <View style={{ flex: 1, width: "100%" }}>
-        <AppButton
-          title={register ? "Register" : "Login"}
-          onPress={handleSubmit(onSubmit)}
-        />
+        <AppButton title={"Login"} onPress={handleSubmit(onSubmit)} />
       </View>
     </AppView>
   );

@@ -1,3 +1,5 @@
+import { NAVIGATION } from "./routes";
+
 export const PLAYERS = [
   {
     name: "Alice",
@@ -240,5 +242,20 @@ export const PLAYERS = [
     isST: false,
     selectedCaptain: false,
     selectedViceCaptain: false,
+  },
+];
+
+export const dashboardCards = [
+  {
+    name: "ADD PLAYER",
+    navigation: NAVIGATION.ADD_PLAYER,
+  },
+  {
+    name: "ADD TEAM",
+    navigation: NAVIGATION.ADD_TEAM,
+  },
+  {
+    name: "TOURNAMENT",
+    navigation: NAVIGATION.CREATE_TOURNAMENT,
   },
 ];

@@ -5,16 +5,21 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContestHeader from "../components/ContestHeader";
 import { AppDivider, AppText } from "../components";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
-import { PLAYERS } from "../constants/data";
 import { Entypo } from "@expo/vector-icons";
 import { NAVIGATION } from "../constants/routes";
-const SelectCaptainScreen = ({navigation}) => {
-  const [playersArray, setplayersArray] = useState(PLAYERS);
-
+import { useDispatch, useSelector } from "react-redux";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { getLeaderBoard } from "../constants/functions";
+const SelectCaptainScreen = ({ navigation }) => {
+  const [playersArray, setplayersArray] = useState([]);
+  const { players } = useSelector((state) => state.entities.playersReducer);
+  const { user } = useSelector((state) => state.entities.userReducer);
+  const dispatch = useDispatch();
   const updatedPlayersFunc = (item, type) => {
     const updatedPlayers = playersArray.map((player) => {
       if (player.name === item.name) {
@@ -50,7 +55,9 @@ const SelectCaptainScreen = ({navigation}) => {
 
     setplayersArray(updatedPlayers);
   };
-
+  useEffect(() => {
+    setplayersArray(players);
+  }, []);
   const renderItem = ({ item }) => {
     return (
       <View>
@@ -125,6 +132,21 @@ const SelectCaptainScreen = ({navigation}) => {
       </View>
     );
   };
+  const saveTeamstoFirebase = async () => {
+    try {
+      const teamsCollectionRef = collection(db, "teams");
+      await addDoc(teamsCollectionRef, {
+        userId: user.userId,
+        userName: user.firstName + " " + user.lastName,
+        players,
+        matchId: "123",
+      });
+      await getLeaderBoard(dispatch);
+      navigation.navigate(NAVIGATION.MATCH_DETAILS);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -158,7 +180,7 @@ const SelectCaptainScreen = ({navigation}) => {
       <Button
         title="Save & Continue"
         style={{ bottom: 12 }}
-        onPress={() => navigation.navigate(NAVIGATION.MATCH_DETAILS)}
+        onPress={saveTeamstoFirebase}
       />
     </>
   );

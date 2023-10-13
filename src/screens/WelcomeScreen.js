@@ -11,7 +11,7 @@ const WelcomeScreen = ({ navigation }) => {
       <View
         style={{
           ...STYLES,
-          flex: 0.5,
+          flex: 0.6,
         }}
       >
         <Image
@@ -26,19 +26,19 @@ const WelcomeScreen = ({ navigation }) => {
         }}
       >
         <Image
-          source={require("../../assets/dream.png")}
-          style={{ width: "100%", resizeMode: "contain" }}
+          source={require("../../assets/teams.png")}
+          style={{ width: "100%", resizeMode: "contain", height: "110%" }}
         />
       </View>
       <View
         style={{
           ...STYLES,
+          flex: .7,
           justifyContent: "space-between",
-          flex: 1,
           paddingVertical: SIZES.padding,
         }}
       >
-        <View style={{ ...STYLES, marginTop: SIZES.base }}>
+        <View style={{ ...STYLES }}>
           <AppText size={2.5} bold={true}>
             Create Teams
           </AppText>
