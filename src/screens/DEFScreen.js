@@ -7,8 +7,6 @@ import {
   setFilterPlayersForTournament,
   setPlayersForTournament,
 } from "../store/playersReducer";
-import { Button } from "react-native";
-import { logoutUser } from "../constants/functions";
 
 const DEFScreen = () => {
   const [playersArray, setplayersArray] = useState([]);
@@ -62,7 +60,6 @@ const DEFScreen = () => {
             addPlayerstoTeamFunc={addPlayerstoTeamFunc}
           />
         ))}
-        <Button title="Submit" onPress={() => logoutUser()} />
       </ScrollView>
     </>
   );

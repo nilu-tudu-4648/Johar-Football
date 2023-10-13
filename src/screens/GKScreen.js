@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilterPlayersForTournament, setPlayersForTournament } from "../store/playersReducer";
-import { Button } from "react-native";
-import { logoutUser } from "../constants/functions";
 
 const GKScreen = () => {
   const [playersArray, setplayersArray] = useState([]);
@@ -63,7 +61,6 @@ const GKScreen = () => {
             addPlayerstoTeamFunc={addPlayerstoTeamFunc}
           />
         ))}
-        <Button title="Submit" onPress={() => logoutUser()} />
       </ScrollView>
     </>
   );

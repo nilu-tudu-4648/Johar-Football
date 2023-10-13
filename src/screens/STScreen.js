@@ -1,14 +1,17 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
 import { PLAYERS } from "../constants/data";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setFilterPlayersForTournament, setPlayersForTournament } from "../store/playersReducer";
+import {
+  setFilterPlayersForTournament,
+  setPlayersForTournament,
+} from "../store/playersReducer";
 import { Button } from "react-native";
-import { logoutUser } from "../constants/functions";
+import { NAVIGATION } from "../constants/routes";
 
-const STScreen = () => {
+const STScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
   const { players } = useSelector((state) => state.entities.playersReducer);
   const dispatch = useDispatch();
@@ -53,6 +56,13 @@ const STScreen = () => {
   useEffect(() => {
     addSTtoStorage();
   }, []);
+  const NextButton = () => {
+    if (players.length === 11) {
+      navigation.navigate(NAVIGATION.SELECT_CAPTAIN);
+    } else {
+      ToastAndroid.show("Please select 11 players",ToastAndroid.SHORT);
+    }
+  };
   return (
     <>
       <ScrollView>
@@ -63,8 +73,8 @@ const STScreen = () => {
             addPlayerstoTeamFunc={addPlayerstoTeamFunc}
           />
         ))}
-        <Button title="Submit" onPress={() => logoutUser()} />
       </ScrollView>
+      <Button title="Next" onPress={NextButton} />
     </>
   );
 };

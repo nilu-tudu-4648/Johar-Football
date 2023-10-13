@@ -11,6 +11,7 @@ import {
   LoginScreen,
   MatchDetailsScreen,
   ProfileScreen,
+  SelectCaptainScreen,
   SignUpScreen,
   WelcomeScreen,
 } from "../screens";
@@ -64,18 +65,23 @@ function AppNavigator() {
           />
           <Stack.Screen
             options={options}
-            name={NAVIGATION.MATCH_DETAILS}
-            component={MatchDetailsScreen}
-          />
-          <Stack.Screen
-            options={options}
             name={NAVIGATION.PROFILE}
             component={ProfileScreen}
           />
           <Stack.Screen
             options={options}
+            name={NAVIGATION.MATCH_DETAILS}
+            component={MatchDetailsScreen}
+          />
+          <Stack.Screen
+            options={options}
             name={NAVIGATION.CREATE_TEAM}
             component={CreateTeamScreen}
+          />
+          <Stack.Screen
+            options={options}
+            name={NAVIGATION.SELECT_CAPTAIN}
+            component={SelectCaptainScreen}
           />
         </>
       )}

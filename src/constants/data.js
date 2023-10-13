@@ -7,6 +7,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Bob",
@@ -16,6 +18,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Charlie",
@@ -25,6 +29,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: false,
     isST: true,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "David",
@@ -34,6 +40,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: false,
     isST: true,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Eve",
@@ -43,6 +51,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Frank",
@@ -52,6 +62,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: true,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Grace",
@@ -61,6 +73,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Hank",
@@ -70,6 +84,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: true,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Ivy",
@@ -79,6 +95,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: true,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Jack",
@@ -88,6 +106,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "naresh",
@@ -97,6 +117,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Ethan",
@@ -106,6 +128,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Diana",
@@ -115,6 +139,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Chris",
@@ -124,6 +150,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: false,
     isST: true,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Bella",
@@ -133,6 +161,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: false,
     isST: true,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Aaron",
@@ -142,6 +172,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Zoe",
@@ -151,6 +183,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: true,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Yara",
@@ -160,6 +194,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Xander",
@@ -169,6 +205,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: true,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Walter",
@@ -178,6 +216,8 @@ export const PLAYERS = [
     isDEF: false,
     isMID: true,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Violet",
@@ -187,6 +227,8 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
   {
     name: "Uma",
@@ -196,5 +238,7 @@ export const PLAYERS = [
     isDEF: true,
     isMID: false,
     isST: false,
+    selectedCaptain: false,
+    selectedViceCaptain: false,
   },
 ];

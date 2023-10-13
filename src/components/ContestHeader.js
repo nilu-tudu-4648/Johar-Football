@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS, WNFONTS, SIZES } from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
 
-const ContestHeader = ({ title, time }) => {
+const ContestHeader = ({ title }) => {
   const navigation = useNavigation();
   const [timeLeft, setTimeLeft] = useState(4000);
 

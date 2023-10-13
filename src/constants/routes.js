@@ -12,6 +12,7 @@ export const NAVIGATION = {
   DEF_SCREEN: "DEF",
   MID_SCREEN: "MID",
   ST_SCREEN: "ST",
+  SELECT_CAPTAIN: "SELECT_CAPTAIN",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod
   },
