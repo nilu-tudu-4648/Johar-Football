@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 const HomeHeader = ({ style, iconColor, header, headerColor = "" }) => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.entities.userReducer);
-  console.log({ user });
+  
   return (
     <AppHeader
       iconColor={iconColor}

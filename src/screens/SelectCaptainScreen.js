@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { getLeaderBoard } from "../constants/functions";
+import { FIRESTORE_COLLECTIONS } from "../constants/data";
 const SelectCaptainScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
   const { players } = useSelector((state) => state.entities.playersReducer);
@@ -132,13 +133,17 @@ const SelectCaptainScreen = ({ navigation }) => {
       </View>
     );
   };
+  console.log("playersArray", playersArray);
   const saveTeamstoFirebase = async () => {
     try {
-      const teamsCollectionRef = collection(db, "teams");
+      const teamsCollectionRef = collection(
+        db,
+        FIRESTORE_COLLECTIONS.CREATED_TEAMS
+      );
       await addDoc(teamsCollectionRef, {
         userId: user.userId,
         userName: user.firstName + " " + user.lastName,
-        players,
+        players: players.map((player) => player.name),
         matchId: "123",
       });
       await getLeaderBoard(dispatch);

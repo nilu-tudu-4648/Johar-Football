@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
   players: [],
+  createPlayers: [],
   leaderBoard: [],
 };
 const playersReducer = createSlice({
@@ -28,6 +29,9 @@ const playersReducer = createSlice({
     setleaderBoard: (playersReducer, action) => {
       playersReducer.leaderBoard = action.payload;
     },
+    setcreatePlayers: (playersReducer, action) => {
+      playersReducer.createPlayers = action.payload;
+    },
   },
 });
 
@@ -36,4 +40,5 @@ export const {
   setPlayersForTournament,
   setFilterPlayersForTournament,
   setleaderBoard,
+  setcreatePlayers
 } = playersReducer.actions;

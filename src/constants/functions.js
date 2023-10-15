@@ -1,22 +1,28 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform, ToastAndroid } from "react-native";
 import axios from "axios";
-import { NAVIGATION } from "./routes";
-import { setLoginUser } from "../store/userReducer";
-import { ACTIONS } from "./data";
-import { setleaderBoard } from "../store/playersReducer";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { setLoginUser, settournaments } from "../store/userReducer";
+import { FIRESTORE_COLLECTIONS } from "./data";
+import { setcreatePlayers, setleaderBoard } from "../store/playersReducer";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebaseConfig";
+import { setAllPlayers, setAllUsers } from "../store/adminReducer";
 
 export const logoutUser = async (dispatch) => {
   try {
     dispatch(setLoginUser(null));
-    await AsyncStorage.clear()
+    await AsyncStorage.clear();
   } catch (error) {
     console.log(error);
   }
 };
-
 
 export const containsSpecialCharacters = (str) => {
   const regex = /[!₹@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
@@ -29,16 +35,6 @@ export const isValidPhoneNumber = (str) => {
 export const truncateString = (inputString, maxLength) => {
   if (inputString.length > maxLength) {
     return inputString.substring(0, maxLength) + "...";
-  }
-  return inputString;
-};
-export const ensureMinimumLength = (inputString, minLength) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  while (inputString.length < minLength) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    const randomChar = characters.charAt(randomIndex);
-    inputString += randomChar;
   }
   return inputString;
 };
@@ -101,15 +97,31 @@ export const sanitizeJsonString = (jsonString) => {
 
   return sanitizedString;
 };
-export function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
+
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
+export const getTournaments = async (dispatch) => {
+  try {
+    const q = query(collection(db, FIRESTORE_COLLECTIONS.TOURNAMENTS));
+    const querySnapshot = await getDocs(q);
+    let arr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      return arr.push({ id, ...data });
+    });
+    dispatch(settournaments(arr));
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getLeaderBoard = async (dispatch) => {
   try {
-    const q = query(collection(db, "teams"), where("matchId", "==", "123"));
+    const q = query(
+      collection(db, FIRESTORE_COLLECTIONS.CREATED_TEAMS),
+      where("matchId", "==", "123")
+    );
     const querySnapshot = await getDocs(q);
     let arr = [];
     querySnapshot.forEach((doc) => {
@@ -118,6 +130,81 @@ export const getLeaderBoard = async (dispatch) => {
       return arr.push({ id, ...data });
     });
     dispatch(setleaderBoard(arr));
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getPlayersfromTeamName = async (firstTeamName, secondTeamName, dispatch) => {
+  try {
+    const arr = [];
+    const q = query(
+      collection(db, FIRESTORE_COLLECTIONS.PLAYERS),
+      where("teamName", "==", firstTeamName)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      arr.push({ id, ...data });
+    });
+
+    const qr = query(
+      collection(db, FIRESTORE_COLLECTIONS.PLAYERS),
+      where("teamName", "==", secondTeamName)
+    );
+    const querySnapshot2 = await getDocs(qr);
+    querySnapshot2.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      arr.push({ id, ...data });
+    });
+    dispatch(setcreatePlayers(arr));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+//admin apis
+export const getAllUsers = async (dispatch, func) => {
+  try {
+    const q = query(
+      collection(db, FIRESTORE_COLLECTIONS.USERS),
+      where("admin", "==", "false")
+    );
+    const querySnapshot = await getDocs(q);
+    let arr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      return arr.push({ id, ...data });
+    });
+    dispatch(setAllUsers(arr));
+    func(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteUser = async (id, func) => {
+  try {
+    await deleteDoc(doc(db, FIRESTORE_COLLECTIONS.PLAYERS, id));
+    func();
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllPlayers = async (dispatch, func) => {
+  try {
+    const q = query(collection(db, FIRESTORE_COLLECTIONS.PLAYERS));
+    const querySnapshot = await getDocs(q);
+    let arr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      return arr.push({ id, ...data });
+    });
+    dispatch(setAllPlayers(arr));
+    func(false);
   } catch (error) {
     console.log(error);
   }

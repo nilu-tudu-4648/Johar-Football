@@ -7,11 +7,14 @@ import ContestDetailsNavigator from "../navigation/ContestDetailsNavigator";
 import { NAVIGATION } from "../constants/routes";
 import ContestHeader from "../components/ContestHeader";
 import { useDispatch } from "react-redux";
-import { getLeaderBoard } from "../constants/functions";
-const MatchDetailsScreen = ({ navigation }) => {
+import { getLeaderBoard, getPlayersfromTeamName } from "../constants/functions";
+const MatchDetailsScreen = ({ navigation, route }) => {
   const [loading, setloading] = useState(false);
+  const item = route.params.item;
   const dispatch = useDispatch();
   const joinContest = () => {
+    
+    getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
     setloading(true);
     setTimeout(() => {
       setloading(false);
@@ -26,7 +29,10 @@ const MatchDetailsScreen = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <AppLoader loading={loading} />
       {/* header */}
-      <ContestHeader title={"FCG vs PUN"} time={"7h 20 m left"} />
+      <ContestHeader
+        title={`${item.firstTeamName} vs ${item.secondTeamName}`}
+        time={"7h 20 m left"}
+      />
       {/* body */}
       <View style={{ padding: SIZES.base }}>
         <AppText style={{ fontWeight: "400" }} size={1.5}>

@@ -10,6 +10,7 @@ import {
   AddPlayerScreen,
   AddTeamsScreen,
   AdminHomeScreen,
+  AllUsersScreen,
   CreateTournament,
   HomeScreen,
   LoginScreen,
@@ -21,6 +22,7 @@ import {
 } from "../screens";
 import { StyleHeader } from "../components";
 import CreateTeamScreen from "../screens/CreateTeamScreen";
+import AllPlayersScreen from "../screens/AllPlayersScreen";
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -81,6 +83,16 @@ function AppNavigator() {
                 options={options}
                 name={NAVIGATION.CREATE_TOURNAMENT}
                 component={CreateTournament}
+              />
+              <Stack.Screen
+                options={options}
+                name={NAVIGATION.ALL_USERS}
+                component={AllUsersScreen}
+              />
+              <Stack.Screen
+                options={options}
+                name={NAVIGATION.ALL_PLAYERS}
+                component={AllPlayersScreen}
               />
               <Stack.Screen
                 options={options}

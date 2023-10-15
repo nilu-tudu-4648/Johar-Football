@@ -8,6 +8,7 @@ const initialState = {
   createteam: [],
   GK: PLAYERS,
   DEF: [],
+  tournaments: [],
 };
 
 const userReducer = createSlice({
@@ -43,6 +44,9 @@ const userReducer = createSlice({
     addPlayerstoTeam: (userReducer, action) => {
       userReducer.createteam = action.payload;
     },
+    settournaments: (userReducer, action) => {
+      userReducer.tournaments = action.payload;
+    },
   },
 });
 
@@ -60,6 +64,7 @@ export const {
   addPlayerstoTeam,
   addGKtoTeam,
   addDEFtoTeam,
+  settournaments
 } = userReducer.actions;
 export const getUserDetails = (data) =>
   apiCallBegan({

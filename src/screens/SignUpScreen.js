@@ -11,6 +11,7 @@ import { AppButton, RedStar } from "../components";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
 import { NAVIGATION } from "../constants/routes";
+import { FIRESTORE_COLLECTIONS } from "../constants/data";
 const SignUpScreen = ({ navigation }) => {
   
   const [loading, setloading] = useState(false);
@@ -30,7 +31,7 @@ const SignUpScreen = ({ navigation }) => {
   });
   async function getUser(email) {
     try {
-      const q = query(collection(db, "users"), where("email", "==", email));
+      const q = query(collection(db, FIRESTORE_COLLECTIONS.USERS), where("email", "==", email));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(async (doc) => {
         if (doc.data()) {
@@ -54,7 +55,7 @@ const SignUpScreen = ({ navigation }) => {
         await getUser(data.email);
         const user = userCredential.user;
         ToastAndroid.show("Sign Up successfully", ToastAndroid.SHORT);
-        const usersCollectionRef = collection(db, "users");
+        const usersCollectionRef = collection(db, FIRESTORE_COLLECTIONS.USERS);
         const userQuery = query(
           usersCollectionRef,
           where("userId", "==", user?.uid)

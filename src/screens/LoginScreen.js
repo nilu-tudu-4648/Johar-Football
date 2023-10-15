@@ -14,6 +14,7 @@ import { NAVIGATION } from "../constants/routes";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../store/userReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FIRESTORE_COLLECTIONS } from "../constants/data";
 
 const LoginScreen = ({ navigation, route }) => {
   const [loading, setloading] = useState(false);
@@ -26,7 +27,8 @@ const LoginScreen = ({ navigation, route }) => {
     defaultValues: {
       // email: "",
       // password: "",
-      email: "nilunilesh94@gmail.com",
+      // email: "nilunilesh94@gmail.com",
+      email: "tudunilesh3@gmail.com",
       password: "123456",
     },
   });
@@ -41,7 +43,7 @@ const LoginScreen = ({ navigation, route }) => {
         password
       );
       if (userCredential.user) {
-        const q = query(collection(db, "users"), where("email", "==", email));
+        const q = query(collection(db, FIRESTORE_COLLECTIONS.USERS), where("email", "==", email));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(async (doc) => {
           const user = doc.data();

@@ -9,7 +9,7 @@ import { db } from "../../firebaseConfig";
 import { AppButton, } from "../components";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
-import { NAVIGATION } from "../constants/routes";
+import { FIRESTORE_COLLECTIONS } from "../constants/data";
 const AddTeamsScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const {
@@ -25,7 +25,7 @@ const AddTeamsScreen = ({ navigation }) => {
   async function getUser(name) {
     try {
       const q = query(
-        collection(db, "teamNames"),
+        collection(db, FIRESTORE_COLLECTIONS.TEAM_NAMES),
         where("teamName", "==", name)
       );
       const querySnapshot = await getDocs(q);
@@ -50,7 +50,7 @@ const AddTeamsScreen = ({ navigation }) => {
       if (teamNameExists) {
         return;
       }
-      const teamNamesCollectionRef = collection(db, "teamNames");
+      const teamNamesCollectionRef = collection(db, FIRESTORE_COLLECTIONS.TEAM_NAMES);
       await addDoc(teamNamesCollectionRef, {
         teamName,
       });

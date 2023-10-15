@@ -37,29 +37,29 @@ const MatchesItem = ({ item }) => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ backgroundColor: "red", height: 30, width: 30 }} />
             <AppText style={{ left: 6 }} size={1.5} bold={true}>
-              KBO
+              {item.firstTeamName}
             </AppText>
           </View>
-          <AppText style={{ fontWeight: "400" }} size={1.5}>
+          {/* <AppText style={{ fontWeight: "400" }} size={1.5}>
             LG Twins
-          </AppText>
+          </AppText> */}
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <AppText color={"red"}>1 hr</AppText>
+          <AppText color={"red"}>{item.time}</AppText>
           <AppText style={{ fontWeight: "400" }} size={1.5}>
-            10:30 AM
+            {item.date}
           </AppText>
         </View>
         <View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <AppText style={{ right: 12 }} size={1.5} bold={true}>
-              KBO
+              {item.secondTeamName}
             </AppText>
             <View style={{ backgroundColor: "red", height: 30, width: 30 }} />
           </View>
-          <AppText style={{ fontWeight: "400" }} size={1.5}>
+          {/* <AppText style={{ fontWeight: "400" }} size={1.5}>
             LG Twins
-          </AppText>
+          </AppText> */}
         </View>
       </View>
 

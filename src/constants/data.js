@@ -258,4 +258,20 @@ export const dashboardCards = [
     name: "TOURNAMENT",
     navigation: NAVIGATION.CREATE_TOURNAMENT,
   },
+  {
+    name: "ALL PLAYERS",
+    navigation: NAVIGATION.ALL_PLAYERS,
+  },
+  {
+    name: "ALL USERS",
+    navigation: NAVIGATION.ALL_USERS,
+  },
 ];
+
+export const FIRESTORE_COLLECTIONS = {
+  CREATED_TEAMS: "createdTeams",
+  USERS: "users",
+  PLAYERS: "players",
+  TEAM_NAMES: "teamNames",
+  TOURNAMENTS: "tournaments",
+};

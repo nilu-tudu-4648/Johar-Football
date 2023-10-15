@@ -3,15 +3,22 @@ import { PLAYERS } from "../constants/data";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilterPlayersForTournament, setPlayersForTournament } from "../store/playersReducer";
+import {
+  setFilterPlayersForTournament,
+  setPlayersForTournament,
+} from "../store/playersReducer";
 
 const GKScreen = () => {
   const [playersArray, setplayersArray] = useState([]);
-  const { players } = useSelector((state) => state.entities.playersReducer);
+  const { players, createPlayers } = useSelector(
+    (state) => state.entities.playersReducer
+  );
   const dispatch = useDispatch();
   const addGKtoStorage = async () => {
     try {
-      const updatedPlayersArray = PLAYERS.filter((player) => player.isGK);
+      const updatedPlayersArray = createPlayers.filter(
+        (player) => player.playerType === "GK"
+      );
       setplayersArray(updatedPlayersArray);
     } catch (error) {
       console.error("Error:", error);

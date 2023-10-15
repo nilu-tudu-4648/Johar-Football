@@ -9,7 +9,7 @@ import { db } from "../../firebaseConfig";
 import { AppButton, AppTextInput, SelectPlayerDialog } from "../components";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
-import { NAVIGATION } from "../constants/routes";
+import { FIRESTORE_COLLECTIONS } from "../constants/data";
 const AddPlayerScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const [visible, setvisible] = useState(false);
@@ -28,7 +28,10 @@ const AddPlayerScreen = ({ navigation }) => {
   });
   async function getUser(name) {
     try {
-      const q = query(collection(db, "players"), where("name", "==", name));
+      const q = query(
+        collection(db, FIRESTORE_COLLECTIONS.PLAYERS),
+        where("name", "==", name)
+      );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         ToastAndroid.show("Player already exists", ToastAndroid.SHORT);
@@ -39,7 +42,7 @@ const AddPlayerScreen = ({ navigation }) => {
     } catch (error) {
       console.error("Error checking player existence:", error);
       ToastAndroid.show("Error checking player existence", ToastAndroid.SHORT);
-      return true; // You may choose to handle this differently, such as returning false on error.
+      return true;
     }
   }
 
@@ -48,13 +51,10 @@ const AddPlayerScreen = ({ navigation }) => {
 
     try {
       setloading(true);
-
-      // Check if the player already exists
       const playerExists = await getUser(name);
       if (playerExists) {
-        return; // Do not proceed with adding the player
+        return; 
       }
-
       const playersCollectionRef = collection(db, "players");
       await addDoc(playersCollectionRef, {
         name,
