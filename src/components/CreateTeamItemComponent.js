@@ -15,10 +15,11 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
         }}
       >
         <View style={{ width: "25%" }}>
-          <Entypo name="user" size={SIZES.h1 * 2} color="black" />
+          <Entypo name="user" size={SIZES.h1 * 1.5} color="black" />
         </View>
         <View style={{ width: "30%" }}>
           <Text>{item.name}</Text>
+          <Text>{item.teamName}</Text>
         </View>
         <View
           style={{

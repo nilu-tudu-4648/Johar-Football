@@ -13,14 +13,15 @@ import { NAVIGATION } from "../constants/routes";
 
 const STScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
-  const { players } = useSelector((state) => state.entities.playersReducer);
+  const { players, createPlayers } = useSelector(
+    (state) => state.entities.playersReducer
+  );
   const dispatch = useDispatch();
   const addSTtoStorage = async () => {
     try {
-      const ST = await AsyncStorage.getItem("ST");
-      const parsedST = ST ? JSON.parse(ST) : null;
-      const updatedPlayersArray =
-        parsedST || PLAYERS.filter((player) => player.isST);
+      const updatedPlayersArray = createPlayers.filter(
+        (player) => player.playerType === "ST"
+      );
       setplayersArray(updatedPlayersArray);
     } catch (error) {
       console.error("Error:", error);
@@ -60,7 +61,7 @@ const STScreen = ({ navigation }) => {
     if (players.length === 11) {
       navigation.navigate(NAVIGATION.SELECT_CAPTAIN);
     } else {
-      ToastAndroid.show("Please select 11 players",ToastAndroid.SHORT);
+      ToastAndroid.show("Please select 11 players", ToastAndroid.SHORT);
     }
   };
   return (

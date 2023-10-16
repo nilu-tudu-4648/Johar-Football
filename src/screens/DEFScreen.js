@@ -1,5 +1,4 @@
-import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
-import { PLAYERS } from "../constants/data";
+import { ScrollView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +9,16 @@ import {
 
 const DEFScreen = () => {
   const [playersArray, setplayersArray] = useState([]);
-  const { players } = useSelector((state) => state.entities.playersReducer);
+  const { players, createPlayers } = useSelector(
+    (state) => state.entities.playersReducer
+  );
 
   const dispatch = useDispatch();
   const addDEFtoStorage = async () => {
     try {
-      const updatedPlayersArray = PLAYERS.filter((player) => player.isDEF);
+      const updatedPlayersArray = createPlayers.filter(
+        (player) => player.playerType === "DEF"
+      );
       setplayersArray(updatedPlayersArray);
     } catch (error) {
       console.error("Error:", error);

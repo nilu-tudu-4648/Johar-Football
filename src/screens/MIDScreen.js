@@ -1,5 +1,4 @@
-import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
-import { PLAYERS } from "../constants/data";
+import { ScrollView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,17 +6,18 @@ import {
   setFilterPlayersForTournament,
   setPlayersForTournament,
 } from "../store/playersReducer";
-import { Button } from "react-native";
-import { logoutUser } from "../constants/functions";
 
 const MIDScreen = () => {
   const [playersArray, setplayersArray] = useState([]);
-
-  const { players } = useSelector((state) => state.entities.playersReducer);
+  const { players, createPlayers } = useSelector(
+    (state) => state.entities.playersReducer
+  );
   const dispatch = useDispatch();
   const addMIDtoStorage = async () => {
     try {
-      const updatedPlayersArray = PLAYERS.filter((player) => player.isMID);
+      const updatedPlayersArray = createPlayers.filter(
+        (player) => player.playerType === "MID"
+      );
       setplayersArray(updatedPlayersArray);
     } catch (error) {
       console.error("Error:", error);
@@ -64,7 +64,6 @@ const MIDScreen = () => {
           />
         ))}
       </ScrollView>
-
     </>
   );
 };
