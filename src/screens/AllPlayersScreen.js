@@ -6,6 +6,7 @@ import {
   AppSearchBar,
   AppText,
   AppView,
+  EditPlayerDialog,
   HomeHeader,
 } from "../components";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +16,8 @@ import { COLORS, FSTYLES, SIZES } from "../constants/theme";
 const AllPlayersScreen = ({ navigation }) => {
   const { allPlayers } = useSelector((state) => state.entities.adminReducer);
   const [loading, setloading] = useState(true);
+  const [editPlayerVisible, seteditPlayerVisible] = useState(false);
+  const [editPlayerItem, seteditPlayerItem] = useState({});
   const [data, setData] = useState([]);
   const [query, setquery] = useState("");
   const dispatch = useDispatch();
@@ -37,9 +40,9 @@ const AllPlayersScreen = ({ navigation }) => {
       setData(allPlayers);
     }
   }, [query, allPlayers, filterFunction]);
-
+  const callGetAllplayer = () => getAllPlayers(dispatch, setloading);
   useEffect(() => {
-    getAllPlayers(dispatch, setloading); // Assuming this function fetches data and sets it in Redux store
+    callGetAllplayer() // Assuming this function fetches data and sets it in Redux store
   }, [dispatch]);
 
   useEffect(() => {
@@ -54,6 +57,10 @@ const AllPlayersScreen = ({ navigation }) => {
     },
     []
   );
+  const openDialog = (item) => {
+    seteditPlayerItem(item);
+    seteditPlayerVisible(true);
+  };
   return (
     <>
       <AppLoader loading={loading} />
@@ -76,7 +83,11 @@ const AllPlayersScreen = ({ navigation }) => {
                 <AppText color={"red"}>{item.teamName}</AppText>
               </View>
               <View style={{ ...FSTYLES, width: "100%" }}>
-                <AppButton title={"Update"} style={{ width: "48%" }} />
+                <AppButton
+                  title={"Update"}
+                  onPress={() => openDialog(item)}
+                  style={{ width: "48%" }}
+                />
                 <AppButton
                   onPress={() =>
                     deleteUser(item.id, getAllPlayers(dispatch, setloading))
@@ -88,6 +99,12 @@ const AllPlayersScreen = ({ navigation }) => {
             </View>
           ))}
         </ScrollView>
+        <EditPlayerDialog
+          item={editPlayerItem}
+          visible={editPlayerVisible}
+          setvisible={seteditPlayerVisible}
+          callGetAllplayer={callGetAllplayer}
+        />
       </AppView>
     </>
   );

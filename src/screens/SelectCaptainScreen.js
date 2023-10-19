@@ -2,6 +2,7 @@ import {
   Button,
   FlatList,
   StyleSheet,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -133,7 +134,6 @@ const SelectCaptainScreen = ({ navigation }) => {
       </View>
     );
   };
-  console.log("playersArray", playersArray);
   const saveTeamstoFirebase = async () => {
     try {
       const teamsCollectionRef = collection(
@@ -143,11 +143,16 @@ const SelectCaptainScreen = ({ navigation }) => {
       await addDoc(teamsCollectionRef, {
         userId: user.userId,
         userName: user.firstName + " " + user.lastName,
-        players: players.map((player) => player.name),
+        players: players.map((player) => ({
+          id: player.id,
+          selectedCaptain: player.selectedCaptain,
+          selectedViceCaptain: player.selectedViceCaptain,
+        })),
         matchId: "123",
       });
       await getLeaderBoard(dispatch);
-      navigation.navigate(NAVIGATION.MATCH_DETAILS);
+      ToastAndroid.show("Team Saved Successfully", ToastAndroid.SHORT);
+      navigation.navigate(NAVIGATION.HOME);
     } catch (error) {
       console.log("Error:", error);
     }

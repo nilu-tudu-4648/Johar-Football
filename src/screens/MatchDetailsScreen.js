@@ -13,7 +13,6 @@ const MatchDetailsScreen = ({ navigation, route }) => {
   const item = route.params.item;
   const dispatch = useDispatch();
   const joinContest = () => {
-    
     getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
     setloading(true);
     setTimeout(() => {

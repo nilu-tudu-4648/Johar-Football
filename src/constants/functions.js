@@ -101,7 +101,7 @@ export const sanitizeJsonString = (jsonString) => {
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
-export const getTournaments = async (dispatch) => {
+export const getTournaments = async (dispatch, setloading) => {
   try {
     const q = query(collection(db, FIRESTORE_COLLECTIONS.TOURNAMENTS));
     const querySnapshot = await getDocs(q);
@@ -111,6 +111,7 @@ export const getTournaments = async (dispatch) => {
       const id = doc.id;
       return arr.push({ id, ...data });
     });
+    setloading(false);
     dispatch(settournaments(arr));
   } catch (error) {
     console.log(error);
@@ -134,7 +135,11 @@ export const getLeaderBoard = async (dispatch) => {
     console.log(error);
   }
 };
-export const getPlayersfromTeamName = async (firstTeamName, secondTeamName, dispatch) => {
+export const getPlayersfromTeamName = async (
+  firstTeamName,
+  secondTeamName,
+  dispatch
+) => {
   try {
     const arr = [];
     const q = query(
@@ -163,7 +168,6 @@ export const getPlayersfromTeamName = async (firstTeamName, secondTeamName, disp
     console.log(error);
   }
 };
-
 
 //admin apis
 export const getAllUsers = async (dispatch, func) => {

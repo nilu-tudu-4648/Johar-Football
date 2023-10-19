@@ -55,7 +55,7 @@ const AddPlayerScreen = ({ navigation }) => {
       if (playerExists) {
         return; 
       }
-      const playersCollectionRef = collection(db, "players");
+      const playersCollectionRef = collection(db, FIRESTORE_COLLECTIONS.PLAYERS);
       await addDoc(playersCollectionRef, {
         name,
         points,

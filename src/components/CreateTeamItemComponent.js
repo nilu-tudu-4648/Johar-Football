@@ -29,12 +29,12 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
             justifyContent: "space-around",
           }}
         >
-          <AppText>{item.points}</AppText>
-          <AppText>6</AppText>
+          <AppText></AppText>
+          <AppText></AppText>
           <Feather
             name={item.isActive ? "minus-circle" : "plus-circle"}
             onPress={() => addPlayerstoTeamFunc(item)}
-            size={24}
+            size={SIZES.h1 * 1}
             color={item.isActive ? COLORS.red : COLORS.green}
           />
         </View>
