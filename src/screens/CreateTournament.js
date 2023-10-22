@@ -44,6 +44,7 @@ const CreateTournament = ({ navigation }) => {
     defaultValues: {
       firstTeamName: "",
       secondTeamName: "",
+      prizeAmount: "",
     },
   });
   const onSubmit = async (data) => {
@@ -117,6 +118,15 @@ const CreateTournament = ({ navigation }) => {
             rules={rules}
             placeholder={"Second Team name"}
             name="secondTeamName"
+          />
+        </View>
+        <View>
+          <AppText style={styles.smallText}>{"Prize Amount"}</AppText>
+          <FormInput
+            control={control}
+            rules={rules}
+            placeholder={"Add Prize Amount"}
+            name="prizeAmount"
           />
         </View>
         <View style={{ marginBottom: SIZES.base }}>

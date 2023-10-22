@@ -266,6 +266,10 @@ export const dashboardCards = [
     name: "ALL USERS",
     navigation: NAVIGATION.ALL_USERS,
   },
+  {
+    name: "ALL TOURNAMENTS",
+    navigation: NAVIGATION.ALL_TOURNAMENTS,
+  },
 ];
 
 export const FIRESTORE_COLLECTIONS = {

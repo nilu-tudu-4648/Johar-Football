@@ -23,6 +23,7 @@ import {
 import { StyleHeader } from "../components";
 import CreateTeamScreen from "../screens/CreateTeamScreen";
 import AllPlayersScreen from "../screens/AllPlayersScreen";
+import AllTournaments from "../screens/AllTournaments";
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -93,6 +94,11 @@ function AppNavigator() {
                 options={options}
                 name={NAVIGATION.ALL_PLAYERS}
                 component={AllPlayersScreen}
+              />
+              <Stack.Screen
+                options={options}
+                name={NAVIGATION.ALL_TOURNAMENTS}
+                component={AllTournaments}
               />
               <Stack.Screen
                 options={options}

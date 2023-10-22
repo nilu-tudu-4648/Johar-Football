@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { COLORS, FSTYLES, SIZES } from "../constants/theme";
@@ -7,7 +7,8 @@ import { AppDivider, AppText } from ".";
 const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
   return (
     <>
-      <View
+      <TouchableOpacity
+       onPress={() => addPlayerstoTeamFunc(item)}
         style={{
           ...FSTYLES,
           padding: SIZES.base * 2,
@@ -33,12 +34,12 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
           <AppText></AppText>
           <Feather
             name={item.isActive ? "minus-circle" : "plus-circle"}
-            onPress={() => addPlayerstoTeamFunc(item)}
+           
             size={SIZES.h1 * 1}
             color={item.isActive ? COLORS.red : COLORS.green}
           />
         </View>
-      </View>
+      </TouchableOpacity>
       <AppDivider />
     </>
   );

@@ -24,6 +24,7 @@ const SelectCaptainScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const updatedPlayersFunc = (item, type) => {
     const updatedPlayers = playersArray.map((player) => {
+      const updatedPlayer = { ...player, type: "Player" };
       if (player.name === item.name) {
         if (type === "C") {
           const otherCaptain = playersArray.find(
@@ -31,28 +32,25 @@ const SelectCaptainScreen = ({ navigation }) => {
           );
           if (otherCaptain) {
             otherCaptain.selectedCaptain = false;
+            otherCaptain.type = "Player";
           }
-          return {
-            ...player,
-            selectedCaptain: !player.selectedCaptain,
-            selectedViceCaptain: false,
-          };
+          updatedPlayer.selectedCaptain = !player.selectedCaptain;
+          updatedPlayer.type = "Captain";
         } else if (type === "VC") {
           const otherViceCaptain = playersArray.find(
             (p) => p.selectedViceCaptain && p.name !== item.name
           );
           if (otherViceCaptain) {
             otherViceCaptain.selectedViceCaptain = false;
+            otherViceCaptain.type = "Player";
           }
-          return {
-            ...player,
-            selectedCaptain: false,
-            selectedViceCaptain: !player.selectedViceCaptain,
-          };
+          updatedPlayer.selectedCaptain = false;
+          updatedPlayer.selectedViceCaptain = !player.selectedViceCaptain;
+          updatedPlayer.type = "ViceCaptain";
         }
-      } else {
-        return player;
       }
+
+      return updatedPlayer;
     });
 
     setplayersArray(updatedPlayers);
@@ -143,10 +141,10 @@ const SelectCaptainScreen = ({ navigation }) => {
       await addDoc(teamsCollectionRef, {
         userId: user.userId,
         userName: user.firstName + " " + user.lastName,
-        players: players.map((player) => ({
+        players: playersArray.map((player) => ({
           id: player.id,
-          selectedCaptain: player.selectedCaptain,
-          selectedViceCaptain: player.selectedViceCaptain,
+          name: player.name,
+          type: player.type,
         })),
         matchId: "123",
       });

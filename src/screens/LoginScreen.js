@@ -22,13 +22,12 @@ const LoginScreen = ({ navigation, route }) => {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     defaultValues: {
       // email: "",
       // password: "",
-      // email: "nilunilesh94@gmail.com",
-      email: "tudunilesh3@gmail.com",
+      email: "nilunilesh94@gmail.com",
+      // email: "tudunilesh3@gmail.com",
       password: "123456",
     },
   });

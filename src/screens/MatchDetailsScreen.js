@@ -13,7 +13,6 @@ const MatchDetailsScreen = ({ navigation, route }) => {
   const item = route.params.item;
   const dispatch = useDispatch();
   const joinContest = () => {
-    getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
     setloading(true);
     setTimeout(() => {
       setloading(false);
@@ -23,6 +22,7 @@ const MatchDetailsScreen = ({ navigation, route }) => {
   };
   useEffect(() => {
     getLeaderBoard(dispatch);
+    getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
   }, []);
   return (
     <View style={{ flex: 1 }}>
@@ -38,7 +38,7 @@ const MatchDetailsScreen = ({ navigation, route }) => {
           Prize Pool
         </AppText>
         <AppText>₹5 lakhs</AppText>
-        <Progress.Bar
+        {/* <Progress.Bar
           progress={0.3}
           width={SIZES.width * 0.93}
           color={COLORS.purple}
@@ -50,7 +50,7 @@ const MatchDetailsScreen = ({ navigation, route }) => {
           <AppText style={{ fontWeight: "400" }} size={1.5} color={COLORS.gray}>
             19,323 spots left
           </AppText>
-        </View>
+        </View> */}
         <AppButton
           title={"JOIN ₹44"}
           onPress={joinContest}
