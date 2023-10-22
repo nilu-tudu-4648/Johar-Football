@@ -74,9 +74,11 @@ export default function ProfileScreen({ navigation, route }) {
         </AppText>
       </View>
       <View style={styles.container}>
-        <View style={{ ...styles.gpsButton }}>
-          <AppText size={1.8}>{user.email}</AppText>
-        </View>
+        {user.email && (
+          <View style={{ ...styles.gpsButton }}>
+            <AppText size={1.8}>{user.email}</AppText>
+          </View>
+        )}
         <View style={{ ...styles.gpsButton }}>
           <AppText size={1.8}>+91 {user.mobile}</AppText>
         </View>
