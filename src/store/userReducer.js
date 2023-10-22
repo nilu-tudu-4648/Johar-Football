@@ -1,13 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./api";
-import { PLAYERS } from "../constants/data";
 const initialState = {
   loading: false,
   user: null,
   userLoggedIn: "false",
   createteam: [],
-  GK: PLAYERS,
-  DEF: [],
   tournaments: [],
 };
 
@@ -35,12 +32,6 @@ const userReducer = createSlice({
     logoutFromReducer: (userReducer, action) => {
       userReducer.otpData = null;
     },
-    addGKtoTeam: (userReducer, action) => {
-      userReducer.GK = action.payload;
-    },
-    addDEFtoTeam: (userReducer, action) => {
-      userReducer.DEF = action.payload;
-    },
     addPlayerstoTeam: (userReducer, action) => {
       userReducer.createteam = action.payload;
     },
@@ -62,8 +53,6 @@ export const {
   setLoginUser,
   checkUserLogin,
   addPlayerstoTeam,
-  addGKtoTeam,
-  addDEFtoTeam,
   settournaments
 } = userReducer.actions;
 export const getUserDetails = (data) =>

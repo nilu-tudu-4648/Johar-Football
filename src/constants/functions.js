@@ -13,7 +13,11 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
-import { setAllPlayers, setAllUsers } from "../store/adminReducer";
+import {
+  setAllMatches,
+  setAllPlayers,
+  setAllUsers,
+} from "../store/adminReducer";
 
 export const logoutUser = async (dispatch) => {
   try {
@@ -197,6 +201,14 @@ export const deleteUser = async (id, func) => {
     console.log(error);
   }
 };
+export const deleteMatch = async (id, func) => {
+  try {
+    await deleteDoc(doc(db, FIRESTORE_COLLECTIONS.TOURNAMENTS, id));
+    func();
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getAllPlayers = async (dispatch, func) => {
   try {
     const q = query(collection(db, FIRESTORE_COLLECTIONS.PLAYERS));
@@ -208,6 +220,22 @@ export const getAllPlayers = async (dispatch, func) => {
       return arr.push({ id, ...data });
     });
     dispatch(setAllPlayers(arr));
+    func(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllMatches = async (dispatch, func) => {
+  try {
+    const q = query(collection(db, FIRESTORE_COLLECTIONS.TOURNAMENTS));
+    const querySnapshot = await getDocs(q);
+    let arr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      return arr.push({ id, ...data });
+    });
+    dispatch(setAllMatches(arr));
     func(false);
   } catch (error) {
     console.log(error);

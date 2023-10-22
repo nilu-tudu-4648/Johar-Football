@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -76,9 +76,6 @@ export default function ProfileScreen({ navigation, route }) {
       <View style={styles.container}>
         <View style={{ ...styles.gpsButton }}>
           <AppText size={1.8}>{user.email}</AppText>
-        </View>
-        <View style={{ ...styles.gpsButton }}>
-          <AppText size={1.8}>Id :-{user.userId}</AppText>
         </View>
         <View style={{ ...styles.gpsButton }}>
           <AppText size={1.8}>+91 {user.mobile}</AppText>

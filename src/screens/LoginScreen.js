@@ -26,45 +26,52 @@ const LoginScreen = ({ navigation, route }) => {
     defaultValues: {
       // email: "",
       // password: "",
-      email: "nilunilesh94@gmail.com",
+      phone: "9155186701",
       // email: "tudunilesh3@gmail.com",
       password: "123456",
     },
   });
   const dispatch = useDispatch();
-  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  const handleSignIn = async (email, password) => {
-    try {
-      setloading(true);
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (userCredential.user) {
-        const q = query(collection(db, FIRESTORE_COLLECTIONS.USERS), where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(async (doc) => {
-          const user = doc.data();
-          dispatch(setLoginUser(user));
-          await AsyncStorage.setItem("loggedInUser", JSON.stringify(user));
-          ToastAndroid.show("Login successful", ToastAndroid.SHORT);
-        });
-      } else {
-        ToastAndroid.show("Invalid credentials", ToastAndroid.SHORT);
-        console.log("User login failed.");
-      }
-    } catch (error) {
-      console.error("An error occurred during sign-in:", error);
-      ToastAndroid.show("Login failed. Please try again.", ToastAndroid.SHORT);
-    } finally {
-      setloading(false);
+  async function getUser(mobile) {
+    const q = query(
+      collection(db, FIRESTORE_COLLECTIONS.USERS),
+      where("mobile", "==", mobile)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // User with the provided mobile number exists
+      return querySnapshot.docs[0].data();
+    }
+    // User does not exist
+    return null;
+  }
+
+  const handleSignIn = async (phone, password) => {
+    const userExists = await getUser(phone);
+
+    if (!userExists) {
+      ToastAndroid.show("Invalid credentials", ToastAndroid.SHORT);
+      console.log("User login failed.");
+      return;
+    }
+
+    const checkPassword = userExists.password === password;
+
+    if (checkPassword) {
+      dispatch(setLoginUser(userExists));
+      await AsyncStorage.setItem("loggedInUser", JSON.stringify(userExists));
+      ToastAndroid.show("Login successful", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("Invalid credentials", ToastAndroid.SHORT);
+      console.log("User login failed.");
     }
   };
+
   const onSubmit = async (data) => {
     setloading(true);
     try {
-      await handleSignIn(data.email, data.password);
+      await handleSignIn(data.phone, data.password);
     } catch (error) {
       console.log(error, "err");
       ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
@@ -78,7 +85,7 @@ const LoginScreen = ({ navigation, route }) => {
   BackHandler.addEventListener(
     "hardwareBackPress",
     () => {
-      BackHandler.exitApp();
+      navigation.navigate(NAVIGATION.WELCOME);
       return () => true;
     },
     []
@@ -97,19 +104,18 @@ const LoginScreen = ({ navigation, route }) => {
       </View>
       <View style={{ ...STYLES, flex: 1 }}>
         <View style={{ width: "100%" }}>
-          <AppText style={styles.smallText}>{"Fist Name"}</AppText>
+          <AppText style={styles.smallText}>{"Phone Number"}</AppText>
           <FormInput
             control={control}
             rules={{
               required: "This field is mandatory",
               pattern: {
-                value: emailPattern,
-                message: "Invalid Email Address",
+                message: "Invalid Phone Number",
               },
             }}
-            keyboardType={"email-address"}
-            placeholder={"First Name"}
-            name="email"
+            keyboardType={"numeric"}
+            placeholder={"Enter Phone Number"}
+            name="phone"
           />
         </View>
         <View style={{ width: "100%" }}>

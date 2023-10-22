@@ -5,17 +5,21 @@ import { useForm } from "react-hook-form";
 import AppText from "../components/AppText";
 import FormInput from "../components/FormInput";
 import AppLoader from "../components/AppLoader";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
+import { db } from "../../firebaseConfig";
 import { AppButton, RedStar } from "../components";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  runTransaction,
+  where,
+} from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
 import { NAVIGATION } from "../constants/routes";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 const SignUpScreen = ({ navigation }) => {
-  
   const [loading, setloading] = useState(false);
-
   const {
     control,
     handleSubmit,
@@ -29,55 +33,54 @@ const SignUpScreen = ({ navigation }) => {
       password: "",
     },
   });
-  async function getUser(email) {
-    try {
-      const q = query(collection(db, FIRESTORE_COLLECTIONS.USERS), where("email", "==", email));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async (doc) => {
-        if (doc.data()) {
-          ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  async function getUser(mobile) {
+    const q = query(
+      collection(db, FIRESTORE_COLLECTIONS.USERS),
+      where("mobile", "==", mobile)
+    );
+    const querySnapshot = await getDocs(q);
+   
+    return querySnapshot.docs.length > 0;
   }
+
   const onSubmit = async (data) => {
     const { firstName, lastName, email, password, mobile } = data;
+
     try {
       setloading(true);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (userCredential.user) {
-        await getUser(data.email);
-        const user = userCredential.user;
-        ToastAndroid.show("Sign Up successfully", ToastAndroid.SHORT);
-        const usersCollectionRef = collection(db, FIRESTORE_COLLECTIONS.USERS);
-        const userQuery = query(
-          usersCollectionRef,
-          where("userId", "==", user?.uid)
-        );
-        const querySnapshot = await getDocs(userQuery);
-        if (querySnapshot.empty) {
-          await addDoc(usersCollectionRef, {
-            userId: user.uid,
-            email: user.email,
-            firstName,
-            lastName,
-            mobile,
-            proflePic: "",
-            admin: "false",
-          });
-        }
-        navigation.navigate(NAVIGATION.LOGIN);
+      const userExists = await getUser(mobile);
+
+      if (userExists) {
+        ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
       } else {
-        ToastAndroid.show(
-          "Sign Up failed. Please try again.",
-          ToastAndroid.SHORT
-        );
+        await runTransaction(db, async (transaction) => {
+          const usersCollectionRef = collection(
+            db,
+            FIRESTORE_COLLECTIONS.USERS
+          );
+          const userQuery = query(
+            usersCollectionRef,
+            where("mobile", "==", mobile)
+          );
+          const querySnapshot = await getDocs(userQuery);
+
+          if (querySnapshot.empty) {
+            await addDoc(usersCollectionRef, {
+              email,
+              password,
+              firstName,
+              lastName,
+              mobile,
+              proflePic: "",
+              admin: "false",
+            });
+            ToastAndroid.show("Sign Up successfully", ToastAndroid.SHORT);
+          } else {
+            ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
+          }
+        });
+
+        navigation.navigate(NAVIGATION.LOGIN);
       }
     } catch (error) {
       console.error("An error occurred during sign-up:", error);
@@ -138,14 +141,10 @@ const SignUpScreen = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>
-            {"Email"}
-            <RedStar />
-          </AppText>
+          <AppText style={styles.smallText}>{"Email"}</AppText>
           <FormInput
             control={control}
             rules={{
-              required: "This field is mandatory",
               pattern: {
                 value: emailPattern,
                 message: "Please enter valid email",

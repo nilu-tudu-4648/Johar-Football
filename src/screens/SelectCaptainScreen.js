@@ -139,7 +139,7 @@ const SelectCaptainScreen = ({ navigation }) => {
         FIRESTORE_COLLECTIONS.CREATED_TEAMS
       );
       await addDoc(teamsCollectionRef, {
-        userId: user.userId,
+        user: user.firstName + " " + user.lastName,
         userName: user.firstName + " " + user.lastName,
         players: playersArray.map((player) => ({
           id: player.id,

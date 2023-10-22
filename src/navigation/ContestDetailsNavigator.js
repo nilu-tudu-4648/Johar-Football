@@ -44,13 +44,22 @@ export default function ContestDetailsNavigator() {
     }, [createPlayers]);
     return (
       <View style={{ flex: 1, padding: SIZES.base }}>
-        <AppText>All Teams ({leaderBoard.length})</AppText>
+        <View style={FSTYLES}>
+          <View style={{ ...FSTYLES, width: "35%" }}>
+            <AppText>Names</AppText>
+          </View>
+          <AppText>Points</AppText>
+          <AppText>Ranking</AppText>
+        </View>
         <ScrollView>
           {leaderBoardArray.map((item, index) => (
             <View key={index} style={{ ...FSTYLES, padding: SIZES.base }}>
               <View style={{ ...FSTYLES, width: "30%" }}>
                 <FontAwesome name="user-circle-o" size={24} color="black" />
                 <AppText style={{ left: 12 }}>{item.userName}</AppText>
+              </View>
+              <View>
+                <AppText>{item.score}</AppText>
               </View>
               <View>
                 <AppText>{index + 1}</AppText>

@@ -1,5 +1,4 @@
 import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
-import { PLAYERS } from "../constants/data";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";

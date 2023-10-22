@@ -1,11 +1,19 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import React from "react";
 import { AppButton, AppText, AppView } from "../components";
-import { FSTYLES, SIZES, STYLES } from "../constants/theme";
+import { SIZES, STYLES } from "../constants/theme";
 import { Image } from "react-native";
 import { NAVIGATION } from "../constants/routes";
 
 const WelcomeScreen = ({ navigation }) => {
+  BackHandler.addEventListener(
+    "hardwareBackPress",
+    () => {
+      BackHandler.exitApp();
+      return () => true;
+    },
+    []
+  );
   return (
     <AppView>
       <View
@@ -33,7 +41,7 @@ const WelcomeScreen = ({ navigation }) => {
       <View
         style={{
           ...STYLES,
-          flex: .7,
+          flex: 0.7,
           justifyContent: "space-between",
           paddingVertical: SIZES.padding,
         }}
@@ -58,20 +66,13 @@ const WelcomeScreen = ({ navigation }) => {
               navigation.navigate(NAVIGATION.REGISTER, { register: true })
             }
           />
-          <View style={FSTYLES}>
-            <View>
-              <AppText size={1.5}>Invited by a friend?</AppText>
-              <AppText>Enter Code</AppText>
-            </View>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate(NAVIGATION.LOGIN, { register: false })
-              }
-            >
-              <AppText size={1.5}>Already a user?</AppText>
-              <AppText>Login</AppText>
-            </TouchableOpacity>
-          </View>
+          <AppButton
+            title="LOGIN"
+            style={{ marginVertical: SIZES.h4 }}
+            onPress={() =>
+              navigation.navigate(NAVIGATION.LOGIN, { register: false })
+            }
+          />
         </View>
       </View>
     </AppView>

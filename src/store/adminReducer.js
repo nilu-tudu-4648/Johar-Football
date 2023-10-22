@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "./api";
-import { PLAYERS } from "../constants/data";
 const initialState = {
   loading: false,
   allusers: [],
   allPlayers: [],
+  allMatches: [],
 };
 
 const adminReducer = createSlice({
@@ -17,8 +17,12 @@ const adminReducer = createSlice({
     setAllPlayers: (adminReducer, action) => {
       adminReducer.allPlayers = action.payload;
     },
+    setAllMatches: (adminReducer, action) => {
+      adminReducer.allMatches = action.payload;
+    },
   },
 });
 
 export default adminReducer.reducer;
-export const { setAllUsers, setAllPlayers } = adminReducer.actions;
+export const { setAllUsers, setAllPlayers, setAllMatches } =
+  adminReducer.actions;

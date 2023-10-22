@@ -267,7 +267,7 @@ export const dashboardCards = [
     navigation: NAVIGATION.ALL_USERS,
   },
   {
-    name: "ALL TOURNAMENTS",
+    name: "ALL MATCHES",
     navigation: NAVIGATION.ALL_TOURNAMENTS,
   },
 ];

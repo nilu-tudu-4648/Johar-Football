@@ -1,9 +1,7 @@
 import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
-import { PLAYERS } from "../constants/data";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   setFilterPlayersForTournament,
   setPlayersForTournament,
@@ -45,9 +43,6 @@ const STScreen = ({ navigation }) => {
       setplayersArray(updatedPlayers);
       if (!playerExists) {
         dispatch(setPlayersForTournament(item));
-        console.log("Player does not exist in the team");
-      } else {
-        console.log("Player already exists in the team");
       }
     } catch (error) {
       console.error("Error:", error);

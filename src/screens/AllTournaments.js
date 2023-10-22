@@ -6,49 +6,48 @@ import {
   AppSearchBar,
   AppText,
   AppView,
-  EditPlayerDialog,
   HomeHeader,
 } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPlayers, deleteUser } from "../constants/functions";
+import {
+  deleteMatch,
+  getAllMatches,
+} from "../constants/functions";
 import { NAVIGATION } from "../constants/routes";
 import { COLORS, FSTYLES, SIZES } from "../constants/theme";
 const AllTournaments = ({ navigation }) => {
-  const { allPlayers } = useSelector((state) => state.entities.adminReducer);
+  const { allMatches } = useSelector((state) => state.entities.adminReducer);
   const [loading, setloading] = useState(true);
   const [editPlayerVisible, seteditPlayerVisible] = useState(false);
   const [editPlayerItem, seteditPlayerItem] = useState({});
   const [data, setData] = useState([]);
   const [query, setquery] = useState("");
   const dispatch = useDispatch();
-
   const filterFunction = useMemo(() => {
     return (item) => {
       const lowercaseQuery = query.toLowerCase();
       return (
-        item.teamName?.toLowerCase().includes(lowercaseQuery) ||
-        item.name?.toLowerCase().includes(lowercaseQuery)
+        item.firstTeamName?.toLowerCase().includes(lowercaseQuery) ||
+        item.secondTeamName?.toLowerCase().includes(lowercaseQuery)
       );
     };
   }, [query]);
 
   const filterData = useCallback(() => {
     if (query) {
-      const filteredData = allPlayers.filter(filterFunction);
+      const filteredData = allMatches.filter(filterFunction);
       setData(filteredData);
     } else {
-      setData(allPlayers);
+      setData(allMatches);
     }
-  }, [query, allPlayers, filterFunction]);
-  const callGetAllplayer = () => getAllPlayers(dispatch, setloading);
+  }, [query, allMatches, filterFunction]);
   useEffect(() => {
-    callGetAllplayer(); // Assuming this function fetches data and sets it in Redux store
+    getAllMatches(dispatch, setloading); // Assuming this function fetches data and sets it in Redux store
   }, [dispatch]);
 
   useEffect(() => {
     filterData();
-  }, [query, allPlayers, filterFunction, filterData]);
-
+  }, [query, allMatches, filterFunction, filterData]);
   BackHandler.addEventListener(
     "hardwareBackPress",
     () => {
@@ -64,13 +63,13 @@ const AllTournaments = ({ navigation }) => {
   return (
     <>
       <AppLoader loading={loading} />
-      <HomeHeader header={"ALL Tournaments"} />
+      <HomeHeader header={"ALL MATCHES"} />
       <AppView>
         <AppSearchBar
           style={{ width: "99%" }}
           onChangeSearch={(text) => setquery(text)}
           searchQuery={query}
-          placeholder={'Search by "Name" or "Team Name"'}
+          placeholder={'Search by Team Name'}
         />
         <ScrollView
           style={{ width: "100%" }}
@@ -78,33 +77,27 @@ const AllTournaments = ({ navigation }) => {
         >
           {data?.map((item, i) => (
             <View key={i} style={styles.card}>
-              <View style={{ ...FSTYLES, width: "100%" }}>
-                <AppText bold={true}>{item.name}</AppText>
-                <AppText color={"red"}>{item.teamName}</AppText>
+              <View style={{ ...FSTYLES}}>
+                <AppText bold={true}>{item.firstTeamName}</AppText>
+                <AppText bold={true}>vs</AppText>
+                <AppText color={"red"}>{item.secondTeamName}</AppText>
               </View>
-              <View style={{ ...FSTYLES, width: "100%" }}>
-                <AppButton
-                  title={"Update"}
-                  onPress={() => openDialog(item)}
-                  style={{ width: "48%" }}
-                />
-                <AppButton
-                  onPress={() =>
-                    deleteUser(item.id, getAllPlayers(dispatch, setloading))
-                  }
-                  title={"Delete"}
-                  style={{ width: "48%", backgroundColor: COLORS.gray }}
-                />
-              </View>
+              <AppButton
+                onPress={() =>
+                  deleteMatch(item.id, getAllMatches(dispatch, setloading))
+                }
+                title={"Delete"}
+                style={{ width: "48%", backgroundColor: COLORS.gray }}
+              />
             </View>
           ))}
         </ScrollView>
-        <EditPlayerDialog
+        {/* <EditPlayerDialog
           item={editPlayerItem}
           visible={editPlayerVisible}
           setvisible={seteditPlayerVisible}
           callGetAllplayer={callGetAllplayer}
-        />
+        /> */}
       </AppView>
     </>
   );

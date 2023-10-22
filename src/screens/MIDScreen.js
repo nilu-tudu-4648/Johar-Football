@@ -41,10 +41,7 @@ const MIDScreen = () => {
       setplayersArray(updatedPlayers);
       if (!playerExists) {
         dispatch(setPlayersForTournament(item));
-        console.log("Player does not exist in the team");
-      } else {
-        console.log("Player already exists in the team");
-      }
+      } 
     } catch (error) {
       console.error("Error:", error);
     }
