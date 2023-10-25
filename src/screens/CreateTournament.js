@@ -1,4 +1,10 @@
-import { StyleSheet, View, ToastAndroid, TouchableOpacity, BackHandler } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ToastAndroid,
+  TouchableOpacity,
+  BackHandler,
+} from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -45,10 +51,18 @@ const CreateTournament = ({ navigation }) => {
       firstTeamName: "",
       secondTeamName: "",
       prizeAmount: "",
+      eventName: "",
+      eventLocation: "",
     },
   });
   const onSubmit = async (data) => {
-    const { firstTeamName, secondTeamName } = data;
+    const {
+      firstTeamName,
+      secondTeamName,
+      prizeAmount,
+      eventName,
+      eventLocation,
+    } = data;
     try {
       setloading(true);
       const playersCollectionRef = collection(
@@ -58,6 +72,9 @@ const CreateTournament = ({ navigation }) => {
       await addDoc(playersCollectionRef, {
         firstTeamName,
         secondTeamName,
+        prizeAmount,
+        eventName,
+        eventLocation,
         date: `${formatDate(date)}`,
         time: `${formatTimestamp(startTime)}`,
       });
@@ -121,10 +138,30 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Prize Amount"}</AppText>
+          <AppText style={styles.smallText}>{"Event name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
+            placeholder={"Event name"}
+            name="eventName"
+          />
+        </View>
+        <View>
+          <AppText style={styles.smallText}>{"Event location"}</AppText>
+          <FormInput
+            control={control}
+            rules={rules}
+            placeholder={"Event location"}
+            name="eventLocation"
+          />
+        </View>
+        <View>
+          <AppText style={styles.smallText}>{"Prize Amount"}</AppText>
+          <FormInput
+            control={control}
+            rules={{
+              required: "This field is mandatory",
+            }}
             placeholder={"Add Prize Amount"}
             name="prizeAmount"
           />

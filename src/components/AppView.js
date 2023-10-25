@@ -10,7 +10,6 @@ const AppView = ({ children, style, justify }) => {
         style,
       ]}
     >
-      <StatusBar style="auto" />
       {children}
     </View>
   );

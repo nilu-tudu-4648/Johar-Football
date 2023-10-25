@@ -1,4 +1,10 @@
-import { StyleSheet, View, ToastAndroid, BackHandler } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ToastAndroid,
+  BackHandler,
+  Image,
+} from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -7,9 +13,8 @@ import AppText from "../components/AppText";
 import FormInput from "../components/FormInput";
 import AppLoader from "../components/AppLoader";
 import { AppView } from "../components";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { NAVIGATION } from "../constants/routes";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../store/userReducer";
@@ -24,10 +29,10 @@ const LoginScreen = ({ navigation, route }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
-      // phone: "9155186701",
-      // password: "123456",
+      // email: "",
+      // password: "",
+      phone: "9155186701",
+      password: "123456",
     },
   });
   const dispatch = useDispatch();
@@ -93,6 +98,10 @@ const LoginScreen = ({ navigation, route }) => {
     <AppView>
       <AppLoader loading={loading} />
       <View style={{ ...STYLES, flex: 1 }}>
+        <Image
+          source={require("../../assets/JOHAR.png")}
+          style={{ height: 100, width: 100, alignSelf: "center" }}
+        />
         <AppText
           bold={true}
           style={{ alignSelf: "center", marginTop: SIZES.h1 * 2 }}

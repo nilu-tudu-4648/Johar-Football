@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
+import { ScrollView, StyleSheet, ToastAndroid, View } from "react-native";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,11 +6,13 @@ import {
   setFilterPlayersForTournament,
   setPlayersForTournament,
 } from "../store/playersReducer";
-import { Button } from "react-native";
 import { NAVIGATION } from "../constants/routes";
+import { AppButton, StatusDialog } from "../components";
+import { COLORS, FSTYLES } from "../constants/theme";
 
 const STScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
+  const [visible, setvisible] = useState(false);
   const { players, createPlayers } = useSelector(
     (state) => state.entities.playersReducer
   );
@@ -70,7 +72,23 @@ const STScreen = ({ navigation }) => {
           />
         ))}
       </ScrollView>
-      <Button title="Next" onPress={NextButton} />
+      <View style={{ ...FSTYLES, justifyContent: "space-around", bottom: 12 }}>
+        <AppButton
+          title="Preview"
+          onPress={() => setvisible(true)}
+          style={{ borderRadius: 20, width: 150 }}
+        />
+        <AppButton
+          title="Next"
+          onPress={NextButton}
+          style={{
+            borderRadius: 20,
+            width: 150,
+            backgroundColor: COLORS.green,
+          }}
+        />
+      </View>
+      <StatusDialog visible={visible} setvisible={setvisible} />
     </>
   );
 };

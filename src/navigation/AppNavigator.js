@@ -10,6 +10,7 @@ import {
   AddPlayerScreen,
   AddTeamsScreen,
   AdminHomeScreen,
+  AllTeamsScreen,
   AllUsersScreen,
   CreateTournament,
   HomeScreen,
@@ -94,6 +95,11 @@ function AppNavigator() {
                 options={options}
                 name={NAVIGATION.ALL_PLAYERS}
                 component={AllPlayersScreen}
+              />
+              <Stack.Screen
+                options={options}
+                name={NAVIGATION.ALL_TEAMS}
+                component={AllTeamsScreen}
               />
               <Stack.Screen
                 options={options}

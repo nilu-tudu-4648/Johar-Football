@@ -263,6 +263,10 @@ export const dashboardCards = [
     navigation: NAVIGATION.ALL_PLAYERS,
   },
   {
+    name: "ALL TEAMS",
+    navigation: NAVIGATION.ALL_TEAMS,
+  },
+  {
     name: "ALL USERS",
     navigation: NAVIGATION.ALL_USERS,
   },

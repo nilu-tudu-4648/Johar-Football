@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { PaperProvider } from "react-native-paper";
 import DrawerNavigator from "./src/navigation/DrawerNavigator";
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const App = () => {
   // eas update --branch preview --message "Updating the app"
@@ -13,12 +13,12 @@ const App = () => {
   // eas build --platform android
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
-      <Provider store={store}>
-        <PaperProvider>
-          <DrawerNavigator />
-        </PaperProvider>
-      </Provider>
+       <StatusBar style="light" />
+        <Provider store={store}>
+          <PaperProvider>
+            <DrawerNavigator />
+          </PaperProvider>
+        </Provider>
     </NavigationContainer>
   );
 };

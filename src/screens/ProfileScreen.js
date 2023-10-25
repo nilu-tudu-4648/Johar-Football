@@ -12,7 +12,16 @@ import AppText from "../components/AppText";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
 import { Avatar } from "react-native-paper";
 import { NAVIGATION } from "../constants/routes";
-
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { doc } from "firebase/firestore";
+import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import { db } from "../../firebaseConfig";
+import { updateUser } from "../constants/functions";
 export default function ProfileScreen({ navigation, route }) {
   const admin = route.params?.admin;
   const [image, setimage] = useState(null);
@@ -26,10 +35,17 @@ export default function ProfileScreen({ navigation, route }) {
         base64: true,
       });
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        setimage(result.assets[0].uri);
-        const urlParts = result.assets[0].uri.split("/");
-        const ImageName = urlParts[urlParts.length - 1].split("?")[0];
-        //api call
+        const urlParts = result.assets[0].uri;
+        setimage(urlParts);
+        const url = await saveMediaToStorage(
+          urlParts,
+          `/profile/${user.firstName}${user.lastName}`
+        );
+        const userUpdate = {
+          ...user,
+          profilePic: url,
+        };
+        await updateUser(userUpdate);
         ToastAndroid.show(
           "Profile picture updated successfully",
           ToastAndroid.SHORT
@@ -39,6 +55,50 @@ export default function ProfileScreen({ navigation, route }) {
       console.log(error);
     }
   };
+
+  const saveMediaToStorage = async (file, path) => {
+    try {
+      const storage = getStorage();
+      const response = await fetch(file);
+      const blob = await response.blob();
+      const storageRef = ref(storage, path);
+      const uploadTask = uploadBytesResumable(storageRef, blob);
+      const url = await new Promise((res, rej) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+            console.log(error);
+            ToastAndroid.show("Video upload Failed", ToastAndroid.SHORT);
+            rej(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              res(downloadURL);
+            });
+          }
+        );
+      });
+      return url; // Return the download URL
+    } catch (error) {
+      console.log(error);
+      throw error; // Rethrow the error for handling in your app
+    }
+  };
+
   BackHandler.addEventListener(
     "hardwareBackPress",
     () => {

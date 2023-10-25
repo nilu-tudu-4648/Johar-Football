@@ -5,6 +5,7 @@ const initialState = {
   allusers: [],
   allPlayers: [],
   allMatches: [],
+  allTeams: [],
 };
 
 const adminReducer = createSlice({
@@ -20,9 +21,12 @@ const adminReducer = createSlice({
     setAllMatches: (adminReducer, action) => {
       adminReducer.allMatches = action.payload;
     },
+    setAllTeams: (adminReducer, action) => {
+      adminReducer.allTeams = action.payload;
+    },
   },
 });
 
 export default adminReducer.reducer;
-export const { setAllUsers, setAllPlayers, setAllMatches } =
+export const { setAllUsers, setAllPlayers, setAllMatches,setAllTeams } =
   adminReducer.actions;

@@ -20,49 +20,53 @@ const MatchesItem = ({ item }) => {
         }}
       >
         <AppText style={{ fontWeight: "400" }} size={1.5}>
-          KBO
+          {item?.prizeAmount}
         </AppText>
-        <AppText style={{ fontWeight: "400" }} size={1.5}>
-          Lineups Out
+        <AppText style={{ fontWeight: "400" }} bold={true} size={1.5}>
+          {item?.eventName}
         </AppText>
       </View>
-
       <View
         style={{
           ...FSTYLES,
           paddingHorizontal: 8,
         }}
       >
-        <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={{ backgroundColor: "red", height: 30, width: 30 }} />
-            <AppText style={{ left: 6 }} size={1.5} bold={true}>
-              {item.firstTeamName}
-            </AppText>
-          </View>
-          {/* <AppText style={{ fontWeight: "400" }} size={1.5}>
-            LG Twins
-          </AppText> */}
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <AppText color={"red"}>{item.time}</AppText>
-          <AppText style={{ fontWeight: "400" }} size={1.5}>
-            {item.date}
+        <View
+          style={{
+            alignItems: "flex-start",
+            width: "30%",
+          }}
+        >
+          <View style={{ backgroundColor: "red", height: 20, width: 20 }} />
+          <AppText size={1.5} bold={true}>
+            {item.firstTeamName}
           </AppText>
         </View>
-        <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <AppText style={{ right: 12 }} size={1.5} bold={true}>
-              {item.secondTeamName}
-            </AppText>
-            <View style={{ backgroundColor: "red", height: 30, width: 30 }} />
-          </View>
-          {/* <AppText style={{ fontWeight: "400" }} size={1.5}>
-            LG Twins
-          </AppText> */}
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <AppText size={1.5}>{item.date}</AppText>
+          <AppText color={COLORS.primary} size={1.2}>
+            {item.time}
+          </AppText>
+        </View>
+        <View
+          style={{
+            width: "30%",
+            alignItems: "flex-end",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "red",
+              height: 20,
+              width: 20,
+            }}
+          />
+          <AppText size={1.5} bold={true}>
+            {item.secondTeamName}
+          </AppText>
         </View>
       </View>
-
       <View
         style={{
           ...FSTYLES,
@@ -70,7 +74,7 @@ const MatchesItem = ({ item }) => {
           backgroundColor: COLORS.lightgray,
         }}
       >
-        <AppText size={1.5}>KBO</AppText>
+        <AppText size={1.5}>{item.eventLocation}</AppText>
         <AppText size={1.5}>Lines Out</AppText>
       </View>
     </TouchableOpacity>

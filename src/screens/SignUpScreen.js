@@ -1,4 +1,4 @@
-import { StyleSheet, View, ToastAndroid } from "react-native";
+import { StyleSheet, View, ToastAndroid, Image } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { NAVIGATION } from "../constants/routes";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import { BackHandler } from "react-native";
 const SignUpScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const {
@@ -39,7 +40,7 @@ const SignUpScreen = ({ navigation }) => {
       where("mobile", "==", mobile)
     );
     const querySnapshot = await getDocs(q);
-   
+
     return querySnapshot.docs.length > 0;
   }
 
@@ -101,7 +102,14 @@ const SignUpScreen = ({ navigation }) => {
   };
   const phonePattern = /^[6-9][0-9]{9}$/;
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+  BackHandler.addEventListener(
+    "hardwareBackPress",
+    () => {
+      navigation.navigate(NAVIGATION.WELCOME);
+      return () => true;
+    },
+    []
+  );
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
@@ -109,6 +117,10 @@ const SignUpScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ marginVertical: SIZES.h1 * 2 }}
       >
+        <Image
+          source={require("../../assets/JOHAR.png")}
+          style={{ height: 100, width: 100, alignSelf: "center" }}
+        />
         <AppText
           bold={true}
           style={{ alignSelf: "center", marginVertical: SIZES.h3 * 2 }}

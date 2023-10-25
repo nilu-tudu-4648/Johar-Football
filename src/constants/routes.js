@@ -19,6 +19,7 @@ export const NAVIGATION = {
   CREATE_TOURNAMENT: "CREATE_TOURNAMENT",
   ALL_USERS: "ALL_USERS",
   ALL_PLAYERS: "ALL_PLAYERS",
+  ALL_TEAMS: "ALL_TEAMS",
   ALL_TOURNAMENTS: "ALL_TOURNAMENTS",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod

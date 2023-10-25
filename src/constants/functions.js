@@ -16,6 +16,7 @@ import { db } from "../../firebaseConfig";
 import {
   setAllMatches,
   setAllPlayers,
+  setAllTeams,
   setAllUsers,
 } from "../store/adminReducer";
 
@@ -28,10 +29,6 @@ export const logoutUser = async (dispatch) => {
   }
 };
 
-export const containsSpecialCharacters = (str) => {
-  const regex = /[!₹@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
-  return regex.test(str);
-};
 export const isValidPhoneNumber = (str) => {
   const regex = /^[6-9][0-9]{9}$/;
   return regex.test(str);
@@ -42,10 +39,7 @@ export const truncateString = (inputString, maxLength) => {
   }
   return inputString;
 };
-export function checkIfMultipleTypes(arr) {
-  const uniqueItems = new Set(arr);
-  return uniqueItems.size > 1;
-}
+
 export const formatDate = (timestamp) => {
   const truncatedTimestamp = Math.floor(timestamp / 1000); // Remove milliseconds
 
@@ -76,25 +70,6 @@ export const formatTimestamp = (timestamp) => {
   // Return the formatted date with AM/PM indicator in ddmmyy format
   return `${hours}:${minutes.toString().padStart(2, "0")} ${ampm}`;
 };
-export const secformatTimestamp = (timestamp) => {
-  const date = new Date(timestamp);
-
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed, so add 1
-  const day = date.getDate().toString().padStart(2, "0");
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-
-  // Convert hours to 12-hour format
-  const hours12 = hours % 12 || 12;
-
-  // Return the formatted date in yyyy-MM-dd hh:mm tt format
-  return `${year}-${month}-${day} ${hours12}:${minutes
-    .toString()
-    .padStart(2, "0")} ${ampm}`;
-};
-
 export const sanitizeJsonString = (jsonString) => {
   // Remove any characters that are not part of a valid JSON format
   const sanitizedString = jsonString.replace(/[^\x20-\x7E]/g, "");
@@ -105,6 +80,32 @@ export const sanitizeJsonString = (jsonString) => {
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
+
+export async function getUserDetails(mobile) {
+  const q = query(
+    collection(db, FIRESTORE_COLLECTIONS.USERS),
+    where("mobile", "==", mobile)
+  );
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    // User with the provided mobile number exists
+    return querySnapshot.docs[0].data();
+  }
+  // User does not exist
+  return null;
+}
+export const updateUser = async (fdata, fn) => {
+  try {
+    const postRef = doc(db, FIRESTORE_COLLECTIONS.USERS, item.id);
+    await updateDoc(postRef, fdata).then(async () => {
+      ToastAndroid.show("Update Succussfully", ToastAndroid.SHORT);
+      await getUserDetails(fdata.mobile);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getTournaments = async (dispatch, setloading) => {
   try {
     const q = query(collection(db, FIRESTORE_COLLECTIONS.TOURNAMENTS));
@@ -189,6 +190,30 @@ export const getAllUsers = async (dispatch, func) => {
     });
     dispatch(setAllUsers(arr));
     func(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllTeams = async (dispatch, func) => {
+  try {
+    const q = query(collection(db, FIRESTORE_COLLECTIONS.TEAM_NAMES));
+    const querySnapshot = await getDocs(q);
+    let arr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const id = doc.id;
+      return arr.push({ id, ...data });
+    });
+    dispatch(setAllTeams(arr));
+    func(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteTeam = async (id, func) => {
+  try {
+    await deleteDoc(doc(db, FIRESTORE_COLLECTIONS.TEAM_NAMES, id));
+    func();
   } catch (error) {
     console.log(error);
   }
