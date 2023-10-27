@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { COLORS, FSTYLES, SIZES } from "../constants/theme";
@@ -8,7 +8,7 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
   return (
     <>
       <TouchableOpacity
-       onPress={() => addPlayerstoTeamFunc(item)}
+        onPress={() => addPlayerstoTeamFunc(item)}
         style={{
           ...FSTYLES,
           padding: SIZES.base * 2,
@@ -19,8 +19,12 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
           <Entypo name="user" size={SIZES.h1 * 1.5} color="black" />
         </View>
         <View style={{ width: "30%" }}>
-          <Text>{item.name}</Text>
-          <Text>{item.teamName}</Text>
+          <AppText size={1.8} bold={true}>
+            {item.name}
+          </AppText>
+          <AppText size={1.5} color={COLORS.lightgray2}>
+            {item.teamName}
+          </AppText>
         </View>
         <View
           style={{
@@ -31,11 +35,10 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
           }}
         >
           <AppText></AppText>
-          <AppText></AppText>
+          <AppText size={1.4}>{item.points}</AppText>
           <Feather
             name={item.isActive ? "minus-circle" : "plus-circle"}
-           
-            size={SIZES.h1 * 1}
+            size={SIZES.h1 * 0.8}
             color={item.isActive ? COLORS.red : COLORS.green}
           />
         </View>

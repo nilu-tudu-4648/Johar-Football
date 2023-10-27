@@ -10,6 +10,7 @@ import {
   doc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
@@ -95,12 +96,12 @@ export async function getUserDetails(mobile) {
   // User does not exist
   return null;
 }
-export const updateUser = async (fdata, fn) => {
+export const updateUser = async (fdata,dispatch) => {
   try {
-    const postRef = doc(db, FIRESTORE_COLLECTIONS.USERS, item.id);
+    const postRef = doc(db, FIRESTORE_COLLECTIONS.USERS, fdata.id);
     await updateDoc(postRef, fdata).then(async () => {
-      ToastAndroid.show("Update Succussfully", ToastAndroid.SHORT);
-      await getUserDetails(fdata.mobile);
+      await AsyncStorage.setItem("loggedInUser", JSON.stringify(fdata));
+      dispatch(setLoginUser(fdata));
     });
   } catch (error) {
     console.log(error);

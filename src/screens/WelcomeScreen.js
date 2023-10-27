@@ -23,7 +23,7 @@ const WelcomeScreen = ({ navigation }) => {
         }}
       >
         <Image
-          source={require("../../assets/logo.jpg")}
+          source={require("../../assets/kick.jpg")}
           style={{ width: "50%", height: 100, resizeMode: "contain" }}
         />
       </View>

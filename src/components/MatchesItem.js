@@ -19,9 +19,7 @@ const MatchesItem = ({ item }) => {
           padding: 4,
         }}
       >
-        <AppText style={{ fontWeight: "400" }} size={1.5}>
-          {item?.prizeAmount}
-        </AppText>
+        <AppText size={1.5}>Prize {item?.prizeAmount}</AppText>
         <AppText style={{ fontWeight: "400" }} bold={true} size={1.5}>
           {item?.eventName}
         </AppText>

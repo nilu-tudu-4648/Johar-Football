@@ -19,7 +19,7 @@ const HomeScreen = () => {
       <HomeHeader header={"JOHAR11"} />
       <AppView style={{ flex: 1 }}>
         <View style={{ width: "100%" }}>
-          <AppText>Upcoming Matches</AppText>
+          <AppText bold={true}>Upcoming Matches</AppText>
         </View>
         <View style={{ width: "100%", height: 200 }}>
           <Swiper style={styles.wrapper} autoplay={true}>

@@ -13,6 +13,7 @@ import {
   getDocs,
   query,
   runTransaction,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
@@ -55,31 +56,34 @@ const SignUpScreen = ({ navigation }) => {
         ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
       } else {
         await runTransaction(db, async (transaction) => {
-          const usersCollectionRef = collection(
-            db,
-            FIRESTORE_COLLECTIONS.USERS
-          );
-          const userQuery = query(
-            usersCollectionRef,
-            where("mobile", "==", mobile)
-          );
+          const usersCollectionRef = collection(db, FIRESTORE_COLLECTIONS.USERS);
+          const userQuery = query(usersCollectionRef, where("mobile", "==", mobile));
           const querySnapshot = await getDocs(userQuery);
-
+        
           if (querySnapshot.empty) {
-            await addDoc(usersCollectionRef, {
+            // Include the document ID in the data
+            const userData = {
+              id: "", // Firestore will generate a unique ID
               email,
               password,
               firstName,
               lastName,
               mobile,
-              proflePic: "",
+              profilePic: "",
               admin: "false",
-            });
+            };
+        
+            const docRef = await addDoc(usersCollectionRef, userData);
+        
+            // Update the document with the auto-generated ID
+            await updateDoc(docRef, { id: docRef.id });
+        
             ToastAndroid.show("Sign Up successfully", ToastAndroid.SHORT);
           } else {
             ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
           }
         });
+        
 
         navigation.navigate(NAVIGATION.LOGIN);
       }

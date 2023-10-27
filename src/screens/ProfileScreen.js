@@ -6,7 +6,7 @@ import {
   ToastAndroid,
   BackHandler,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import AppText from "../components/AppText";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
@@ -18,14 +18,12 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
-import { doc } from "firebase/firestore";
-import { FIRESTORE_COLLECTIONS } from "../constants/data";
-import { db } from "../../firebaseConfig";
 import { updateUser } from "../constants/functions";
 export default function ProfileScreen({ navigation, route }) {
   const admin = route.params?.admin;
   const [image, setimage] = useState(null);
   const { user } = useSelector((state) => state.entities.userReducer);
+  const dispatch = useDispatch();
   const pickImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,7 +43,7 @@ export default function ProfileScreen({ navigation, route }) {
           ...user,
           profilePic: url,
         };
-        await updateUser(userUpdate);
+        await updateUser(userUpdate,dispatch);
         ToastAndroid.show(
           "Profile picture updated successfully",
           ToastAndroid.SHORT
@@ -111,10 +109,10 @@ export default function ProfileScreen({ navigation, route }) {
     <View>
       <View style={styles.headerstyle}>
         <TouchableOpacity onPress={pickImage}>
-          {user.ImgUrl ? (
+          {user.profilePic ? (
             <Avatar.Image
               size={SIZES.largeTitle * 1.2}
-              source={{ uri: user.ImgUrl }}
+              source={{ uri: user.profilePic }}
             />
           ) : image ? (
             <Avatar.Image

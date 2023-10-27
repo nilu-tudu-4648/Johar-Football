@@ -9,16 +9,17 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import AppText from "./AppText";
 import { useSelector } from "react-redux";
+import { Image } from "react-native";
 const HomeHeader = ({ style, iconColor, header, headerColor = "" }) => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.entities.userReducer);
-  
+
   return (
     <AppHeader
       iconColor={iconColor}
       style={[
         {
-          height: SIZES.height / 6,
+          height: SIZES.height / 7,
           justifyContent: "center",
         },
         style,
@@ -32,13 +33,19 @@ const HomeHeader = ({ style, iconColor, header, headerColor = "" }) => {
           color={iconColor ? iconColor : COLORS.white}
         />
         {header ? (
-          <AppText
-            bold={true}
-            color={headerColor ? headerColor : COLORS.white}
-            size={2}
-          >
-            {header}
-          </AppText>
+          <View style={{ ...FSTYLES, width: "35%" }}>
+            <Image
+              source={require("../../assets/JOHAR.png")}
+              style={{ width: 30, height: 30, borderRadius: 30 / 2 }}
+            />
+            <AppText
+              bold={true}
+              color={headerColor ? headerColor : COLORS.white}
+              size={2}
+            >
+              {header}
+            </AppText>
+          </View>
         ) : null}
         <TouchableOpacity
           onPress={() =>

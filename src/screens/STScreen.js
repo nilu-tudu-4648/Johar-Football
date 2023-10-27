@@ -7,7 +7,7 @@ import {
   setPlayersForTournament,
 } from "../store/playersReducer";
 import { NAVIGATION } from "../constants/routes";
-import { AppButton, StatusDialog } from "../components";
+import { AppButton, PriviewDialog } from "../components";
 import { COLORS, FSTYLES } from "../constants/theme";
 
 const STScreen = ({ navigation }) => {
@@ -88,7 +88,11 @@ const STScreen = ({ navigation }) => {
           }}
         />
       </View>
-      <StatusDialog visible={visible} setvisible={setvisible} />
+      <PriviewDialog
+        visible={visible}
+        players={players}
+        setvisible={setvisible}
+      />
     </>
   );
 };

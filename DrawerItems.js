@@ -17,10 +17,10 @@ const DrawerItems = ({ navigation }) => {
       contentContainerStyle={{ flex: 1, backgroundColor: COLORS.purple }}
     >
       <View style={styles.headerstyle}>
-        {user?.ImgUrl ? (
+        {user?.profilePic ? (
           <Avatar.Image
             size={SIZES.largeTitle * 1.2}
-            source={{ uri: user.ImgUrl }}
+            source={{ uri: user.profilePic }}
           />
         ) : (
           <Avatar.Icon
@@ -59,7 +59,7 @@ const DrawerItems = ({ navigation }) => {
           }}
         >
           <AppText size={1} color={COLORS.lightgray1}>
-            1.0.3
+            1.0.4
           </AppText>
           <AppButton
             title={"Logout"}

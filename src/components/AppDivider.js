@@ -7,7 +7,7 @@ const AppDivider = () => {
     <View
       style={{
         width: "100%",
-        borderTopColor: COLORS.black,
+        borderTopColor: COLORS.lightgray1,
         borderTopWidth: 0.4,
       }}
     />
