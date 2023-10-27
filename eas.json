@@ -12,6 +12,10 @@
       "distribution": "internal",
       "channel": "preview"
     },
+    "prod": {
+      "distribution": "internal",
+      "channel": "prod"
+    },
     "production": {
       "channel": "production"
     }

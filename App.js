@@ -8,9 +8,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 
 const App = () => {
-  // eas update --branch preview --message "Updating the app"
   // eas build -p android --profile preview
-  // eas build --platform android
+  // eas update --branch preview --message "Updating the app"
+
+  // eas build -p android --profile prod
+  // eas update --branch prod --message "Updating the app"
   return (
     <NavigationContainer>
        <StatusBar style="light" />

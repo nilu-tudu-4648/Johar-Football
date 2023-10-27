@@ -10,6 +10,7 @@ import {
   AddPlayerScreen,
   AddTeamsScreen,
   AdminHomeScreen,
+  AlertScreen,
   AllTeamsScreen,
   AllUsersScreen,
   CreateTournament,
@@ -68,6 +69,11 @@ function AppNavigator() {
             <>
               <Stack.Screen
                 options={options}
+                name={"Alert"}
+                component={AlertScreen}
+              />
+              {/* <Stack.Screen
+                options={options}
                 name={NAVIGATION.ADMIN_HOME}
                 component={AdminHomeScreen}
               />
@@ -110,7 +116,7 @@ function AppNavigator() {
                 options={options}
                 name={NAVIGATION.PROFILE}
                 component={ProfileScreen}
-              />
+              /> */}
             </>
           ) : (
             <>
