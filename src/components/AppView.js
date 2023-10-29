@@ -1,16 +1,17 @@
 import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View, StatusBar } from "react-native";
 import { COLORS, SIZES } from "../constants/theme";
+import Constants from "expo-constants";
 
 const AppView = ({ children, style, justify }) => {
   return (
-    <View
-      style={[
-        { ...styles.container, justifyContent: justify && "center" },
-        style,
-      ]}
-    >
-      {children}
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent"  />
+      <SafeAreaView style={[styles.screen]}>
+        <View style={[styles.view, style, justify && { justifyContent: "center" }]}>
+          {children}
+        </View>
+      </SafeAreaView>
     </View>
   );
 };
@@ -18,10 +19,15 @@ const AppView = ({ children, style, justify }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    padding: SIZES.base,
-    paddingTop: StatusBar.currentHeight,
     backgroundColor: COLORS.lightwhite,
+  },
+  screen: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+  },
+  view: {
+    flex: 1,
+    padding: SIZES.base,
   },
 });
 
