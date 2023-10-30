@@ -1,6 +1,6 @@
 import { StyleSheet, View, ToastAndroid, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { COLORS, SIZES } from "../constants/theme";
+import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { useForm } from "react-hook-form";
 import AppText from "../components/AppText";
 import FormInput from "../components/FormInput";
@@ -10,14 +10,19 @@ import { AppButton, AppTextInput, SelectPlayerDialog } from "../components";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import * as ImagePicker from "expo-image-picker";
+import { saveMediaToStorage } from "../constants/functions";
+import { Avatar } from "react-native-paper";
 const AddPlayerScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const [visible, setvisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Select Type");
+  const [image, setimage] = useState(null);
   const {
     control,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -26,7 +31,7 @@ const AddPlayerScreen = ({ navigation }) => {
       points: "",
     },
   });
-  async function getUser(name) {
+  async function getPlayer(name) {
     try {
       const q = query(
         collection(db, FIRESTORE_COLLECTIONS.PLAYERS),
@@ -45,23 +50,48 @@ const AddPlayerScreen = ({ navigation }) => {
       return true;
     }
   }
-
+  const pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 3],
+        quality: 0.1,
+        base64: true,
+      });
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const urlParts = result.assets[0].uri;
+        setimage(urlParts);
+        const playerName = getValues("name");
+        const url = await saveMediaToStorage(
+          urlParts,
+          `/players/${playerName}`
+        );
+        setimage(url);
+        ToastAndroid.show("upload successfully", ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const onSubmit = async (data) => {
     const { name, points, teamName } = data;
 
     try {
       setloading(true);
-      const playerExists = await getUser(name);
+      const playerExists = await getPlayer(name);
       if (playerExists) {
-        return; 
+        return;
       }
-      const playersCollectionRef = collection(db, FIRESTORE_COLLECTIONS.PLAYERS);
+      const playersCollectionRef = collection(
+        db,
+        FIRESTORE_COLLECTIONS.PLAYERS
+      );
       await addDoc(playersCollectionRef, {
         name,
         points,
         teamName,
         tournamentName: "IPL",
-        playerPic: "",
+        playerPic: image,
         isActive: false,
         playerType: selectedOption,
         selectedCaptain: false,
@@ -73,6 +103,7 @@ const AddPlayerScreen = ({ navigation }) => {
       setValue("points", "");
       setValue("teamName", "");
       setSelectedOption("Select Type");
+      setimage(null);
     } catch (error) {
       console.error("Error adding player:", error);
       ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
@@ -88,7 +119,6 @@ const AddPlayerScreen = ({ navigation }) => {
       message: "Only alphabets are allowed for this field.",
     },
   };
-
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
@@ -103,6 +133,20 @@ const AddPlayerScreen = ({ navigation }) => {
         >
           {"Add Player"}
         </AppText>
+        <TouchableOpacity style={STYLES} onPress={pickImage}>
+          {image ? (
+            <Avatar.Image
+              size={SIZES.largeTitle * 1.7}
+              source={{ uri: image }}
+            />
+          ) : (
+            <Avatar.Icon
+              size={SIZES.largeTitle * 1.7}
+              icon="account"
+              style={{ backgroundColor: COLORS.gray }}
+            />
+          )}
+        </TouchableOpacity>
         <View>
           <AppText style={styles.smallText}>{"Player name"}</AppText>
           <FormInput

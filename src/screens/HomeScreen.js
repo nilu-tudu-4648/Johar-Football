@@ -4,7 +4,6 @@ import { AppLoader, AppText, AppView, HomeHeader } from "../components";
 import MatchesItem from "../components/MatchesItem";
 import { getTournaments } from "../constants/functions";
 import { useDispatch, useSelector } from "react-redux";
-import Swiper from "react-native-swiper";
 
 const HomeScreen = () => {
   const { tournaments } = useSelector((state) => state.entities.userReducer);
@@ -18,28 +17,18 @@ const HomeScreen = () => {
       <AppLoader loading={loading} />
       <HomeHeader header={"JOHAR11"} />
       <AppView style={{ flex: 1 }}>
+        <View style={{ width: "100%", height: 100 }}>
+          <Image
+            source={require("../../assets/slide2.jpg")}
+            style={{
+              height: "100%",
+              width: "100%",
+              resizeMode: "contain",
+            }}
+          />
+        </View>
         <View style={{ width: "100%" }}>
           <AppText bold={true}>Upcoming Matches</AppText>
-        </View>
-        <View style={{ width: "100%", height: 200 }}>
-          <Swiper style={styles.wrapper} autoplay={true}>
-            <View
-              style={{
-                height: "100%",
-                width: "100%",
-                flex: 0.5,
-              }}
-            >
-              <Image
-                source={require("../../assets/slide2.jpg")}
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  resizeMode: "contain",
-                }}
-              />
-            </View>
-          </Swiper>
         </View>
         <ScrollView
           style={{ width: "100%" }}

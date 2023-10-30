@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation, route }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
+      phone: "",
       password: "",
       // phone: "9155186701",
       // password: "123456",
@@ -94,6 +94,7 @@ const LoginScreen = ({ navigation, route }) => {
     },
     []
   );
+  const phonePattern = /^[6-9][0-9]{9}$/;
   return (
     <AppView>
       <AppLoader loading={loading} />
@@ -118,12 +119,18 @@ const LoginScreen = ({ navigation, route }) => {
             rules={{
               required: "This field is mandatory",
               pattern: {
-                message: "Invalid Phone Number",
+                value: phonePattern,
+                message: "Please enter valid Phone number",
+              },
+              minLength: {
+                value: 10,
+                message: "Please enter valid Phone number",
               },
             }}
             keyboardType={"numeric"}
             placeholder={"Enter Phone Number"}
             name="phone"
+            maxLength={10}
           />
         </View>
         <View style={{ width: "100%" }}>

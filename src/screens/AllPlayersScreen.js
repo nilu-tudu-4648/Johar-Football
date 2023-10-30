@@ -1,4 +1,4 @@
-import { BackHandler, ScrollView, StyleSheet, View } from "react-native";
+import { BackHandler, ScrollView, StyleSheet, View, Image } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AppButton,
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPlayers, deleteUser } from "../constants/functions";
 import { NAVIGATION } from "../constants/routes";
 import { COLORS, FSTYLES, SIZES } from "../constants/theme";
+import { Avatar } from "react-native-paper";
 const AllPlayersScreen = ({ navigation }) => {
   const { allPlayers } = useSelector((state) => state.entities.adminReducer);
   const [loading, setloading] = useState(true);
@@ -21,7 +22,6 @@ const AllPlayersScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [query, setquery] = useState("");
   const dispatch = useDispatch();
-
   const filterFunction = useMemo(() => {
     return (item) => {
       const lowercaseQuery = query.toLowerCase();
@@ -42,7 +42,7 @@ const AllPlayersScreen = ({ navigation }) => {
   }, [query, allPlayers, filterFunction]);
   const callGetAllplayer = () => getAllPlayers(dispatch, setloading);
   useEffect(() => {
-    callGetAllplayer() // Assuming this function fetches data and sets it in Redux store
+    callGetAllplayer(); // Assuming this function fetches data and sets it in Redux store
   }, [dispatch]);
 
   useEffect(() => {
@@ -79,6 +79,18 @@ const AllPlayersScreen = ({ navigation }) => {
           {data?.map((item, i) => (
             <View key={i} style={styles.card}>
               <View style={{ ...FSTYLES, width: "100%" }}>
+                {item.playerPic ? (
+                  <Avatar.Image
+                    size={SIZES.largeTitle * 1.7}
+                    source={{ uri: item.playerPic }}
+                  />
+                ) : (
+                  <Avatar.Icon
+                    size={SIZES.largeTitle * 1.7}
+                    icon="account"
+                    style={{ backgroundColor: COLORS.gray }}
+                  />
+                )}
                 <AppText bold={true}>{item.name}</AppText>
                 <AppText color={"red"}>{item.teamName}</AppText>
               </View>
@@ -119,7 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: SIZES.base,
     width: "99%",
-    height: SIZES.height * 0.15,
+    height: SIZES.height * 0.25,
     justifyContent: "space-between",
     alignSelf: "center",
     marginVertical: 10,

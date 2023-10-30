@@ -20,6 +20,12 @@ import {
   setAllTeams,
   setAllUsers,
 } from "../store/adminReducer";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 export const logoutUser = async (dispatch) => {
   try {
@@ -81,6 +87,49 @@ export const sanitizeJsonString = (jsonString) => {
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
+//apis
+export const saveMediaToStorage = async (file, path) => {
+  try {
+    const storage = getStorage();
+    const response = await fetch(file);
+    const blob = await response.blob();
+    const storageRef = ref(storage, path);
+    const uploadTask = uploadBytesResumable(storageRef, blob);
+    const url = await new Promise((res, rej) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+          ToastAndroid.show("upload Failed", ToastAndroid.SHORT);
+          rej(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            res(downloadURL);
+          });
+        }
+      );
+    });
+    return url; // Return the download URL
+  } catch (error) {
+    console.log(error);
+    throw error; // Rethrow the error for handling in your app
+  }
+};
 
 export async function getUserDetails(mobile) {
   const q = query(
