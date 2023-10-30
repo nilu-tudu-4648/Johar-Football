@@ -2,7 +2,6 @@ import {
   Button,
   FlatList,
   StyleSheet,
-  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,12 +14,14 @@ import { NAVIGATION } from "../constants/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
-import { getLeaderBoard } from "../constants/functions";
+import { getLeaderBoard, showToast } from "../constants/functions";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 const SelectCaptainScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
   const { players } = useSelector((state) => state.entities.playersReducer);
-  const { user } = useSelector((state) => state.entities.userReducer);
+  const { user, selectedTournament } = useSelector(
+    (state) => state.entities.userReducer
+  );
   const dispatch = useDispatch();
   const updatedPlayersFunc = (item, type) => {
     const updatedPlayers = playersArray.map((player) => {
@@ -145,11 +146,12 @@ const SelectCaptainScreen = ({ navigation }) => {
           id: player.id,
           name: player.name,
           type: player.type,
+          playerType: player.playerType,
         })),
-        matchId: "123",
+        matchId: selectedTournament.id,
       });
-      await getLeaderBoard(dispatch);
-      ToastAndroid.show("Team Saved Successfully", ToastAndroid.SHORT);
+      await getLeaderBoard(dispatch, selectedTournament.id);
+      showToast("Team Saved Successfully");
       navigation.navigate(NAVIGATION.HOME);
     } catch (error) {
       console.log("Error:", error);

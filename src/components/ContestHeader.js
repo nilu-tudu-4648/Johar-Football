@@ -15,15 +15,17 @@ const ContestHeader = ({ title }) => {
 
   // Parse the date and time strings
   const dateParts = date.split("/");
-  const timeParts = time.split(":");
+  const timeParts = time.split(" ");
+  const timeAMPM = timeParts[1];
+  const timeHoursMinutes = timeParts[0].split(":");
 
   // Create a new Date object with the parsed values
   const eventDate = new Date(
-    parseInt(dateParts[2]), // Year
-    parseInt(dateParts[1]) - 1, // Month (0-indexed)
-    parseInt(dateParts[0]), // Day
-    parseInt(timeParts[0]), // Hours
-    parseInt(timeParts[1]) // Minutes
+    parseInt(dateParts[2]),  // Year
+    parseInt(dateParts[1]) - 1,  // Month (0-indexed)
+    parseInt(dateParts[0]),  // Day
+    timeAMPM === "PM" ? parseInt(timeHoursMinutes[0]) + 12 : parseInt(timeHoursMinutes[0]), // Hours
+    parseInt(timeHoursMinutes[1])  // Minutes
   );
 
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(eventDate));
@@ -74,7 +76,7 @@ const ContestHeader = ({ title }) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          width: "50%",
+          width: "70%",
           justifyContent: "space-around",
         }}
       >

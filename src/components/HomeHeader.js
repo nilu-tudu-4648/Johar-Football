@@ -33,19 +33,13 @@ const HomeHeader = ({ style, iconColor, header, headerColor = "" }) => {
           color={iconColor ? iconColor : COLORS.white}
         />
         {header ? (
-          <View style={{ ...FSTYLES, width: "40%" }}>
-            <Image
-              source={require("../../assets/JOHAR.png")}
-              style={{ width: 30, height: 30, borderRadius: 30 / 2 }}
-            />
-            <AppText
-              bold={true}
-              color={headerColor ? headerColor : COLORS.white}
-              size={2}
-            >
-              {header}
-            </AppText>
-          </View>
+          <AppText
+            bold={true}
+            color={headerColor ? headerColor : COLORS.white}
+            size={2}
+          >
+            {header}
+          </AppText>
         ) : null}
         <TouchableOpacity
           onPress={() =>

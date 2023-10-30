@@ -22,6 +22,7 @@ export const NAVIGATION = {
   ALL_TEAMS: "ALL_TEAMS",
   ALL_TOURNAMENTS: "ALL_TOURNAMENTS",
   POINTS_SYSTEM: "POINTS_SYSTEM",
+  WINNING_POINTS: "WINNING_POINTS",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod
   },

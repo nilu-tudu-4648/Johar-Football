@@ -22,6 +22,7 @@ import {
   SelectCaptainScreen,
   SignUpScreen,
   WelcomeScreen,
+  WinningPointsScreen,
 } from "../screens";
 import { StyleHeader } from "../components";
 import CreateTeamScreen from "../screens/CreateTeamScreen";
@@ -148,8 +149,8 @@ function AppNavigator() {
               />
               <Stack.Screen
                 options={options}
-                name={NAVIGATION.ADD_PLAYER}
-                component={AddPlayerScreen}
+                name={NAVIGATION.WINNING_POINTS}
+                component={WinningPointsScreen}
               />
             </>
           )}

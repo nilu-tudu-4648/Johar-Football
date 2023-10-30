@@ -1,4 +1,4 @@
-import { StyleSheet, ToastAndroid, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { Dialog } from "react-native-paper";
@@ -8,6 +8,7 @@ import AppButton from "./AppButton";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import { showToast } from "../constants/functions";
 const EditPlayerDialog = ({ visible, setvisible, item, callGetAllplayer }) => {
   const [itemSelected, setitemSelected] = useState(item);
   const onChangeText = (text, t) => {
@@ -24,7 +25,7 @@ const EditPlayerDialog = ({ visible, setvisible, item, callGetAllplayer }) => {
     try {
       const postRef = doc(db, FIRESTORE_COLLECTIONS.PLAYERS, item.id);
       await updateDoc(postRef, itemSelected).then(() => {
-        ToastAndroid.show("Player details updated", ToastAndroid.SHORT);
+        showToast("Player details updated");
         callGetAllplayer();
       });
       setvisible(false);

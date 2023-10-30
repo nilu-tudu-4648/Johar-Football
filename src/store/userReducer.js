@@ -6,6 +6,7 @@ const initialState = {
   userLoggedIn: "false",
   createteam: [],
   tournaments: [],
+  pastTournaments: [],
   selectedTournament: null,
 };
 
@@ -39,6 +40,9 @@ const userReducer = createSlice({
     settournaments: (userReducer, action) => {
       userReducer.tournaments = action.payload;
     },
+    setpastTournaments: (userReducer, action) => {
+      userReducer.pastTournaments = action.payload;
+    },
     setselectedTournament: (userReducer, action) => {
       userReducer.selectedTournament = action.payload;
     },
@@ -58,7 +62,8 @@ export const {
   checkUserLogin,
   addPlayerstoTeam,
   settournaments,
-  setselectedTournament
+  setselectedTournament,
+  setpastTournaments,
 } = userReducer.actions;
 export const getUserDetails = (data) =>
   apiCallBegan({

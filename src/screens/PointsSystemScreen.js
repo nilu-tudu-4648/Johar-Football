@@ -9,7 +9,7 @@ const PointsSystemScreen = () => {
     { Midfielder: 60 },
     { "Defender Or GoalKeeper": 60 },
     { "GoalKeeper Saved": 10 },
-    { "Head Goal": 30 },
+    { "Head Goal": 70 },
     { "Cornar Goal": 80 },
     { "Shot on Target": 10 },
     { "Hat rik": 100 },

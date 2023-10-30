@@ -12,6 +12,7 @@ import {
   query,
   updateDoc,
   where,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import {
@@ -46,7 +47,6 @@ export const truncateString = (inputString, maxLength) => {
   }
   return inputString;
 };
-
 export const formatDate = (timestamp) => {
   const truncatedTimestamp = Math.floor(timestamp / 1000); // Remove milliseconds
 
@@ -83,7 +83,6 @@ export const sanitizeJsonString = (jsonString) => {
 
   return sanitizedString;
 };
-
 export function showToast(msg) {
   ToastAndroid.show(msg, ToastAndroid.SHORT);
 }
@@ -114,7 +113,7 @@ export const saveMediaToStorage = async (file, path) => {
         (error) => {
           // Handle unsuccessful uploads
           console.log(error);
-          ToastAndroid.show("upload Failed", ToastAndroid.SHORT);
+          showToast("upload Failed");
           rej(error);
         },
         () => {
@@ -130,7 +129,6 @@ export const saveMediaToStorage = async (file, path) => {
     throw error; // Rethrow the error for handling in your app
   }
 };
-
 export async function getUserDetails(mobile) {
   const q = query(
     collection(db, FIRESTORE_COLLECTIONS.USERS),
@@ -156,16 +154,39 @@ export const updateUser = async (fdata, dispatch) => {
     console.log(error);
   }
 };
-function filterUpcomingEvents(events) {
+export function filterUpcomingEvents(events) {
   const currentDate = new Date();
 
   // Filter events that have 'date' and 'time' properties in the future
   const upcomingEvents = events.filter((event) => {
     if (event.date && event.time) {
-      const [day, month, year] = event.date.split("/").map(Number);
-      const [hours, minutes] = event.time.match(/\d+/g).map(Number);
+      // Parse the date string "30/10/2023"
+      const dateParts = event.date.split("/");
+      const year = parseInt(dateParts[2], 10);
+      const month = parseInt(dateParts[1], 10) - 1; // Months are 0-based
+      const day = parseInt(dateParts[0], 10);
 
-      const eventDateTime = new Date(year, month - 1, day, hours, minutes);
+      // Parse the time string "4:32 PM"
+      const timeParts = event.time.match(/\d+/g);
+      const hours = parseInt(timeParts[0], 10) % 12; // Handle 12-hour format
+      const minutes = parseInt(timeParts[1], 10);
+      const isPM = event.time.includes("PM");
+
+      const eventTime = new Date(); // Create a new Date object for the time
+      eventTime.setHours(hours);
+      eventTime.setMinutes(minutes);
+
+      if (isPM) {
+        eventTime.setHours(eventTime.getHours() + 12); // Add 12 hours for PM
+      }
+
+      const eventDateTime = new Date(
+        year,
+        month,
+        day,
+        eventTime.getHours(),
+        eventTime.getMinutes()
+      );
 
       return eventDateTime > currentDate;
     }
@@ -173,9 +194,52 @@ function filterUpcomingEvents(events) {
   });
   return upcomingEvents;
 }
+export function filterPastEvents(events) {
+  const currentDate = new Date();
+
+  // Filter events that have 'date' and 'time' properties in the past
+  const pastEvents = events.filter((event) => {
+    if (event.date && event.time) {
+      // Parse the date string "30/10/2023"
+      const dateParts = event.date.split("/");
+      const year = parseInt(dateParts[2], 10);
+      const month = parseInt(dateParts[1], 10) - 1; // Months are 0-based
+      const day = parseInt(dateParts[0], 10);
+
+      // Parse the time string "4:32 PM"
+      const timeParts = event.time.match(/\d+/g);
+      const hours = parseInt(timeParts[0], 10) % 12; // Handle 12-hour format
+      const minutes = parseInt(timeParts[1], 10);
+      const isPM = event.time.includes("PM");
+
+      const eventTime = new Date(); // Create a new Date object for the time
+      eventTime.setHours(hours);
+      eventTime.setMinutes(minutes);
+
+      if (isPM) {
+        eventTime.setHours(eventTime.getHours() + 12); // Add 12 hours for PM
+      }
+
+      const eventDateTime = new Date(
+        year,
+        month,
+        day,
+        eventTime.getHours(),
+        eventTime.getMinutes()
+      );
+
+      return eventDateTime < currentDate;
+    }
+    return false;
+  });
+  return pastEvents;
+}
 export const getTournaments = async (dispatch, setloading) => {
   try {
+    // Create a query for the tournaments collection
     const q = query(collection(db, FIRESTORE_COLLECTIONS.TOURNAMENTS));
+
+    // Fetch the initial data
     const querySnapshot = await getDocs(q);
     let arr = [];
     querySnapshot.forEach((doc) => {
@@ -183,8 +247,34 @@ export const getTournaments = async (dispatch, setloading) => {
       const id = doc.id;
       return arr.push({ id, ...data });
     });
-    const upcomingEvents = filterUpcomingEvents(arr);
+
+    // Set the initial data
+    const upcomingEvents = e(arr);
     dispatch(settournaments(upcomingEvents));
+
+    // Set up a listener for live updates
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          // Handle added data
+          const data = change.doc.data();
+          console.log("Added data: ", data);
+        } else if (change.type === "modified") {
+          // Handle modified data
+          const data = change.doc.data();
+          console.log("Modified data: ", data);
+        } else if (change.type === "removed") {
+          // Handle removed data
+          console.log("Removed data ID: ", change.doc.id);
+        }
+      });
+    });
+
+    // When you want to stop listening for updates
+    // Call the `unsubscribe` function
+    // For example, to stop listening when the component unmounts
+    // unsubscribe();
+
     if (setloading) {
       setloading(false);
     }
@@ -192,11 +282,11 @@ export const getTournaments = async (dispatch, setloading) => {
     console.log(error);
   }
 };
-export const getLeaderBoard = async (dispatch) => {
+export const getLeaderBoard = async (dispatch, id,setloading) => {
   try {
     const q = query(
       collection(db, FIRESTORE_COLLECTIONS.CREATED_TEAMS),
-      where("matchId", "==", "123")
+      where("matchId", "==", id)
     );
     const querySnapshot = await getDocs(q);
     let arr = [];
@@ -206,6 +296,9 @@ export const getLeaderBoard = async (dispatch) => {
       return arr.push({ id, ...data });
     });
     dispatch(setleaderBoard(arr));
+    if(setloading){
+      setloading(false);
+    }
   } catch (error) {
     console.log(error);
   }

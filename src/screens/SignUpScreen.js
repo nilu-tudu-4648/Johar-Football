@@ -1,4 +1,4 @@
-import { StyleSheet, View, ToastAndroid, Image } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { NAVIGATION } from "../constants/routes";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 import { BackHandler } from "react-native";
+import { showToast } from "../constants/functions";
 const SignUpScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const {
@@ -53,13 +54,19 @@ const SignUpScreen = ({ navigation }) => {
       const userExists = await getUser(mobile);
 
       if (userExists) {
-        ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
+        showToast("User already Exist");
       } else {
         await runTransaction(db, async (transaction) => {
-          const usersCollectionRef = collection(db, FIRESTORE_COLLECTIONS.USERS);
-          const userQuery = query(usersCollectionRef, where("mobile", "==", mobile));
+          const usersCollectionRef = collection(
+            db,
+            FIRESTORE_COLLECTIONS.USERS
+          );
+          const userQuery = query(
+            usersCollectionRef,
+            where("mobile", "==", mobile)
+          );
           const querySnapshot = await getDocs(userQuery);
-        
+
           if (querySnapshot.empty) {
             // Include the document ID in the data
             const userData = {
@@ -72,27 +79,23 @@ const SignUpScreen = ({ navigation }) => {
               profilePic: "",
               admin: "false",
             };
-        
+
             const docRef = await addDoc(usersCollectionRef, userData);
-        
+
             // Update the document with the auto-generated ID
             await updateDoc(docRef, { id: docRef.id });
-        
-            ToastAndroid.show("Sign Up successfully", ToastAndroid.SHORT);
+
+            showToast("Sign Up successfully");
           } else {
-            ToastAndroid.show("User already Exist", ToastAndroid.SHORT);
+            showToast("User already Exist");
           }
         });
-        
 
         navigation.navigate(NAVIGATION.LOGIN);
       }
     } catch (error) {
       console.error("An error occurred during sign-up:", error);
-      ToastAndroid.show(
-        "Sign Up failed. Please try again.",
-        ToastAndroid.SHORT
-      );
+      showToast("Sign Up failed. Please try again.");
     } finally {
       setloading(false);
     }

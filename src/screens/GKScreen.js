@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, ToastAndroid } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import {
   setFilterPlayersForTournament,
   setPlayersForTournament,
 } from "../store/playersReducer";
+import { showToast } from "../constants/functions";
 
 const GKScreen = () => {
   const [playersArray, setplayersArray] = useState([]);
@@ -36,7 +37,7 @@ const GKScreen = () => {
         (player) => player.isActive
       );
       if (selectedPlayers.length > 1) {
-        ToastAndroid.show("You can only select 1 player", ToastAndroid.SHORT);
+        showToast("You can only select 1 player");
         return;
       }
       const deselectedPlayer = players.filter((ite) => ite.name !== item.name);

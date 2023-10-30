@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  ToastAndroid,
-  BackHandler,
-  Image,
-} from "react-native";
+import { StyleSheet, View, BackHandler, Image } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -20,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setLoginUser } from "../store/userReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import { showToast } from "../constants/functions";
 
 const LoginScreen = ({ navigation, route }) => {
   const [loading, setloading] = useState(false);
@@ -55,7 +50,7 @@ const LoginScreen = ({ navigation, route }) => {
     const userExists = await getUser(phone);
 
     if (!userExists) {
-      ToastAndroid.show("Invalid credentials", ToastAndroid.SHORT);
+      showToast("Invalid credentials");
       console.log("User login failed.");
       return;
     }
@@ -65,9 +60,9 @@ const LoginScreen = ({ navigation, route }) => {
     if (checkPassword) {
       dispatch(setLoginUser(userExists));
       await AsyncStorage.setItem("loggedInUser", JSON.stringify(userExists));
-      ToastAndroid.show("Login successful", ToastAndroid.SHORT);
+      showToast("Login successful");
     } else {
-      ToastAndroid.show("Invalid credentials", ToastAndroid.SHORT);
+      showToast("Invalid credentials");
       console.log("User login failed.");
     }
   };
@@ -78,7 +73,7 @@ const LoginScreen = ({ navigation, route }) => {
       await handleSignIn(data.phone, data.password);
     } catch (error) {
       console.log(error, "err");
-      ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
+      showToast("Something went wrong");
     } finally {
       setloading(false);
     }

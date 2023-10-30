@@ -1,4 +1,4 @@
-import { StyleSheet, ToastAndroid, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import { AppButton, AppLoader, AppText } from "../components";
 import { COLORS, SIZES } from "../constants/theme";
@@ -6,21 +6,25 @@ import ContestDetailsNavigator from "../navigation/ContestDetailsNavigator";
 import { NAVIGATION } from "../constants/routes";
 import ContestHeader from "../components/ContestHeader";
 import { useDispatch } from "react-redux";
-import { getLeaderBoard, getPlayersfromTeamName } from "../constants/functions";
+import {
+  getLeaderBoard,
+  getPlayersfromTeamName,
+  showToast,
+} from "../constants/functions";
 const MatchDetailsScreen = ({ navigation, route }) => {
-  const [loading, setloading] = useState(false);
-  const item = route.params.item;
+  const [loading, setloading] = useState(true);
+  const { item, completed } = route.params;
   const dispatch = useDispatch();
   const joinContest = () => {
     setloading(true);
     setTimeout(() => {
       setloading(false);
       navigation.navigate(NAVIGATION.CREATE_TEAM);
-      ToastAndroid.show("Joined Successfully", ToastAndroid.SHORT);
+      showToast("Joined Successfully");
     }, 2000);
   };
   useEffect(() => {
-    getLeaderBoard(dispatch);
+    getLeaderBoard(dispatch, item.id, setloading);
     getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
   }, []);
   return (
@@ -34,11 +38,15 @@ const MatchDetailsScreen = ({ navigation, route }) => {
           Prize Pool
         </AppText>
         <AppText>₹{item?.prizeAmount}</AppText>
-        <AppButton
-          title={`JOIN ₹${item.entryFees}`}
-          onPress={joinContest}
-          style={{ backgroundColor: COLORS.green }}
-        />
+        {completed ? (
+          <AppText>Match Completed</AppText>
+        ) : (
+          <AppButton
+            title={`JOIN ₹${item.entryFees}`}
+            onPress={joinContest}
+            style={{ backgroundColor: COLORS.green }}
+          />
+        )}
       </View>
       {ContestDetailsNavigator()}
     </View>

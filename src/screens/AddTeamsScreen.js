@@ -1,4 +1,4 @@
-import { StyleSheet, View, ToastAndroid, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -6,10 +6,11 @@ import AppText from "../components/AppText";
 import FormInput from "../components/FormInput";
 import AppLoader from "../components/AppLoader";
 import { db } from "../../firebaseConfig";
-import { AppButton, } from "../components";
+import { AppButton } from "../components";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import { showToast } from "../constants/functions";
 const AddTeamsScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const {
@@ -30,13 +31,13 @@ const AddTeamsScreen = ({ navigation }) => {
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        ToastAndroid.show("Team name already exists", ToastAndroid.SHORT);
+        showToast("Team name already exists");
         return true;
       } else {
         return false;
       }
     } catch (error) {
-      ToastAndroid.show("Error checking team existence", ToastAndroid.SHORT);
+      showToast("Error checking team existence");
       return true; // You may choose to handle this differently, such as returning false on error.
     }
   }
@@ -50,16 +51,19 @@ const AddTeamsScreen = ({ navigation }) => {
       if (teamNameExists) {
         return;
       }
-      const teamNamesCollectionRef = collection(db, FIRESTORE_COLLECTIONS.TEAM_NAMES);
+      const teamNamesCollectionRef = collection(
+        db,
+        FIRESTORE_COLLECTIONS.TEAM_NAMES
+      );
       await addDoc(teamNamesCollectionRef, {
         teamName,
       });
 
-      ToastAndroid.show("Team name added successfully", ToastAndroid.SHORT);
+      showToast("Team name added successfully");
       setValue("teamName", "");
     } catch (error) {
       console.error("Error adding teamName:", error);
-      ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
+      showToast("Something went wrong");
     } finally {
       setloading(false);
     }

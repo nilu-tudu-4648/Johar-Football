@@ -1,4 +1,4 @@
-import { StyleSheet, View, ToastAndroid, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 import * as ImagePicker from "expo-image-picker";
-import { saveMediaToStorage } from "../constants/functions";
+import { saveMediaToStorage, showToast } from "../constants/functions";
 import { Avatar } from "react-native-paper";
 const AddPlayerScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
@@ -39,14 +39,14 @@ const AddPlayerScreen = ({ navigation }) => {
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        ToastAndroid.show("Player already exists", ToastAndroid.SHORT);
+       showToast("Player already exists");
         return true;
       } else {
         return false;
       }
     } catch (error) {
       console.error("Error checking player existence:", error);
-      ToastAndroid.show("Error checking player existence", ToastAndroid.SHORT);
+     showToast("Error checking player existence");
       return true;
     }
   }
@@ -67,7 +67,7 @@ const AddPlayerScreen = ({ navigation }) => {
           `/players/${playerName}`
         );
         setimage(url);
-        ToastAndroid.show("upload successfully", ToastAndroid.SHORT);
+       showToast("upload successfully");
       }
     } catch (error) {
       console.log(error);
@@ -98,7 +98,7 @@ const AddPlayerScreen = ({ navigation }) => {
         selectedViceCaptain: false,
       });
 
-      ToastAndroid.show("Player Added Successfully", ToastAndroid.SHORT);
+     showToast("Player Added Successfully");
       setValue("name", "");
       setValue("points", "");
       setValue("teamName", "");
@@ -106,7 +106,7 @@ const AddPlayerScreen = ({ navigation }) => {
       setimage(null);
     } catch (error) {
       console.error("Error adding player:", error);
-      ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);
+     showToast("Something went wrong");
     } finally {
       setloading(false);
     }

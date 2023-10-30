@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ToastAndroid,
-  BackHandler,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, BackHandler } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import AppText from "../components/AppText";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
 import { Avatar } from "react-native-paper";
 import { NAVIGATION } from "../constants/routes";
-import { saveMediaToStorage, updateUser } from "../constants/functions";
+import {
+  saveMediaToStorage,
+  showToast,
+  updateUser,
+} from "../constants/functions";
 export default function ProfileScreen({ navigation, route }) {
   const admin = route.params?.admin;
   const [image, setimage] = useState(null);
@@ -38,10 +36,7 @@ export default function ProfileScreen({ navigation, route }) {
           profilePic: url,
         };
         await updateUser(userUpdate, dispatch);
-        ToastAndroid.show(
-          "Profile picture updated successfully",
-          ToastAndroid.SHORT
-        );
+        showToast("Profile picture updated successfully");
       }
     } catch (error) {
       console.log(error);

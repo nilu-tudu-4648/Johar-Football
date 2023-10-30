@@ -6,10 +6,12 @@ import { AppText } from "../components";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { NAVIGATION } from "../constants/routes";
 const Tab = createMaterialTopTabNavigator();
 
 export default function ContestDetailsNavigator() {
-  const Winnings = () => {
+  const Winnings = ({ navigation }) => {
     const { leaderBoard, createPlayers } = useSelector(
       (state) => state.entities.playersReducer
     );
@@ -19,7 +21,6 @@ export default function ContestDetailsNavigator() {
       ViceCaptain: 1.5,
       Player: 1,
     };
-
     useEffect(() => {
       if (createPlayers) {
         const tempLeaderBoard = leaderBoard?.map((team) => {
@@ -38,6 +39,7 @@ export default function ContestDetailsNavigator() {
             }, 0);
 
           return {
+            id: team.id,
             userName: team.userName,
             score: tempScores,
           };
@@ -60,7 +62,18 @@ export default function ContestDetailsNavigator() {
         </View>
         <ScrollView>
           {leaderBoardArray.map((item, index) => (
-            <View key={index} style={{ ...FSTYLES, padding: SIZES.base }}>
+            <TouchableOpacity
+              onPress={() => {
+                const selectedTeam = leaderBoard.find(
+                  (team) => team.id === item.id
+                );
+                navigation.navigate(NAVIGATION.WINNING_POINTS, {
+                  selectedTeam,
+                });
+              }}
+              key={index}
+              style={{ ...FSTYLES, padding: SIZES.base }}
+            >
               <View style={{ ...FSTYLES, width: "30%" }}>
                 <FontAwesome name="user-circle-o" size={24} color="black" />
                 <AppText style={{ left: 12 }} size={1.3}>
@@ -73,7 +86,7 @@ export default function ContestDetailsNavigator() {
               <View>
                 <AppText size={1.3}>{index + 1}</AppText>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </SafeAreaView>

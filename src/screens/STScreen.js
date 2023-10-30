@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, ToastAndroid, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
 import CreateTeamItemComponent from "../components/CreateTeamItemComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import {
 import { NAVIGATION } from "../constants/routes";
 import { AppButton, PriviewDialog } from "../components";
 import { COLORS, FSTYLES } from "../constants/theme";
+import { showToast } from "../constants/functions";
 
 const STScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
@@ -55,10 +56,10 @@ const STScreen = ({ navigation }) => {
     addSTtoStorage();
   }, []);
   const NextButton = () => {
-    if (players.length === 11) {
+    if (players.length !== 11) {
       navigation.navigate(NAVIGATION.SELECT_CAPTAIN);
     } else {
-      ToastAndroid.show("Please select 11 players", ToastAndroid.SHORT);
+      showToast("Please select 11 players");
     }
   };
   return (

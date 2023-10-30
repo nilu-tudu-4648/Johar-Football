@@ -7,14 +7,14 @@ import { NAVIGATION } from "../constants/routes";
 import { useDispatch } from "react-redux";
 import { setselectedTournament } from "../store/userReducer";
 
-const MatchesItem = ({ item }) => {
+const MatchesItem = ({ item, completed }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   return (
     <TouchableOpacity
       onPress={() => {
         dispatch(setselectedTournament(item));
-        navigation.navigate(NAVIGATION.MATCH_DETAILS, { item });
+        navigation.navigate(NAVIGATION.MATCH_DETAILS, { item ,completed});
       }}
       style={styles.mainContainer}
     >
