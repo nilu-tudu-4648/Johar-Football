@@ -25,7 +25,7 @@ const HomeHeader = ({ style, iconColor, header, headerColor = "" }) => {
         style,
       ]}
     >
-      <View style={{ ...FSTYLES, padding: SIZES.h6 }}>
+      <View style={{ ...FSTYLES }}>
         <Ionicons
           onPress={() => navigation.openDrawer()}
           name="reorder-three-sharp"
@@ -33,7 +33,7 @@ const HomeHeader = ({ style, iconColor, header, headerColor = "" }) => {
           color={iconColor ? iconColor : COLORS.white}
         />
         {header ? (
-          <View style={{ ...FSTYLES, width: "35%" }}>
+          <View style={{ ...FSTYLES, width: "40%" }}>
             <Image
               source={require("../../assets/JOHAR.png")}
               style={{ width: 30, height: 30, borderRadius: 30 / 2 }}

@@ -145,7 +145,7 @@ export async function getUserDetails(mobile) {
   // User does not exist
   return null;
 }
-export const updateUser = async (fdata,dispatch) => {
+export const updateUser = async (fdata, dispatch) => {
   try {
     const postRef = doc(db, FIRESTORE_COLLECTIONS.USERS, fdata.id);
     await updateDoc(postRef, fdata).then(async () => {
@@ -156,6 +156,23 @@ export const updateUser = async (fdata,dispatch) => {
     console.log(error);
   }
 };
+function filterUpcomingEvents(events) {
+  const currentDate = new Date();
+
+  // Filter events that have 'date' and 'time' properties in the future
+  const upcomingEvents = events.filter((event) => {
+    if (event.date && event.time) {
+      const [day, month, year] = event.date.split("/").map(Number);
+      const [hours, minutes] = event.time.match(/\d+/g).map(Number);
+
+      const eventDateTime = new Date(year, month - 1, day, hours, minutes);
+
+      return eventDateTime > currentDate;
+    }
+    return false;
+  });
+  return upcomingEvents;
+}
 export const getTournaments = async (dispatch, setloading) => {
   try {
     const q = query(collection(db, FIRESTORE_COLLECTIONS.TOURNAMENTS));
@@ -166,8 +183,11 @@ export const getTournaments = async (dispatch, setloading) => {
       const id = doc.id;
       return arr.push({ id, ...data });
     });
-    setloading(false);
-    dispatch(settournaments(arr));
+    const upcomingEvents = filterUpcomingEvents(arr);
+    dispatch(settournaments(upcomingEvents));
+    if (setloading) {
+      setloading(false);
+    }
   } catch (error) {
     console.log(error);
   }

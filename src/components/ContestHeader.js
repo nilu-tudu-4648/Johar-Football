@@ -4,10 +4,36 @@ import { AppText } from "../components";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, WNFONTS, SIZES } from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const ContestHeader = ({ title }) => {
+  const { selectedTournament } = useSelector(
+    (state) => state.entities.userReducer
+  );
   const navigation = useNavigation();
-  const [timeLeft, setTimeLeft] = useState(4000);
+  const { date, time } = selectedTournament;
+
+  // Parse the date and time strings
+  const dateParts = date.split("/");
+  const timeParts = time.split(":");
+
+  // Create a new Date object with the parsed values
+  const eventDate = new Date(
+    parseInt(dateParts[2]), // Year
+    parseInt(dateParts[1]) - 1, // Month (0-indexed)
+    parseInt(dateParts[0]), // Day
+    parseInt(timeParts[0]), // Hours
+    parseInt(timeParts[1]) // Minutes
+  );
+
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(eventDate));
+
+  function getTimeLeft(eventDate) {
+    const currentTime = new Date();
+    const timeDifference = eventDate - currentTime;
+
+    return Math.max(0, Math.floor(timeDifference / 1000));
+  }
 
   const formatTime = (time) => {
     const days = Math.floor(time / 86400); // 86400 seconds in a day
@@ -23,16 +49,21 @@ const ContestHeader = ({ title }) => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      setTimeLeft(timeLeft - 1);
+    const timer = setInterval(() => {
+      const newTimeLeft = getTimeLeft(eventDate);
+      if (newTimeLeft <= 0) {
+        clearInterval(timer);
+      } else {
+        setTimeLeft(newTimeLeft);
+      }
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, [timeLeft]);
+    return () => clearInterval(timer); // Clear the interval when the component unmounts
+  }, [timeLeft, eventDate]);
 
   useEffect(() => {
     const timerId = startTimer();
-    return () => clearTimeout(timerId);
+    return () => clearInterval(timerId);
   }, [startTimer]);
 
   const formattedTime = formatTime(timeLeft);
@@ -43,7 +74,7 @@ const ContestHeader = ({ title }) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          width: "40%",
+          width: "50%",
           justifyContent: "space-around",
         }}
       >
@@ -55,7 +86,9 @@ const ContestHeader = ({ title }) => {
         />
         <View>
           <AppText color={COLORS.white} style={WNFONTS.h5}>
-            {title}
+            {title
+              ? title
+              : `${selectedTournament.firstTeamName} vs ${selectedTournament.secondTeamName}`}
           </AppText>
           <AppText color={COLORS.white} style={WNFONTS.h6}>
             {formattedTime} left

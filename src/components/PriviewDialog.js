@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import { SIZES, STYLES } from "../constants/theme";
+import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { Dialog } from "react-native-paper";
 import AppText from "./AppText";
 import { Entypo } from "@expo/vector-icons";
@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     paddingTop: 0,
+    backgroundColor:COLORS.green,
+    alignSelf: "center",
   },
   viewContainer: {
     ...STYLES,

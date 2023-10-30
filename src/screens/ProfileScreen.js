@@ -90,6 +90,12 @@ export default function ProfileScreen({ navigation, route }) {
         <View style={{ ...styles.gpsButton }}>
           <AppText size={1.8}>+91 {user.mobile}</AppText>
         </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(NAVIGATION.POINTS_SYSTEM)}
+          style={{ ...styles.gpsButton }}
+        >
+          <AppText size={1.8}>Points System</AppText>
+        </TouchableOpacity>
       </View>
     </View>
   );

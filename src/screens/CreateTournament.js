@@ -53,6 +53,7 @@ const CreateTournament = ({ navigation }) => {
       prizeAmount: "",
       eventName: "",
       eventLocation: "",
+      entryFees: "",
     },
   });
   const onSubmit = async (data) => {
@@ -62,6 +63,7 @@ const CreateTournament = ({ navigation }) => {
       prizeAmount,
       eventName,
       eventLocation,
+      entryFees
     } = data;
     try {
       setloading(true);
@@ -75,6 +77,7 @@ const CreateTournament = ({ navigation }) => {
         prizeAmount,
         eventName,
         eventLocation,
+        entryFees,
         date: `${formatDate(date)}`,
         time: `${formatTimestamp(startTime)}`,
       });
@@ -82,6 +85,11 @@ const CreateTournament = ({ navigation }) => {
       ToastAndroid.show("Tournament Created Successfully", ToastAndroid.SHORT);
       setValue("firstTeamName", "");
       setValue("secondTeamName", "");
+      setValue("prizeAmount", "");
+      setValue("eventName", "");
+      setValue("eventLocation", "");
+      setValue("entryFees", "");
+      navigation.navigate(NAVIGATION.ADMIN_HOME);
     } catch (error) {
       console.error("Error adding player:", error);
       ToastAndroid.show("Something went wrong", ToastAndroid.SHORT);

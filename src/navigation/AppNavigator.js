@@ -17,6 +17,7 @@ import {
   HomeScreen,
   LoginScreen,
   MatchDetailsScreen,
+  PointsSystemScreen,
   ProfileScreen,
   SelectCaptainScreen,
   SignUpScreen,
@@ -152,6 +153,11 @@ function AppNavigator() {
               />
             </>
           )}
+          <Stack.Screen
+            options={options}
+            name={NAVIGATION.POINTS_SYSTEM}
+            component={PointsSystemScreen}
+          />
         </>
       )}
     </Stack.Navigator>

@@ -4,12 +4,18 @@ import { AppText } from "../components";
 import { COLORS, FSTYLES } from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NAVIGATION } from "../constants/routes";
+import { useDispatch } from "react-redux";
+import { setselectedTournament } from "../store/userReducer";
 
 const MatchesItem = ({ item }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(NAVIGATION.MATCH_DETAILS, { item })}
+      onPress={() => {
+        dispatch(setselectedTournament(item));
+        navigation.navigate(NAVIGATION.MATCH_DETAILS, { item });
+      }}
       style={styles.mainContainer}
     >
       <View
@@ -73,7 +79,7 @@ const MatchesItem = ({ item }) => {
         }}
       >
         <AppText size={1.5}>{item.eventLocation}</AppText>
-        <AppText size={1.5}>Lines Out</AppText>
+        {/* <AppText size={1.5}>Lines Out</AppText> */}
       </View>
     </TouchableOpacity>
   );

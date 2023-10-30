@@ -21,6 +21,7 @@ export const NAVIGATION = {
   ALL_PLAYERS: "ALL_PLAYERS",
   ALL_TEAMS: "ALL_TEAMS",
   ALL_TOURNAMENTS: "ALL_TOURNAMENTS",
+  POINTS_SYSTEM: "POINTS_SYSTEM",
   prod: {
     url: `http://baapi.inland.in/V1/BAAPI.svc/BAAPI`, // prod
   },

@@ -27,31 +27,15 @@ const MatchDetailsScreen = ({ navigation, route }) => {
     <View style={{ flex: 1 }}>
       <AppLoader loading={loading} />
       {/* header */}
-      <ContestHeader
-        title={`${item.firstTeamName} vs ${item.secondTeamName}`}
-        time={"7h 20 m left"}
-      />
+      <ContestHeader />
       {/* body */}
       <View style={{ padding: SIZES.base }}>
         <AppText style={{ fontWeight: "400" }} size={1.5}>
           Prize Pool
         </AppText>
-        <AppText>₹5 lakhs</AppText>
-        {/* <Progress.Bar
-          progress={0.3}
-          width={SIZES.width * 0.93}
-          color={COLORS.purple}
-        />
-        <View style={FSTYLES}>
-          <AppText style={{ fontWeight: "400" }} size={1.5}>
-            19,323 spots left
-          </AppText>
-          <AppText style={{ fontWeight: "400" }} size={1.5} color={COLORS.gray}>
-            19,323 spots left
-          </AppText>
-        </View> */}
+        <AppText>₹{item?.prizeAmount}</AppText>
         <AppButton
-          title={"JOIN ₹44"}
+          title={`JOIN ₹${item.entryFees}`}
           onPress={joinContest}
           style={{ backgroundColor: COLORS.green }}
         />

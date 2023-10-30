@@ -9,7 +9,7 @@ const CreateTeamScreen = () => {
   const { players } = useSelector((state) => state.entities.playersReducer);
   return (
     <View style={{ flex: 1 }}>
-      <ContestHeader time={"7h 20 m left"} title={"Create Team"} />
+      <ContestHeader  title={"Create Team"} />
       <AppText>Players {players.length}/11</AppText>
       <AppText>Maximum of 7 players from one team</AppText>
       <CreateTeamNavigator  />
