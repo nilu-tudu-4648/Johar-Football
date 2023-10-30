@@ -23,25 +23,35 @@ export default function ContestDetailsNavigator() {
     };
     useEffect(() => {
       if (createPlayers) {
+        const playerPointMap = {}; // Create a map to store player points
+
+        createPlayers.forEach((player) => {
+          playerPointMap[player.id] = player.points; // Store player points by player ID
+        });
+
         const tempLeaderBoard = leaderBoard?.map((team) => {
           const tempScores = team.players
             .map((item) => {
-              const player = createPlayers.find((p) => p.id === item.id);
-              if (player) {
-                // Check if player is defined before accessing 'points'
-                player.points = (pointsValue[item?.type] || 0) * player.points;
-                return player?.points;
-              }
-              return 0; // or any default value if player is not found
+              const playerPoints = playerPointMap[item.id] || 0; // Get player points from the map
+              return (pointsValue[item?.type] || 0) * playerPoints;
             })
             .reduce((accumulator, currentValue) => {
-              return parseInt(accumulator) + parseInt(currentValue);
+              return accumulator + currentValue;
             }, 0);
+          const playersArray = team.players.map((item) => {
+            const playerPoints = playerPointMap[item.id] || 0; // Get player points from the map
+            return {
+              name: item.name, // Replace with the actual property containing the player's name
+              playerType: item.playerType,
+              points: (pointsValue[item?.type] || 0) * playerPoints,
+            };
+          });
 
           return {
             id: team.id,
             userName: team.userName,
             score: tempScores,
+            playersArray,
           };
         });
 
@@ -69,6 +79,7 @@ export default function ContestDetailsNavigator() {
                 );
                 navigation.navigate(NAVIGATION.WINNING_POINTS, {
                   selectedTeam,
+                  playersArray: item.playersArray,
                 });
               }}
               key={index}
