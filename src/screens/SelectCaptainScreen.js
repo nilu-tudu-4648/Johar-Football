@@ -87,7 +87,7 @@ const SelectCaptainScreen = ({ navigation }) => {
               <AppText size={1.4} bold={true}>
                 {item.name}
               </AppText>
-              <AppText size={1.3}>012 pts</AppText>
+              <AppText size={1.3}>{item.points} pts</AppText>
             </View>
           </View>
           <View

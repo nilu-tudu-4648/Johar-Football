@@ -154,9 +154,6 @@ export default function ContestDetailsNavigator() {
                   {item.userName}
                 </AppText>
               </View>
-              <View>
-                <AppText size={1.3}>{item.score}</AppText>
-              </View>
             </View>
           ))}
         </ScrollView>
