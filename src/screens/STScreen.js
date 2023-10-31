@@ -56,7 +56,7 @@ const STScreen = ({ navigation }) => {
     addSTtoStorage();
   }, []);
   const NextButton = () => {
-    if (players.length !== 11) {
+    if (players.length === 11) {
       navigation.navigate(NAVIGATION.SELECT_CAPTAIN);
     } else {
       showToast("Please select 11 players");

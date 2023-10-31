@@ -22,7 +22,7 @@ export default function ContestDetailsNavigator() {
       Player: 1,
     };
     useEffect(() => {
-      if (createPlayers) {
+      if (createPlayers && leaderBoard) {
         const playerPointMap = {}; // Create a map to store player points
 
         createPlayers.forEach((player) => {
@@ -46,7 +46,6 @@ export default function ContestDetailsNavigator() {
               points: (pointsValue[item?.type] || 0) * playerPoints,
             };
           });
-
           return {
             id: team.id,
             userName: team.userName,
@@ -60,7 +59,7 @@ export default function ContestDetailsNavigator() {
       } else {
         setleaderBoardArray([]);
       }
-    }, [createPlayers]);
+    }, [createPlayers, leaderBoard]);
     return (
       <SafeAreaView style={{ flex: 1, padding: SIZES.base }}>
         <View style={FSTYLES}>

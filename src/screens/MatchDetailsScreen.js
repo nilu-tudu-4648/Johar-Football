@@ -17,12 +17,8 @@ const MatchDetailsScreen = ({ navigation, route }) => {
   const { item, completed } = route.params;
   const dispatch = useDispatch();
   const joinContest = () => {
-    setloading(true);
-    setTimeout(() => {
-      setloading(false);
-      navigation.navigate(NAVIGATION.CREATE_TEAM);
-      showToast("Joined Successfully");
-    }, 2000);
+    navigation.navigate(NAVIGATION.CREATE_TEAM);
+    showToast("Joined Successfully");
   };
   useEffect(() => {
     getLeaderBoard(dispatch, item.id, setloading);

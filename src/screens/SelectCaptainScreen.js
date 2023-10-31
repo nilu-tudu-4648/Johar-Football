@@ -10,55 +10,55 @@ import ContestHeader from "../components/ContestHeader";
 import { AppDivider, AppText } from "../components";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
 import { Entypo } from "@expo/vector-icons";
-import { NAVIGATION } from "../constants/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { getLeaderBoard, showToast } from "../constants/functions";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
+import { NAVIGATION } from "../constants/routes";
+
 const SelectCaptainScreen = ({ navigation }) => {
-  const [playersArray, setplayersArray] = useState([]);
+  const [playersArray, setPlayersArray] = useState([]);
   const { players } = useSelector((state) => state.entities.playersReducer);
   const { user, selectedTournament } = useSelector(
     (state) => state.entities.userReducer
   );
   const dispatch = useDispatch();
+
   const updatedPlayersFunc = (item, type) => {
     const updatedPlayers = playersArray.map((player) => {
-      const updatedPlayer = { ...player, type: "Player" };
+      let updatedPlayer = { ...player };
+  
       if (player.name === item.name) {
         if (type === "C") {
-          const otherCaptain = playersArray.find(
-            (p) => p.selectedCaptain && p.name !== item.name
-          );
-          if (otherCaptain) {
-            otherCaptain.selectedCaptain = false;
-            otherCaptain.type = "Player";
-          }
-          updatedPlayer.selectedCaptain = !player.selectedCaptain;
+          updatedPlayer.selectedCaptain = true;
+          updatedPlayer.selectedViceCaptain = false;
           updatedPlayer.type = "Captain";
         } else if (type === "VC") {
-          const otherViceCaptain = playersArray.find(
-            (p) => p.selectedViceCaptain && p.name !== item.name
-          );
-          if (otherViceCaptain) {
-            otherViceCaptain.selectedViceCaptain = false;
-            otherViceCaptain.type = "Player";
-          }
           updatedPlayer.selectedCaptain = false;
-          updatedPlayer.selectedViceCaptain = !player.selectedViceCaptain;
+          updatedPlayer.selectedViceCaptain = true;
           updatedPlayer.type = "ViceCaptain";
         }
+      } else {
+        if (player.type === "Captain" && type === "C") {
+          updatedPlayer.selectedCaptain = false;
+          updatedPlayer.type = "Player";
+        } else if (player.type === "ViceCaptain" && type === "VC") {
+          updatedPlayer.selectedViceCaptain = false;
+          updatedPlayer.type = "Player";
+        }
       }
-
+  
       return updatedPlayer;
     });
-
-    setplayersArray(updatedPlayers);
+  
+    setPlayersArray(updatedPlayers);
   };
+ 
   useEffect(() => {
-    setplayersArray(players);
+    setPlayersArray(players);
   }, []);
+
   const renderItem = ({ item }) => {
     return (
       <View>
@@ -133,7 +133,8 @@ const SelectCaptainScreen = ({ navigation }) => {
       </View>
     );
   };
-  const saveTeamstoFirebase = async () => {
+
+  const saveTeamsToFirebase = async () => {
     try {
       const teamsCollectionRef = collection(
         db,
@@ -141,12 +142,7 @@ const SelectCaptainScreen = ({ navigation }) => {
       );
       await addDoc(teamsCollectionRef, {
         userName: user.firstName + " " + user.lastName,
-        players: playersArray.map((player) => ({
-          id: player.id,
-          name: player.name,
-          type: player.type,
-          playerType: player.playerType,
-        })),
+        players: playersArray,
         matchId: selectedTournament.id,
       });
       await getLeaderBoard(dispatch, selectedTournament.id);
@@ -162,7 +158,7 @@ const SelectCaptainScreen = ({ navigation }) => {
         <ContestHeader title={"Create Team"} />
         <View style={{ ...STYLES, marginVertical: SIZES.base }}>
           <AppText bold={true}>Choose your Captain and Vice Captain</AppText>
-          <AppText size={1.5}>C gets 2X poinst,VC gets 1.5x points</AppText>
+          <AppText size={1.5}>C gets 2X points, VC gets 1.5x points</AppText>
         </View>
         <AppDivider />
         <View style={{ ...FSTYLES, marginVertical: SIZES.base }}>
@@ -183,13 +179,13 @@ const SelectCaptainScreen = ({ navigation }) => {
         <FlatList
           data={playersArray}
           renderItem={renderItem}
-          keyExtractor={(i, index) => index.toString()}
+          keyExtractor={(item, index) => item.id.toString()}
         />
       </View>
       <Button
         title="Save & Continue"
         style={{ bottom: 12 }}
-        onPress={saveTeamstoFirebase}
+        onPress={saveTeamsToFirebase}
       />
     </>
   );
