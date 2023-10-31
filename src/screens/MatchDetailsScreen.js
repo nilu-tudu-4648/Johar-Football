@@ -11,6 +11,7 @@ import {
   getPlayersfromTeamName,
   showToast,
 } from "../constants/functions";
+import { BackHandler } from "react-native";
 const MatchDetailsScreen = ({ navigation, route }) => {
   const [loading, setloading] = useState(true);
   const { item, completed } = route.params;
@@ -27,6 +28,14 @@ const MatchDetailsScreen = ({ navigation, route }) => {
     getLeaderBoard(dispatch, item.id, setloading);
     getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
   }, []);
+  BackHandler.addEventListener(
+    "hardwareBackPress",
+    () => {
+      navigation.navigate(NAVIGATION.HOME);
+      return () => true;
+    },
+    []
+  );
   return (
     <View style={{ flex: 1 }}>
       <AppLoader loading={loading} />

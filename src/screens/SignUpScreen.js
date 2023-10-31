@@ -120,14 +120,8 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ marginVertical: SIZES.h1 * 2 }}
-      >
-        <Image
-          source={require("../../assets/JOHAR.png")}
-          style={{ height: 100, width: 100, alignSelf: "center" }}
-        />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Image source={require("../../assets/JOHAR.png")} style={styles.logo} />
         <AppText
           bold={true}
           style={{ alignSelf: "center", marginVertical: SIZES.h3 * 2 }}
@@ -135,32 +129,19 @@ const SignUpScreen = ({ navigation }) => {
         >
           {"Registration"}
         </AppText>
-        <View>
-          <AppText style={styles.smallText}>
-            {"First name"}
-            <RedStar />
-          </AppText>
+        <View style={styles.inputContainer}>
           <FormInput
             control={control}
             rules={rules}
             placeholder={"First name"}
             name="firstName"
           />
-        </View>
-        <View>
-          <AppText style={styles.smallText}>
-            {"Last Name"}
-            <RedStar />
-          </AppText>
           <FormInput
             control={control}
             rules={rules}
             placeholder={"Last Name"}
             name="lastName"
           />
-        </View>
-        <View>
-          <AppText style={styles.smallText}>{"Email"}</AppText>
           <FormInput
             control={control}
             rules={{
@@ -172,26 +153,6 @@ const SignUpScreen = ({ navigation }) => {
             placeholder={"Email"}
             name="email"
           />
-        </View>
-        <View>
-          <AppText style={styles.smallText}>
-            {"Password"}
-            <RedStar />
-          </AppText>
-          <FormInput
-            control={control}
-            rules={{
-              required: "This field is mandatory",
-            }}
-            placeholder={"Password"}
-            name="password"
-          />
-        </View>
-        <View>
-          <AppText style={styles.smallText}>
-            {"Mobile No"}
-            <RedStar />
-          </AppText>
           <FormInput
             control={control}
             rules={{
@@ -210,9 +171,19 @@ const SignUpScreen = ({ navigation }) => {
             name="mobile"
             maxLength={10}
           />
+          <FormInput
+            control={control}
+            rules={{
+              required: "This field is mandatory",
+            }}
+            placeholder={"Password"}
+            name="password"
+          />
         </View>
-        <AppButton title={"Register"} onPress={handleSubmit(onSubmit)} />
       </ScrollView>
+      <View>
+        <AppButton title="Register" onPress={handleSubmit(onSubmit)} />
+      </View>
     </View>
   );
 };
@@ -220,16 +191,19 @@ const SignUpScreen = ({ navigation }) => {
 export default SignUpScreen;
 
 const styles = StyleSheet.create({
-  inputStyle: {
-    width: "100%",
-  },
   container: {
     flex: 1,
-    padding: SIZES.h3,
+    padding: SIZES.padding,
+    justifyContent: "space-between",
     backgroundColor: COLORS.white,
   },
-  smallText: {
-    fontSize: SIZES.h6,
-    alignSelf: "stretch",
+  logo: {
+    width: 100,
+    height: 100,
+    alignSelf: "center",
+    borderRadius: 100 / 2,
+  },
+  inputContainer: {
+    marginVertical: SIZES.padding * 2,
   },
 });

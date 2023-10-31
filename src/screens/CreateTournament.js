@@ -7,7 +7,7 @@ import FormInput from "../components/FormInput";
 import AppLoader from "../components/AppLoader";
 import { db } from "../../firebaseConfig";
 import { AppButton, AppTextInput } from "../components";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { ScrollView } from "react-native-gesture-handler";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 
@@ -122,10 +122,7 @@ const CreateTournament = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ marginVertical: SIZES.h1 * 2 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <AppText
           bold={true}
           style={{ alignSelf: "center", marginVertical: SIZES.h3 * 2 }}
@@ -134,7 +131,6 @@ const CreateTournament = ({ navigation }) => {
           {"Create Tournament"}
         </AppText>
         <View>
-          <AppText style={styles.smallText}>{"First Team name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -143,7 +139,6 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Second Team name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -152,7 +147,6 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Event name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -161,7 +155,6 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Event location"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -170,7 +163,6 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Prize Amount"}</AppText>
           <FormInput
             control={control}
             rules={{
@@ -181,7 +173,6 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Entry Fee"}</AppText>
           <FormInput
             control={control}
             rules={{
@@ -192,7 +183,6 @@ const CreateTournament = ({ navigation }) => {
           />
         </View>
         <View style={{ marginBottom: SIZES.base }}>
-          <AppText style={styles.smallText}>{"Select Date"}</AppText>
           <TouchableOpacity onPress={() => setShow(true)}>
             <AppTextInput
               editable={false}

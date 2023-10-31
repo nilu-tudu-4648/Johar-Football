@@ -1,4 +1,4 @@
-import { StyleSheet, View, BackHandler, Image } from "react-native";
+import { StyleSheet, View, BackHandler, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { useForm } from "react-hook-form";
@@ -91,78 +91,81 @@ const LoginScreen = ({ navigation, route }) => {
   );
   const phonePattern = /^[6-9][0-9]{9}$/;
   return (
-    <AppView>
+    <View style={styles.container}>
       <AppLoader loading={loading} />
-      <View style={{ ...STYLES, flex: 1 }}>
-        <Image
-          source={require("../../assets/JOHAR.png")}
-          style={{ height: 100, width: 100, alignSelf: "center" }}
-        />
-        <AppText
-          bold={true}
-          style={{ alignSelf: "center", marginTop: SIZES.h1 * 2 }}
-          size={2.5}
-        >
-          {"Login"}
-        </AppText>
-      </View>
-      <View style={{ ...STYLES, flex: 1 }}>
-        <View style={{ width: "100%" }}>
-          <AppText style={styles.smallText}>{"Phone Number"}</AppText>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <Image
+            source={require("../../assets/JOHAR.png")}
+            style={styles.logo}
+          />
+          <AppText bold={true} style={styles.title}>
+            {"Login"}
+          </AppText>
+        </View>
+        <View style={styles.inputContainer}>
           <FormInput
             control={control}
             rules={{
               required: "This field is mandatory",
               pattern: {
                 value: phonePattern,
-                message: "Please enter valid Phone number",
+                message: "Please enter a valid phone number",
               },
               minLength: {
                 value: 10,
-                message: "Please enter valid Phone number",
+                message: "Please enter a valid phone number",
               },
             }}
-            keyboardType={"numeric"}
-            placeholder={"Enter Phone Number"}
+            keyboardType="numeric"
+            placeholder="Enter Mobile Number"
             name="phone"
             maxLength={10}
           />
-        </View>
-        <View style={{ width: "100%" }}>
-          <AppText style={styles.smallText}>{"Password"}</AppText>
           <FormInput
             control={control}
-            rules={rules}
-            placeholder={"password"}
+            rules={{ required: "This field is mandatory" }}
+            placeholder="Password"
             name="password"
             secureTextEntry={true}
           />
         </View>
+        <View style={{ flex: 0.4 }} />
+      </ScrollView>
+      <View>
+        <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
       </View>
-      <View style={{ flex: 1, width: "100%" }}>
-        <AppButton title={"Login"} onPress={handleSubmit(onSubmit)} />
-      </View>
-    </AppView>
+    </View>
   );
 };
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  inputStyle: {
-    width: "100%",
-  },
   container: {
-    ...STYLES,
-    width: "100%",
-    marginTop: SIZES.h1,
-    height: SIZES.height,
-    paddingHorizontal: SIZES.h4,
-    justifyContent: "space-between",
+    flex: 1,
     backgroundColor: COLORS.white,
+    padding: SIZES.padding,
   },
-  smallText: {
-    fontSize: SIZES.h6,
-    alignSelf: "stretch",
+  logo: {
+    width: 100,
+    height: 100,
+    borderRadius: 100 / 2,
+    alignSelf: "center",
+    marginVertical: SIZES.padding * 2,
+  },
+  title: {
+    alignSelf: "center",
+    marginVertical: SIZES.h3,
+    fontSize: SIZES.h2,
+  },
+  inputContainer: {
+    marginVertical: SIZES.padding * 2,
   },
 });
