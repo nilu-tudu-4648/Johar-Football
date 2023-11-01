@@ -122,6 +122,11 @@ function AppNavigator() {
             </>
           ) : (
             <>
+             {/* <Stack.Screen
+                options={options}
+                name={"Alert"}
+                component={AlertScreen}
+              /> */}
               <Stack.Screen
                 options={options}
                 name={NAVIGATION.HOME}

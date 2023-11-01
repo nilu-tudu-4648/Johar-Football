@@ -92,7 +92,6 @@ const AddTeamsScreen = ({ navigation }) => {
           {"Add Teams"}
         </AppText>
         <View>
-          <AppText style={styles.smallText}>{"Team name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -100,8 +99,8 @@ const AddTeamsScreen = ({ navigation }) => {
             name="teamName"
           />
         </View>
-        <AppButton title={"Submit"} onPress={handleSubmit(onSubmit)} />
       </ScrollView>
+      <AppButton title={"Submit"} onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };

@@ -58,6 +58,7 @@ const CreateTournament = ({ navigation }) => {
       eventName,
       eventLocation,
       entryFees,
+      eventType,
     } = data;
 
     try {
@@ -75,6 +76,7 @@ const CreateTournament = ({ navigation }) => {
         eventName,
         eventLocation,
         entryFees,
+        eventType,
         date: formatDate(date),
         time: formatTimestamp(startTime),
       };
@@ -95,6 +97,7 @@ const CreateTournament = ({ navigation }) => {
       setValue("eventName", "");
       setValue("eventLocation", "");
       setValue("entryFees", "");
+      setValue("eventType", "");
       navigation.navigate(NAVIGATION.ADMIN_HOME);
     } catch (error) {
       console.error("Error adding tournament:", error);
@@ -180,6 +183,16 @@ const CreateTournament = ({ navigation }) => {
             }}
             placeholder={"Add Entry Fee"}
             name="entryFees"
+          />
+        </View>
+        <View>
+          <FormInput
+            control={control}
+            rules={{
+              required: "This field is mandatory",
+            }}
+            placeholder={"Add event Type"}
+            name="eventType"
           />
         </View>
         <View style={{ marginBottom: SIZES.base }}>

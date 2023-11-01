@@ -39,14 +39,14 @@ const AddPlayerScreen = ({ navigation }) => {
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-       showToast("Player already exists");
+        showToast("Player already exists");
         return true;
       } else {
         return false;
       }
     } catch (error) {
       console.error("Error checking player existence:", error);
-     showToast("Error checking player existence");
+      showToast("Error checking player existence");
       return true;
     }
   }
@@ -67,7 +67,7 @@ const AddPlayerScreen = ({ navigation }) => {
           `/players/${playerName}`
         );
         setimage(url);
-       showToast("upload successfully");
+        showToast("upload successfully");
       }
     } catch (error) {
       console.log(error);
@@ -98,7 +98,7 @@ const AddPlayerScreen = ({ navigation }) => {
         selectedViceCaptain: false,
       });
 
-     showToast("Player Added Successfully");
+      showToast("Player Added Successfully");
       setValue("name", "");
       setValue("points", "");
       setValue("teamName", "");
@@ -106,7 +106,7 @@ const AddPlayerScreen = ({ navigation }) => {
       setimage(null);
     } catch (error) {
       console.error("Error adding player:", error);
-     showToast("Something went wrong");
+      showToast("Something went wrong");
     } finally {
       setloading(false);
     }
@@ -122,10 +122,7 @@ const AddPlayerScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ marginVertical: SIZES.h1 * 2 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <AppText
           bold={true}
           style={{ alignSelf: "center", marginVertical: SIZES.h3 * 2 }}
@@ -133,7 +130,10 @@ const AddPlayerScreen = ({ navigation }) => {
         >
           {"Add Player"}
         </AppText>
-        <TouchableOpacity style={STYLES} onPress={pickImage}>
+        <TouchableOpacity
+          style={{ ...STYLES, marginVertical: SIZES.base }}
+          onPress={pickImage}
+        >
           {image ? (
             <Avatar.Image
               size={SIZES.largeTitle * 1.7}
@@ -148,7 +148,6 @@ const AddPlayerScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
         <View>
-          <AppText style={styles.smallText}>{"Player name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -157,7 +156,6 @@ const AddPlayerScreen = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Team name"}</AppText>
           <FormInput
             control={control}
             rules={rules}
@@ -166,7 +164,6 @@ const AddPlayerScreen = ({ navigation }) => {
           />
         </View>
         <View>
-          <AppText style={styles.smallText}>{"Points"}</AppText>
           <FormInput
             control={control}
             rules={{
@@ -179,13 +176,12 @@ const AddPlayerScreen = ({ navigation }) => {
           />
         </View>
         <View style={{ marginBottom: SIZES.base }}>
-          <AppText style={styles.smallText}>{"Player Type"}</AppText>
           <TouchableOpacity onPress={() => setvisible(true)}>
             <AppTextInput editable={false} value={selectedOption} />
           </TouchableOpacity>
         </View>
-        <AppButton title={"Submit"} onPress={handleSubmit(onSubmit)} />
       </ScrollView>
+      <AppButton title={"Submit"} onPress={handleSubmit(onSubmit)} />
       <SelectPlayerDialog
         visible={visible}
         setvisible={setvisible}

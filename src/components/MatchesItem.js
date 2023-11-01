@@ -14,7 +14,7 @@ const MatchesItem = ({ item, completed }) => {
     <TouchableOpacity
       onPress={() => {
         dispatch(setselectedTournament(item));
-        navigation.navigate(NAVIGATION.MATCH_DETAILS, { item ,completed});
+        navigation.navigate(NAVIGATION.MATCH_DETAILS, { item, completed });
       }}
       style={styles.mainContainer}
     >
@@ -79,7 +79,7 @@ const MatchesItem = ({ item, completed }) => {
         }}
       >
         <AppText size={1.5}>{item.eventLocation}</AppText>
-        {/* <AppText size={1.5}>Lines Out</AppText> */}
+        <AppText size={1.5}>{item.eventType}</AppText>
       </View>
     </TouchableOpacity>
   );
