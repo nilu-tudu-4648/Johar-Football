@@ -1,12 +1,11 @@
 import { StyleSheet, View, BackHandler, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { COLORS, SIZES, STYLES } from "../constants/theme";
+import { COLORS, SIZES } from "../constants/theme";
 import { useForm } from "react-hook-form";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import FormInput from "../components/FormInput";
 import AppLoader from "../components/AppLoader";
-import { AppView } from "../components";
 import { db } from "../../firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { NAVIGATION } from "../constants/routes";
@@ -15,12 +14,16 @@ import { setLoginUser } from "../store/userReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 import { showToast } from "../constants/functions";
+import { TouchableOpacity } from "react-native";
 
-const LoginScreen = ({ navigation, route }) => {
+const LoginScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
+  const [forgotPin, setforgotPin] = useState(false);
+  const [userData, setUserData] = useState({});
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -39,13 +42,13 @@ const LoginScreen = ({ navigation, route }) => {
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      // User with the provided mobile number exists
-      return querySnapshot.docs[0].data();
+      const data = querySnapshot.docs[0].data();
+      setUserData(data);
+      return data;
     }
     // User does not exist
     return null;
   }
-
   const handleSignIn = async (phone, password) => {
     const userExists = await getUser(phone);
 
@@ -68,18 +71,21 @@ const LoginScreen = ({ navigation, route }) => {
   };
 
   const onSubmit = async (data) => {
-    setloading(true);
-    try {
-      await handleSignIn(data.phone, data.password);
-    } catch (error) {
-      console.log(error, "err");
-      showToast("Something went wrong");
-    } finally {
-      setloading(false);
+    if (forgotPin) {
+      showToast(`Your password is ${userData.password}`);
+      setforgotPin(false);
+      setUserData({});
+    } else {
+      setloading(true);
+      try {
+        await handleSignIn(data.phone, data.password);
+      } catch (error) {
+        console.log(error, "err");
+        showToast("Something went wrong");
+      } finally {
+        setloading(false);
+      }
     }
-  };
-  const rules = {
-    required: "This field is mandatory",
   };
   BackHandler.addEventListener(
     "hardwareBackPress",
@@ -90,6 +96,15 @@ const LoginScreen = ({ navigation, route }) => {
     []
   );
   const phonePattern = /^[6-9][0-9]{9}$/;
+  const ForgotPin = async () => {
+    try {
+      setforgotPin(true);
+      const mobile = getValues("phone");
+      await getUser(mobile);
+    } catch (error) {
+      showToast("Something went wrong");
+    }
+  };
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
@@ -128,18 +143,29 @@ const LoginScreen = ({ navigation, route }) => {
             name="phone"
             maxLength={10}
           />
-          <FormInput
-            control={control}
-            rules={{ required: "This field is mandatory" }}
-            placeholder="Password"
-            name="password"
-            secureTextEntry={true}
-          />
+          {!forgotPin ? (
+            <FormInput
+              control={control}
+              rules={{ required: "This field is mandatory" }}
+              placeholder="Password"
+              name="password"
+              secureTextEntry={true}
+            />
+          ) : null}
+          <TouchableOpacity
+            style={{ alignSelf: "flex-end" }}
+            onPress={ForgotPin}
+          >
+            <AppText size={1.3}>Forgot Pin</AppText>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 0.4 }} />
       </ScrollView>
       <View>
-        <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
+        <AppButton
+          title={forgotPin ? "Get Password" : "Login"}
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
     </View>
   );

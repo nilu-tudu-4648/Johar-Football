@@ -33,7 +33,12 @@ const PointsSystemScreen = () => {
   return (
     <>
       <HomeHeader header={"Points System"} />
-      <ScrollView contentContainerStyle={{ padding: SIZES.h6 }}>
+      <ScrollView
+        contentContainerStyle={{
+          padding: SIZES.h6,
+          backgroundColor: COLORS.white,
+        }}
+      >
         <AppText style={styles.heading}>Goal Points :-</AppText>
         {goalArray.map((item, i) => (
           <RenderItem item={item} key={i} />

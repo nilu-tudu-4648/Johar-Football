@@ -17,9 +17,25 @@ const MatchDetailsScreen = ({ navigation, route }) => {
   const { item, completed } = route.params;
   const dispatch = useDispatch();
   const joinContest = () => {
-    navigation.navigate(NAVIGATION.CREATE_TEAM);
-    showToast("Joined Successfully");
+    const currentTime = new Date();
+    const [day, month, year] = item.date.split("/").map(Number); // Parse day, month, and year
+    const [time, amPm] = item.time.split(" "); // Split time and AM/PM
+    let [hours, minutes] = time.split(":").map(Number); // Parse hours and minutes
+
+    if (amPm === "PM" && hours !== 12) {
+      hours += 12; // Convert PM time to 24-hour format
+    }
+
+    const contestTime = new Date(year, month - 1, day, hours, minutes); // Create a Date object for the contest time
+
+    if (contestTime < currentTime) {
+      showToast("Contest time has already passed.");
+    } else {
+      navigation.navigate(NAVIGATION.CREATE_TEAM);
+      showToast("Joined Successfully");
+    }
   };
+
   useEffect(() => {
     getLeaderBoard(dispatch, item.id, setloading);
     getPlayersfromTeamName(item.firstTeamName, item.secondTeamName, dispatch);
@@ -27,7 +43,7 @@ const MatchDetailsScreen = ({ navigation, route }) => {
   BackHandler.addEventListener(
     "hardwareBackPress",
     () => {
-      navigation.navigate(NAVIGATION.HOME);
+      navigation.replace(NAVIGATION.HOME);
       return () => true;
     },
     []

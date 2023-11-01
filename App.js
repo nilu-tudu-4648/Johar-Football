@@ -1,5 +1,6 @@
 import React from "react";
 import "react-native-gesture-handler";
+import 'expo-dev-client';
 import { store } from "./src/store/configureStore";
 import { Provider } from "react-redux";
 import { configureFonts, useTheme, PaperProvider } from "react-native-paper";
@@ -40,6 +41,7 @@ const App = () => {
 
   // eas build -p android --profile prod
   // eas update --branch prod --message "Updating the app"
+  // npx expo  start --dev-client
   return (
     <NavigationContainer>
       <Provider store={store}>

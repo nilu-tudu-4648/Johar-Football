@@ -8,9 +8,9 @@ const AppText = ({ children, style, size, bold = false, color }) => {
     <Text
       style={[
         {
-          color: color ? color : COLORS.black,
+          color: color ? color : COLORS.lightgray2,
           fontWeight: bold ? "700" : "400",
-          fontFamily: 'Inter-Medium',
+          fontFamily: "Inter-Medium",
           fontSize: responsiveFontSize(size ? size : 2),
         },
         style,

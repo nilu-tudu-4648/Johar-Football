@@ -203,8 +203,8 @@ const CreateTournament = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        <AppButton title={"Submit"} onPress={handleSubmit(onSubmit)} />
       </ScrollView>
+      <AppButton title={"Submit"} onPress={handleSubmit(onSubmit)} />
       {show && (
         <DateTimePicker
           value={date || new Date()}
