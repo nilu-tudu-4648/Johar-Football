@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import React from "react";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { Dialog } from "react-native-paper";
@@ -28,12 +28,15 @@ const PriviewDialog = ({ visible, setvisible, players }) => {
       onDismiss={() => setvisible(false)}
       style={styles.modalContainer}
     >
-      <View style={styles.viewContainer}>
+      <ImageBackground
+        style={styles.viewContainer}
+        source={require("../../assets/ground.jpg")}
+      >
         {renderPlayers("GK", "Goal Keeper")}
         {renderPlayers("DEF", "Defenders")}
         {renderPlayers("MID", "Midfielders")}
         {renderPlayers("ST", "Strikers")}
-      </View>
+      </ImageBackground>
     </Dialog>
   );
 };
@@ -50,12 +53,10 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "90%",
-    height: "85%",
+    height: "95%",
     backgroundColor: "white",
-    padding: 15,
     borderRadius: 8,
     paddingTop: 0,
-    backgroundColor:COLORS.green,
     alignSelf: "center",
   },
   viewContainer: {

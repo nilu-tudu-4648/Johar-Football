@@ -1,27 +1,37 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import React from "react";
 import { AppText, AppView } from "../components";
 import { COLORS, SIZES, STYLES } from "../constants/theme";
 import { Entypo } from "@expo/vector-icons";
 import ContestHeader from "../components/ContestHeader";
+import { truncateString } from "../constants/functions";
 const WinningPointsScreen = ({ route }) => {
   const { selectedTeam, playersArray } = route.params;
   const renderPlayers = (playerType, header) => {
     return (
       <>
-        <AppText bold={true} color={COLORS.white} size={1.5}>
-          {header}
+        <AppText bold={true} color={COLORS.red} size={1.5}>
+          {header.toUpperCase()}
         </AppText>
         <View style={styles.optionsContainer}>
           {playersArray
             .filter((player) => player.playerType === playerType)
             .map((item) => (
-              <View key={item.name} style={{ alignItems: "center" }}>
-                <Entypo name="user" size={SIZES.h1 * 1.3} color="black" />
-                <AppText color={COLORS.white} size={1.4}>
-                  {item.name}
+              <View key={item.name} style={{ alignItems: "center", width: 60 }}>
+                <AppText size={1.5} color={COLORS.yellow}>
+                  {item.type === "Captain"
+                    ? "C"
+                    : item.type === "ViceCaptain" && "VC"}
                 </AppText>
-                <AppText color={COLORS.white} size={1.3} bold={true}>
+                <Entypo
+                  name="user"
+                  size={SIZES.h1 * 1.1}
+                  color={COLORS.black}
+                />
+                <AppText color={COLORS.white} size={1.2}>
+                  {truncateString(item.name, 6)}
+                </AppText>
+                <AppText color={COLORS.white} size={1.2} bold={true}>
                   {item.points}
                 </AppText>
               </View>
@@ -37,12 +47,15 @@ const WinningPointsScreen = ({ route }) => {
         <AppText bold={true} style={{ alignSelf: "center" }} size={2}>
           {selectedTeam.userName}
         </AppText>
-        <View style={styles.viewContainer}>
+        <ImageBackground
+          style={styles.viewContainer}
+          source={require("../../assets/ground.jpg")}
+        >
           {renderPlayers("GK", "Goal Keeper")}
           {renderPlayers("DEF", "Defenders")}
           {renderPlayers("MID", "Midfielders")}
           {renderPlayers("ST", "Strikers")}
-        </View>
+        </ImageBackground>
       </AppView>
     </>
   );
@@ -62,7 +75,6 @@ const styles = StyleSheet.create({
   viewContainer: {
     ...STYLES,
     height: "100%",
-    backgroundColor: COLORS.green,
     justifyContent: "space-around",
   },
 });

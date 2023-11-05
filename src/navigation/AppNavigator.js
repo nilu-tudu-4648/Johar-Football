@@ -7,13 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoginUser } from "../store/userReducer";
 
 import {
-  AddPlayerScreen,
-  AddTeamsScreen,
-  AdminHomeScreen,
   AlertScreen,
-  AllTeamsScreen,
-  AllUsersScreen,
-  CreateTournament,
   HomeScreen,
   LoginScreen,
   MatchDetailsScreen,
@@ -26,8 +20,6 @@ import {
 } from "../screens";
 import { StyleHeader } from "../components";
 import CreateTeamScreen from "../screens/CreateTeamScreen";
-import AllPlayersScreen from "../screens/AllPlayersScreen";
-import AllTournaments from "../screens/AllTournaments";
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -74,59 +66,10 @@ function AppNavigator() {
                 name={"Alert"}
                 component={AlertScreen}
               />
-              {/* <Stack.Screen
-                options={options}
-                name={NAVIGATION.ADMIN_HOME}
-                component={AdminHomeScreen}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.ADD_PLAYER}
-                component={AddPlayerScreen}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.ADD_TEAM}
-                component={AddTeamsScreen}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.CREATE_TOURNAMENT}
-                component={CreateTournament}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.ALL_USERS}
-                component={AllUsersScreen}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.ALL_PLAYERS}
-                component={AllPlayersScreen}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.ALL_TEAMS}
-                component={AllTeamsScreen}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.ALL_TOURNAMENTS}
-                component={AllTournaments}
-              />
-              <Stack.Screen
-                options={options}
-                name={NAVIGATION.PROFILE}
-                component={ProfileScreen}
-              /> */}
+             
             </>
           ) : (
             <>
-             {/* <Stack.Screen
-                options={options}
-                name={"Alert"}
-                component={AlertScreen}
-              /> */}
               <Stack.Screen
                 options={options}
                 name={NAVIGATION.HOME}

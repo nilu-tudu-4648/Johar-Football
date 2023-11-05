@@ -60,7 +60,10 @@ const MatchDetailsScreen = ({ navigation, route }) => {
         </AppText>
         <AppText>₹{item?.prizeAmount}</AppText>
         {completed ? (
-          <AppText>Match Completed</AppText>
+          <AppText>
+            Match is{" "}
+            {item.status ? item.status : `Ongoing please wait for complete`}
+          </AppText>
         ) : (
           <AppButton
             title={`JOIN ₹${item.entryFees}`}
@@ -69,7 +72,7 @@ const MatchDetailsScreen = ({ navigation, route }) => {
           />
         )}
       </View>
-      {ContestDetailsNavigator()}
+      {item.status === "completed" && ContestDetailsNavigator()}
     </View>
   );
 };

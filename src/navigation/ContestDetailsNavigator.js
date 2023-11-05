@@ -43,6 +43,7 @@ export default function ContestDetailsNavigator() {
             return {
               name: item.name, // Replace with the actual property containing the player's name
               playerType: item.playerType,
+              type: item.type,
               points: (pointsValue[item?.type] || 0) * playerPoints,
             };
           });
