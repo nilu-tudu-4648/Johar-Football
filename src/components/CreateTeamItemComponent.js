@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Image } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { COLORS, FSTYLES, SIZES } from "../constants/theme";
@@ -16,7 +16,18 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
         }}
       >
         <View style={{ width: "25%" }}>
-          <Entypo name="user" size={SIZES.h1 * 1.5} color="black" />
+          {item.playerPic ? (
+            <Image
+              source={{ uri: item.playerPic }}
+              style={{
+                width: SIZES.h1 * 1.5,
+                height: SIZES.h1 * 1.5,
+                borderRadius: SIZES.h1 * 1.5,
+              }}
+            />
+          ) : (
+            <Entypo name="user" size={SIZES.h1 * 1.5} color="black" />
+          )}
         </View>
         <View style={{ width: "30%" }}>
           <AppText size={1.8} bold={true}>

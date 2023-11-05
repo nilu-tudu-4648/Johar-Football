@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContestHeader from "../components/ContestHeader";
@@ -28,7 +29,7 @@ const SelectCaptainScreen = ({ navigation }) => {
   const updatedPlayersFunc = (item, type) => {
     const updatedPlayers = playersArray.map((player) => {
       let updatedPlayer = { ...player };
-  
+
       if (player.name === item.name) {
         if (type === "C") {
           updatedPlayer.selectedCaptain = true;
@@ -48,13 +49,13 @@ const SelectCaptainScreen = ({ navigation }) => {
           updatedPlayer.type = "Player";
         }
       }
-  
+
       return updatedPlayer;
     });
-  
+
     setPlayersArray(updatedPlayers);
   };
- 
+
   useEffect(() => {
     setPlayersArray(players);
   }, []);
@@ -76,7 +77,18 @@ const SelectCaptainScreen = ({ navigation }) => {
                 width: "30%",
               }}
             >
-              <Entypo name="user" size={SIZES.h1 * 1.5} color="black" />
+              {item.playerPic ? (
+                <Image
+                  source={{ uri: item.playerPic }}
+                  style={{
+                    width: SIZES.h1 * 1.5,
+                    height: SIZES.h1 * 1.5,
+                    borderRadius: SIZES.h1 * 1.5,
+                  }}
+                />
+              ) : (
+                <Entypo name="user" size={SIZES.h1 * 1.5} color="black" />
+              )}
             </View>
             <View
               style={{

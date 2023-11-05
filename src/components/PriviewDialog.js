@@ -1,6 +1,6 @@
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { StyleSheet, View, ImageBackground, Image } from "react-native";
 import React from "react";
-import { COLORS, SIZES, STYLES } from "../constants/theme";
+import { SIZES, STYLES } from "../constants/theme";
 import { Dialog } from "react-native-paper";
 import AppText from "./AppText";
 import { Entypo } from "@expo/vector-icons";
@@ -14,7 +14,18 @@ const PriviewDialog = ({ visible, setvisible, players }) => {
             .filter((player) => player.playerType === playerType)
             .map((item) => (
               <View key={item.id} style={{ alignItems: "center" }}>
-                <Entypo name="user" size={SIZES.h1 * 1.3} color="black" />
+                {item.playerPic ? (
+                  <Image
+                    source={{ uri: item.playerPic }}
+                    style={{
+                      width: SIZES.h1 * 1.3,
+                      height: SIZES.h1 * 1.3,
+                      borderRadius: SIZES.h1 * 1.3,
+                    }}
+                  />
+                ) : (
+                  <Entypo name="user" size={SIZES.h1 * 1.3} color="black" />
+                )}
                 <AppText size={1}>{item.name}</AppText>
               </View>
             ))}
