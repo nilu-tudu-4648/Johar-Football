@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NAVIGATION } from "../constants/routes";
 import { useDispatch } from "react-redux";
 import { setselectedTournament } from "../store/userReducer";
+import { Image } from "react-native";
 
 const MatchesItem = ({ item, completed }) => {
   const navigation = useNavigation();
@@ -42,7 +43,14 @@ const MatchesItem = ({ item, completed }) => {
             width: "30%",
           }}
         >
-          <View style={{ backgroundColor: "red", height: 20, width: 20 }} />
+          {item.captain1Pic ? (
+            <Image
+              source={{ uri: item.captain1Pic }}
+              style={{ width: 40, height: 40 }}
+            />
+          ) : (
+            <View style={{ backgroundColor: "red", height: 20, width: 20 }} />
+          )}
           <AppText size={1.5} bold={true}>
             {item.firstTeamName}
           </AppText>
@@ -59,13 +67,14 @@ const MatchesItem = ({ item, completed }) => {
             alignItems: "flex-end",
           }}
         >
-          <View
-            style={{
-              backgroundColor: "red",
-              height: 20,
-              width: 20,
-            }}
-          />
+          {item.captain2Pic ? (
+            <Image
+              source={{ uri: item.captain2Pic }}
+              style={{ width: 40, height: 40 }}
+            />
+          ) : (
+            <View style={{ backgroundColor: "red", height: 20, width: 20 }} />
+          )}
           <AppText size={1.5} bold={true}>
             {item.secondTeamName}
           </AppText>
@@ -96,4 +105,4 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
-export default MatchesItem;
+export default React.memo(MatchesItem);
