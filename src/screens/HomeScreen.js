@@ -7,10 +7,10 @@ import { filterPastEvents, filterUpcomingEvents } from "../constants/functions";
 import { setpastTournaments, settournaments } from "../store/userReducer";
 import { db } from "../../firebaseConfig";
 import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
-import { FIRESTORE_COLLECTIONS } from "../constants/data";
-import { COLORS, FSTYLES } from "../constants/theme";
+import { FIRESTORE_COLLECTIONS, IMAGES } from "../constants/data";
+import { COLORS, FSTYLES, SIZES } from "../constants/theme";
 import { TouchableOpacity } from "react-native";
-
+import { SliderBox } from "react-native-image-slider-box";
 const HomeScreen = () => {
   const { tournaments, pastTournaments } = useSelector(
     (state) => state.entities.userReducer
@@ -63,15 +63,19 @@ const HomeScreen = () => {
     <>
       <AppLoader loading={loading} />
       <HomeHeader header={"JOHAR11"} />
-      <AppView style={{ flex: 1 }}>
-        <View style={{ width: "100%", height: 100 }}>
-          <Image
-            source={require("../../assets/slide2.jpg")}
-            style={{
-              height: "100%",
-              width: "100%",
-              resizeMode: "contain",
-            }}
+      <AppView>
+        <View
+          style={{
+            bottom: 15,
+          }}
+        >
+          <SliderBox
+            images={IMAGES}
+            sliderBoxHeight={100}
+            resizeMode={"contain"}
+            autoplay
+            parentWidth={SIZES.width * 0.935}
+            circleLoop
           />
         </View>
         <View style={FSTYLES}>

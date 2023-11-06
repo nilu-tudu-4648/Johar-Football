@@ -11,12 +11,14 @@ const CreateTeamScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <ContestHeader title={"Create Team"} />
-      <AppText style={styles.text} bold={true} size={1.9}>
-        Players {players.length}/11
-      </AppText>
-      <AppText style={styles.text} bold={true} size={1.9}>
-        Maximum of 7 players from one team
-      </AppText>
+      <View style={{ padding: SIZES.base }}>
+        <AppText style={styles.text} bold={true} size={1.9}>
+          Players {players.length}/11
+        </AppText>
+        <AppText style={styles.text} bold={true} size={1.9}>
+          Maximum of 7 players from one team
+        </AppText>
+      </View>
       <CreateTeamNavigator />
     </View>
   );

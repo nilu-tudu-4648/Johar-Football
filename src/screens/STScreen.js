@@ -7,13 +7,12 @@ import {
   setPlayersForTournament,
 } from "../store/playersReducer";
 import { NAVIGATION } from "../constants/routes";
-import { AppButton, PriviewDialog } from "../components";
+import { AppButton } from "../components";
 import { COLORS, FSTYLES } from "../constants/theme";
 import { showToast } from "../constants/functions";
 
 const STScreen = ({ navigation }) => {
   const [playersArray, setplayersArray] = useState([]);
-  const [visible, setvisible] = useState(false);
   const { players, createPlayers } = useSelector(
     (state) => state.entities.playersReducer
   );
@@ -75,25 +74,14 @@ const STScreen = ({ navigation }) => {
       </ScrollView>
       <View style={{ ...FSTYLES, justifyContent: "space-around", bottom: 12 }}>
         <AppButton
-          title="Preview"
-          onPress={() => setvisible(true)}
-          style={{ borderRadius: 20, width: 150 }}
-        />
-        <AppButton
-          title="Next"
+          title="NEXT"
           onPress={NextButton}
           style={{
-            borderRadius: 20,
-            width: 150,
+            width: 250,
             backgroundColor: COLORS.green,
           }}
         />
       </View>
-      <PriviewDialog
-        visible={visible}
-        players={players}
-        setvisible={setvisible}
-      />
     </>
   );
 };

@@ -21,11 +21,13 @@ const ContestHeader = ({ title }) => {
 
   // Create a new Date object with the parsed values
   const eventDate = new Date(
-    parseInt(dateParts[2]),  // Year
-    parseInt(dateParts[1]) - 1,  // Month (0-indexed)
-    parseInt(dateParts[0]),  // Day
-    timeAMPM === "PM" ? parseInt(timeHoursMinutes[0]) + 12 : parseInt(timeHoursMinutes[0]), // Hours
-    parseInt(timeHoursMinutes[1])  // Minutes
+    parseInt(dateParts[2]), // Year
+    parseInt(dateParts[1]) - 1, // Month (0-indexed)
+    parseInt(dateParts[0]), // Day
+    timeAMPM === "PM"
+      ? parseInt(timeHoursMinutes[0]) + 12
+      : parseInt(timeHoursMinutes[0]), // Hours
+    parseInt(timeHoursMinutes[1]) // Minutes
   );
 
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(eventDate));
@@ -86,7 +88,7 @@ const ContestHeader = ({ title }) => {
           onPress={() => navigation.goBack()}
           color={COLORS.white}
         />
-        <View>
+        <View style={{ width: "80%", alignItems: "flex-start" }}>
           <AppText color={COLORS.white} style={WNFONTS.h5}>
             {title
               ? title

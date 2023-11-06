@@ -30,10 +30,10 @@ const CreateTeamItemComponent = ({ item, addPlayerstoTeamFunc }) => {
           )}
         </View>
         <View style={{ width: "30%" }}>
-          <AppText size={1.8} bold={true}>
+          <AppText size={1.6} bold={true}>
             {item.name}
           </AppText>
-          <AppText size={1.5} color={COLORS.lightgray2}>
+          <AppText size={1.3} color={COLORS.lightgray2}>
             {item.teamName}
           </AppText>
         </View>

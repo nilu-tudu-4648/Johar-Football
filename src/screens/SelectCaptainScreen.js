@@ -1,5 +1,4 @@
 import {
-  Button,
   FlatList,
   StyleSheet,
   TouchableOpacity,
@@ -8,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContestHeader from "../components/ContestHeader";
-import { AppDivider, AppText } from "../components";
+import { AppButton, AppDivider, AppText, PriviewDialog } from "../components";
 import { COLORS, FSTYLES, SIZES, STYLES } from "../constants/theme";
 import { Entypo } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,9 +16,12 @@ import { db } from "../../firebaseConfig";
 import { getLeaderBoard, showToast } from "../constants/functions";
 import { FIRESTORE_COLLECTIONS } from "../constants/data";
 import { NAVIGATION } from "../constants/routes";
+import { BackHandler } from "react-native";
+import { setFilterPlayersForTournament } from "../store/playersReducer";
 
 const SelectCaptainScreen = ({ navigation }) => {
   const [playersArray, setPlayersArray] = useState([]);
+  const [visible, setvisible] = useState(false);
   const { players } = useSelector((state) => state.entities.playersReducer);
   const { user, selectedTournament } = useSelector(
     (state) => state.entities.userReducer
@@ -96,10 +98,10 @@ const SelectCaptainScreen = ({ navigation }) => {
                 width: "50%",
               }}
             >
-              <AppText size={1.4} bold={true}>
+              <AppText size={1.3} bold={true}>
                 {item.name}
               </AppText>
-              <AppText size={1.3}>{item.points} pts</AppText>
+              <AppText size={1.2}>{item.points} pts</AppText>
             </View>
           </View>
           <View
@@ -115,7 +117,7 @@ const SelectCaptainScreen = ({ navigation }) => {
               }}
             >
               <AppText
-                size={1.35}
+                size={1.2}
                 bold={true}
                 color={!item.selectedCaptain ? COLORS.black : COLORS.white}
               >
@@ -132,7 +134,7 @@ const SelectCaptainScreen = ({ navigation }) => {
               }}
             >
               <AppText
-                size={1.35}
+                size={1.2}
                 bold={true}
                 color={!item.selectedViceCaptain ? COLORS.black : COLORS.white}
               >
@@ -164,12 +166,21 @@ const SelectCaptainScreen = ({ navigation }) => {
       console.log("Error:", error);
     }
   };
+  BackHandler.addEventListener(
+    "hardwareBackPress",
+    () => {
+      dispatch(setFilterPlayersForTournament([]));
+      navigation.navigate(NAVIGATION.HOME);
+      return () => true;
+    },
+    []
+  );
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1,backgroundColor: COLORS.white }}>
         <ContestHeader title={"Create Team"} />
         <View style={{ ...STYLES, marginVertical: SIZES.base }}>
-          <AppText bold={true}>Choose your Captain and Vice Captain</AppText>
+          <AppText bold={true} size={1.8}>Choose your Captain and Vice Captain</AppText>
           <AppText size={1.5}>C gets 2X points, VC gets 1.5x points</AppText>
         </View>
         <AppDivider />
@@ -194,10 +205,26 @@ const SelectCaptainScreen = ({ navigation }) => {
           keyExtractor={(item, index) => item.id.toString()}
         />
       </View>
-      <Button
-        title="Save & Continue"
-        style={{ bottom: 12 }}
-        onPress={saveTeamsToFirebase}
+      <View style={{ ...FSTYLES, justifyContent: "space-around", bottom: 12 }}>
+        <AppButton
+          title="PREVIEW"
+          onPress={() => setvisible(true)}
+          style={{ borderRadius: 20, width: 150 }}
+        />
+        <AppButton
+          title="SAVE"
+          onPress={saveTeamsToFirebase}
+          style={{
+            borderRadius: 20,
+            width: 150,
+            backgroundColor: COLORS.green,
+          }}
+        />
+      </View>
+      <PriviewDialog
+        visible={visible}
+        players={players}
+        setvisible={setvisible}
       />
     </>
   );
@@ -209,9 +236,9 @@ const styles = StyleSheet.create({
   chooseButton: {
     borderColor: COLORS.black,
     borderWidth: 1,
-    borderRadius: SIZES.h1 / 2,
-    width: SIZES.h1,
-    height: SIZES.h1,
+    borderRadius: SIZES.h2 / 2,
+    width: SIZES.h2,
+    height: SIZES.h2,
     justifyContent: "center",
     alignItems: "center",
   },

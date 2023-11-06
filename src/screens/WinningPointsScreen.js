@@ -10,7 +10,7 @@ const WinningPointsScreen = ({ route }) => {
   const renderPlayers = (playerType, header) => {
     return (
       <>
-        <AppText bold={true} color={COLORS.red} size={1.5}>
+        <AppText bold={true} color={COLORS.white} size={1.5}>
           {header.toUpperCase()}
         </AppText>
         <View style={styles.optionsContainer}>
@@ -18,7 +18,7 @@ const WinningPointsScreen = ({ route }) => {
             .filter((player) => player.playerType === playerType)
             .map((item) => (
               <View key={item.name} style={{ alignItems: "center", width: 60 }}>
-                <AppText size={1.5} color={COLORS.yellow}>
+                <AppText size={1.5} color={COLORS.white}>
                   {item.type === "Captain"
                     ? "C"
                     : item.type === "ViceCaptain" && "VC"}
@@ -28,9 +28,14 @@ const WinningPointsScreen = ({ route }) => {
                   size={SIZES.h1 * 1.1}
                   color={COLORS.black}
                 />
-                <AppText color={COLORS.white} size={1.2}>
-                  {truncateString(item.name, 6)}
-                </AppText>
+                <View
+                  style={{
+                    backgroundColor: COLORS.white,
+                    padding: SIZES.base / 10,
+                  }}
+                >
+                  <AppText size={1}>{truncateString(item.name, 6)}</AppText>
+                </View>
                 <AppText color={COLORS.white} size={1.2} bold={true}>
                   {item.points}
                 </AppText>
