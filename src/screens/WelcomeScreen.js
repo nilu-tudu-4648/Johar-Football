@@ -19,31 +19,20 @@ const WelcomeScreen = ({ navigation }) => {
       <View
         style={{
           ...STYLES,
-          flex: 0.6,
+          flex: .7,
         }}
       >
         <Image
-          source={require("../../assets/kick.jpg")}
-          style={{ width: "50%", height: 100, resizeMode: "contain" }}
+          source={require("../../assets/welcome.jpg")}
+          style={{ width: "100%", resizeMode: "contain", height: "100%" }}
         />
       </View>
       <View
         style={{
           ...STYLES,
-          flex: 1,
-        }}
-      >
-        <Image
-          source={require("../../assets/teams.png")}
-          style={{ width: "100%", resizeMode: "contain", height: "110%" }}
-        />
-      </View>
-      <View
-        style={{
-          ...STYLES,
-          flex: 0.7,
+          flex: 0.3,
           justifyContent: "space-between",
-          paddingVertical: SIZES.padding,
+
         }}
       >
         <View style={{ ...STYLES }}>
@@ -56,7 +45,6 @@ const WelcomeScreen = ({ navigation }) => {
         <View
           style={{
             ...STYLES,
-            paddingVertical: SIZES.padding,
           }}
         >
           <AppButton

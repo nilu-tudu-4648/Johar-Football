@@ -19,22 +19,18 @@ import { TouchableOpacity } from "react-native";
 const LoginScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false);
   const [forgotPin, setforgotPin] = useState(false);
-  const [userData, setUserData] = useState({});
   const {
     control,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
       phone: "",
       password: "",
-      // phone: "9155186701",
-      // password: "123456",
     },
   });
   const dispatch = useDispatch();
-  async function getUser(mobile) {
+  async function getUser(mobile, forgot = false) {
     const q = query(
       collection(db, FIRESTORE_COLLECTIONS.USERS),
       where("mobile", "==", mobile)
@@ -43,7 +39,9 @@ const LoginScreen = ({ navigation }) => {
 
     if (!querySnapshot.empty) {
       const data = querySnapshot.docs[0].data();
-      setUserData(data);
+      if (forgot) {
+        showToast(`Your password is ${data.password}`);
+      }
       return data;
     }
     // User does not exist
@@ -69,12 +67,10 @@ const LoginScreen = ({ navigation }) => {
       console.log("User login failed.");
     }
   };
-
   const onSubmit = async (data) => {
     if (forgotPin) {
-      showToast(`Your password is ${userData.password}`);
+      await getUser(data.phone, true);
       setforgotPin(false);
-      setUserData({});
     } else {
       setloading(true);
       try {
@@ -96,15 +92,6 @@ const LoginScreen = ({ navigation }) => {
     []
   );
   const phonePattern = /^[6-9][0-9]{9}$/;
-  const ForgotPin = async () => {
-    try {
-      setforgotPin(true);
-      const mobile = getValues("phone");
-      await getUser(mobile);
-    } catch (error) {
-      showToast("Something went wrong");
-    }
-  };
   return (
     <View style={styles.container}>
       <AppLoader loading={loading} />
@@ -154,7 +141,7 @@ const LoginScreen = ({ navigation }) => {
           ) : null}
           <TouchableOpacity
             style={{ alignSelf: "flex-end" }}
-            onPress={ForgotPin}
+            onPress={() => setforgotPin(true)}
           >
             <AppText size={1.3}>Forgot Pin</AppText>
           </TouchableOpacity>

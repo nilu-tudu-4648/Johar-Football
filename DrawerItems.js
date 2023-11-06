@@ -36,21 +36,13 @@ const DrawerItems = ({ navigation }) => {
       <View style={styles.container}>
         <Image
           source={require("./assets/qr.jpg")}
-          style={{ width: "100%", height: 500, resizeMode: "contain",marginVertical:20 }}
+          style={{
+            width: "100%",
+            height: 500,
+            resizeMode: "contain",
+            marginVertical: 20,
+          }}
         />
-        <View style={{ width: "100%" }}>
-          {/* {
-            dashboardCards.map((item, i) => (
-              <TouchableOpacity key={i} onPress={() => navigation.navigate(item.navigation)} style={styles.drawerCards}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={item.image} resizeMode='contain' style={{ width: SIZES.h3, height: SIZES.h3 }} />
-                  <AppText bold={true} size={1.5} style={{ left: 12 }}>{item.name}</AppText>
-                </View>
-                <Entypo name="chevron-right" size={SIZES.h4} color={COLORS.black} />
-              </TouchableOpacity>
-            ))
-          } */}
-        </View>
         <View
           style={{
             width: "100%",
@@ -58,7 +50,7 @@ const DrawerItems = ({ navigation }) => {
             paddingBottom: SIZES.h4,
           }}
         >
-          <AppText size={1} color={COLORS.lightgray1}>
+          <AppText size={1.5} color={COLORS.background}>
             1.0.0
           </AppText>
           <AppButton
